@@ -21,7 +21,7 @@
 
 #define MCSPI_XFERLEVEL 0x17c
 #define MCSPI_DAFTX 0x180   // DMA address aligned FIFO TX register
-#define MCSPI_DAFTX 0x1a0   // DMA address aligned FIFO RX register
+#define MCSPI_DAFRX 0x1a0   // DMA address aligned FIFO RX register
 
 #define MCSPI_CH0CONF 0x12c
 #define MCSPI_CH0STAT 0x130
@@ -53,7 +53,7 @@ START:
 SETUP:
     //reset interrupt status bits write all ones
     MOV r7, 0x3ffff
-    SBCO r7, C6, MCSPI_IRQSTATUS, 18
+    SBCO r7, C6 | MCSPI_IRQSTATUS,0, 18
 
     
 
