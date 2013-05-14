@@ -6,6 +6,7 @@ APP_DIRS += PRU_PRUtoPRU_Interrupt
 APP_DIRS += blink
 APP_DIRS += blinkslave
 APP_DIRS += dmx
+APP_DIRS += SPItest
 
 
 ASSEM_FILES :=
@@ -17,6 +18,7 @@ ASSEM_FILES += PRU_PRUtoPRU_Interrupt/PRU_PRU1toPRU0_Interrupt.p
 ASSEM_FILES += blink/blink.p
 ASSEM_FILES += blinkslave/blinkslave.p
 ASSEM_FILES += dmx/dmx.p
+ASSEM_FILES += SPItest/SPItest.p
 
 
 BIN_FILES :=
@@ -28,4 +30,5 @@ BIN_FILES += PRU_PRU1toPRU0_Interrupt.bin
 BIN_FILES += blink.bin
 BIN_FILES += blinkslave.bin
 BIN_FILES += dmx.bin
+BIN_FILES += SPItest.bin
 
