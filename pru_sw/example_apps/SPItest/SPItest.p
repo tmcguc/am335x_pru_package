@@ -8,6 +8,10 @@
 #define GPIO_CLEARDATAOUT 0x190
 #define GPIO_SETDATAOUT 0x194
 
+#define MCSPI0 0x4803_0000
+#define MCSPI1 0x481a_0000
+
+
 // Cn is the constants table for spi0 it is c6 address of 0x4803_0000
 // c16 is for spi10x481a_0000
 
@@ -52,15 +56,14 @@ START:
 
 SETUP:
     //reset interrupt status bits write all ones
-    MOV r7, 0x3ffff
-    SBCO r7, C6 | MCSPI_IRQSTATUS,0, 18
-
+    MOV r4, 0x3ffff
+    MOV r5, MCSPI0 | MCSPI_IRQSTATUS
+    SBBO r4, r5, 0, 4
     
-
-
     // transmit only| spi word is 24 bits| clock is dived by 2 
-    MOV r4, 0x2<<12 | 0x17<<7 | 1<<2     
-    SBCO r4, C6, MCSPI_CH0CONF, 32
+    MOV r6, 0x2<<12 | 0x17<<7 | 0x1<<2
+    MOV r7, MCSPI0 | MCSPI_CH0CONF     
+    SBBO r6, r7, 0, 4
 
 
 BLINK:
@@ -69,22 +72,22 @@ BLINK:
     SBBO r2, r3, 0, 4
 
     //enable channel
-    MOV r6, 0x1
-    SBCO r6, C6, MCSPI_CH0CTRL, 1
+    MOV r8, MCSPI0 | MCSPI_CH0CTRL
+    SET r8.t0
 
     //write all ones to spi tx register
-    MOV r5, 0x00ffffff
-    SBCO r5, C6, MCSPI_TX0, 32
+    MOV r9, 0x00ffffff
+    MOV r10 , MCSPI0 | MCSPI_TX0
+    SBBO r9, r10,0,4
 
     MOV r0, 0x00f00000
 DELAY:
     SUB r0, r0, 1
     QBNE DELAY, r0, 0
 
-    //reset enable
-    MOV r6, 0x00000000
-    SBCO r6, C6, MCSPI_CH0CTRL, 1
-
+    //spi reset enable
+    CLR r8.t0
+    
     MOV r2, 7<<22
     MOV r3, GPIO1 | GPIO_CLEARDATAOUT
     SBBO r2, r3, 0, 4
