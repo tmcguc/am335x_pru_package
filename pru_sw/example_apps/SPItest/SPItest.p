@@ -1,0 +1,110 @@
+.origin 0
+.entrypoint START
+
+#define PRU0_ARM_INTERRUPT 19
+#define AM33XX
+
+#define GPIO1 0x4804c000
+#define GPIO_CLEARDATAOUT 0x190
+#define GPIO_SETDATAOUT 0x194
+
+// Cn is the constants table for spi0 it is c6 address of 0x4803_0000
+// c16 is for spi10x481a_0000
+
+#define MCSPI_REVISION 0x000
+#define MCSPI_SYSCONFIG 0x110
+#define MCSPI_SYSSTATUS 0x114
+#define MCSPI_IRQSTATUS 0x118
+#define MCSPI_IRQENABLE 0x11c
+#define MCSPI_SYST 0x124
+#define MCSPI_MODULCTRL 0x128
+
+#define MCSPI_XFERLEVEL 0x17c
+#define MCSPI_DAFTX 0x180   // DMA address aligned FIFO TX register
+#define MCSPI_DAFTX 0x1a0   // DMA address aligned FIFO RX register
+
+#define MCSPI_CH0CONF 0x12c
+#define MCSPI_CH0STAT 0x130
+#define MCSPI_CH0CTRL 0x134
+#define MCSPI_TX0 0x138
+#define MCSPI_RX0 0x13c
+
+#define MCSPI_CH1CONF 0x140
+#define MCSPI_CH1STAT 0x144
+#define MCSPI_CH1CTRL 0x148
+#define MCSPI_TX1 0x14c
+#define MCSPI_RX1 0x150
+
+
+
+
+
+
+START:
+// clear that bit
+    LBCO r0, C4, 4, 4
+    CLR r0, r0, 4
+    SBCO r0, C4, 4, 4
+
+    MOV r1, 10
+// 
+
+
+SETUP:
+
+
+
+// transmit only| spi word is 24 bits| clock is dived by 2 
+    MOV r4, 0x2<<12 | 0x17<<7 | 1<<2     
+    SBCO r4, C6, MCSPI_CH0CONF, 32
+
+
+BLINK:
+    MOV r2, 7<<22
+    MOV r3, GPIO1 | GPIO_SETDATAOUT
+    SBBO r2, r3, 0, 4
+
+    //enable channel
+    MOV r6, 0x1
+    SBCO r6, C6, MCSPI_CH0CTRL, 1
+
+    //write all ones to spi tx register
+    MOV r5, 0x00ffffff
+    SBCO r5, C6, MCSPI_TX0, 32
+
+    MOV r0, 0x00f00000
+DELAY:
+    SUB r0, r0, 1
+    QBNE DELAY, r0, 0
+
+    //reset enable
+    MOV r6, 0x00000000
+    SBCO r6, C6, MCSPI_CH0CTRL, 1
+
+    MOV r2, 7<<22
+    MOV r3, GPIO1 | GPIO_CLEARDATAOUT
+    SBBO r2, r3, 0, 4
+
+    MOV r0, 0x00f00000
+DELAY2:
+    SUB r0, r0, 1
+    QBNE DELAY2, r0, 0
+
+    SUB r1, r1, 1
+    QBNE BLINK, r1, 0
+
+
+
+
+
+
+
+
+//#ifdef AM33XX
+    // Send notification to Host for program completion
+    MOV R31.b0, PRU0_ARM_INTERRUPT+16
+//#else
+//    MOV R31.b0, PRU0_ARM_INTERRUPT
+//#endif
+
+HALT
