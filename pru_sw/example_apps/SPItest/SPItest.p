@@ -8,8 +8,8 @@
 #define GPIO_CLEARDATAOUT 0x190
 #define GPIO_SETDATAOUT 0x194
 
-#define MCSPI0 0x4803_0000
-#define MCSPI1 0x481a_0000
+#define MCSPI0 0x48030000
+#define MCSPI1 0x481a0000
 
 
 // Cn is the constants table for spi0 it is c6 address of 0x4803_0000
