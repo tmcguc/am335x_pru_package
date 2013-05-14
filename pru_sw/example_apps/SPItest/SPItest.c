@@ -11,7 +11,7 @@ int main (void)
     unsigned int ret;
     tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
     
-    printf("\nINFO: Starting %s example.\r\n", "blink");
+    printf("\nINFO: Starting %s example.\r\n", "SPItest");
     /* Initialize the PRU */
     prussdrv_init ();		
     
@@ -28,7 +28,7 @@ int main (void)
 
     /* Execute example on PRU */
     printf("\tINFO: Executing example.\r\n");
-    prussdrv_exec_program (PRU_NUM, "./blink.bin");
+    prussdrv_exec_program (PRU_NUM, "./SPItest.bin");
     
     /* Wait until PRU0 has finished execution */
     printf("\tINFO: Waiting for HALT command.\r\n");
