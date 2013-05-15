@@ -67,9 +67,9 @@ SETUP:
 
 
 BLINK:
-    MOV r2, 7<<22
-    MOV r3, GPIO1 | GPIO_SETDATAOUT
-    SBBO r2, r3, 0, 4
+    //MOV r2, 7<<22
+    //MOV r3, GPIO1 | GPIO_SETDATAOUT
+    //SBBO r2, r3, 0, 4
 
 
     //write all ones to spi tx register
@@ -89,9 +89,9 @@ DELAY:
     //spi reset enable
     CLR r8.t0
     
-    MOV r2, 7<<22
-    MOV r3, GPIO1 | GPIO_CLEARDATAOUT
-    SBBO r2, r3, 0, 4
+    //MOV r2, 7<<22
+    //MOV r3, GPIO1 | GPIO_CLEARDATAOUT
+    //SBBO r2, r3, 0, 4
 
     MOV r0, 0x00f00000
 DELAY2:
