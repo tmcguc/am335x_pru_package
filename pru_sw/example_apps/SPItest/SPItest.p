@@ -50,7 +50,7 @@ START:
     CLR r0, r0, 4
     SBCO r0, C4, 4, 4
 
-    MOV r1, 100
+    MOV r1, 10
 // 
 
 
@@ -71,16 +71,17 @@ BLINK:
     MOV r3, GPIO1 | GPIO_SETDATAOUT
     SBBO r2, r3, 0, 4
 
-    //enable channel
-    MOV r8, MCSPI0 | MCSPI_CH0CTRL
-    SET r8.t0
 
     //write all ones to spi tx register
     MOV r9, 0x00ffffff
     MOV r10 , MCSPI0 | MCSPI_TX0
     SBBO r9, r10,0,4
 
-    MOV r0, 0x0f000000
+    //enable channel
+    MOV r8, MCSPI0 | MCSPI_CH0CTRL
+    SET r8.t0
+
+    MOV r0, 0x00f00000
 DELAY:
     SUB r0, r0, 1
     QBNE DELAY, r0, 0
@@ -92,7 +93,7 @@ DELAY:
     MOV r3, GPIO1 | GPIO_CLEARDATAOUT
     SBBO r2, r3, 0, 4
 
-    MOV r0, 0x0f000000
+    MOV r0, 0x00f00000
 DELAY2:
     SUB r0, r0, 1
     QBNE DELAY2, r0, 0
