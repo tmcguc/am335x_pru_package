@@ -57,12 +57,12 @@ START:
 SETUP:
     //reset interrupt status bits write all ones
     MOV r4, 0x3ffff
-    MOV r5, MCSPI0 | MCSPI_IRQSTATUS
+    MOV r5, MCSPI1 | MCSPI_IRQSTATUS
     SBBO r4, r5, 0, 4
     
     // transmit only| spi word is 24 bits| clock is dived by 2 
     MOV r6, 0x2<<12 | 0x17<<7 | 0x1<<2
-    MOV r7, MCSPI0 | MCSPI_CH0CONF     
+    MOV r7, MCSPI1 | MCSPI_CH0CONF     
     SBBO r6, r7, 0, 4
 
 
@@ -72,13 +72,13 @@ BLINK:
     SBBO r2, r3, 0, 4
 
     //enable channel
-    MOV r8, MCSPI0 | MCSPI_CH0CTRL
+    MOV r8, MCSPI1 | MCSPI_CH0CTRL
     SET r8.t0
 
 
     //write all ones to spi tx register
     MOV r9, 0x00ffffff
-    MOV r10 , MCSPI0 | MCSPI_TX0
+    MOV r10 , MCSPI1 | MCSPI_TX0
     SBBO r9, r10,0,4
 
 
