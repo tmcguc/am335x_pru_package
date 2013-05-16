@@ -56,8 +56,8 @@ START:
 
 SETUP:
     //reset interrupt status bits write all ones
-    MOV r4, 0x3ffff
-    MOV r5, MCSPI1 | MCSPI_IRQSTATUS
+    MOV r4, 0x960
+    MOV r5, MCSPI1 | MCSPI_SYST
     SBBO r4, r5, 0, 4
     
     // transmit only| spi word is 24 bits| clock is dived by 2 
