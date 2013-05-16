@@ -73,7 +73,8 @@ BLINK:
 
     //enable channel
     MOV r8, MCSPI1 | MCSPI_CH0CTRL
-    SET r8.t0
+    MOV r11, 0x1
+    SBBO r11, r8, 0, 4
 
 
     //write all ones to spi tx register
@@ -88,7 +89,9 @@ DELAY:
     QBNE DELAY, r0, 0
 
     //spi reset enable
-    CLR r8.t0
+    MOV r11, 0x0
+    SBBO r11, r8, 0, 4
+    //CLR r8.t0
     
     MOV r2, 7<<22
     MOV r3, GPIO1 | GPIO_CLEARDATAOUT
