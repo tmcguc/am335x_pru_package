@@ -55,7 +55,43 @@ START:
 
 
 SETUP:
+
+
+
+
+    //enable clkspiref and clk
+    MOV r12 0x44e00050
+    LBBO r13, r12, 0, 4
+    SET r13, 1
+    SBBO r13, r12, 0, 4
+
+
+    MOV r14, MCSPI1 | MCSPI_SYSCONFIG
+    LBBO r15, r14, 0, 4
+    SET r15, 1
+    SBBO r15, r14, 0, 4
+
+
+CHECKRESET:
+    MOV r16, MCSPI1 | MCSPI_SYSSTATUS
+    LBBO r17, r16, 0, 4
+    QBBC CHECKRESET, r17.t0
+
+
+    // for test no need to change modulctrl
+
+    // settup sysconfig  for clocks and idle mode
+    MOV  r18, 0x3<<8 |0x1
+    SBBO r18, r14, 0, 4
+    
+
+
+
+
+
+   
     //reset interrupt status bits write all ones
+
     MOV r4, 0x960
     MOV r5, MCSPI1 | MCSPI_SYST
     SBBO r4, r5, 0, 4
