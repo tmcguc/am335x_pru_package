@@ -79,6 +79,7 @@ CHECKRESET:
 
 
     // for test no need to change modulctrl
+CONFIG:
 
     // settup sysconfig  for clocks and idle mode
     MOV  r18, 0x3<<8 |0x1
