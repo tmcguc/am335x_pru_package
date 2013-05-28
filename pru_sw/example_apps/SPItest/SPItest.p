@@ -60,7 +60,7 @@ SETUP:
 
 
     //enable clkspiref and clk
-    MOV r12 0x44e00050
+    MOV r12, 0x44e00050
     LBBO r13, r12, 0, 4
     SET r13, 1
     SBBO r13, r12, 0, 4
