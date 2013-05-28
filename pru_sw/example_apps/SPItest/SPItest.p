@@ -101,19 +101,20 @@ CHECKRESET:
     MOV r7, MCSPI1 | MCSPI_CH0CONF     
     SBBO r6, r7, 0, 4
 
+    //enable channel
+    MOV r8, MCSPI1 | MCSPI_CH0CTRL
+    MOV r11, 0x1
+    SBBO r11, r8, 0, 4
 
 BLINK:
     MOV r2, 7<<22
     MOV r3, GPIO1 | GPIO_SETDATAOUT
     SBBO r2, r3, 0, 4
 
-    //enable channel
-    MOV r8, MCSPI1 | MCSPI_CH0CTRL
-    MOV r11, 0x1
-    SBBO r11, r8, 0, 4
+   
 
 
-    //write all ones to spi tx register
+    //write to spi tx register
     MOV r9, 0x00f0f0f0
     MOV r10 , MCSPI1 | MCSPI_TX0
     SBBO r9, r10,0,4
