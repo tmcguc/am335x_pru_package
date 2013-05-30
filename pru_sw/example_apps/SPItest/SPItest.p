@@ -82,7 +82,7 @@ CHECKRESET:
 CONFIG:
 
     // settup sysconfig  for clocks and idle mode
-    MOV  r18, 0x3<<8 |0x1
+    MOV  r18, 0x3<<8
     SBBO r18, r14, 0, 4
     
 
