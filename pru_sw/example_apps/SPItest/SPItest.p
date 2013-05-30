@@ -91,7 +91,14 @@ CONFIG:
 
 
    
-    //reset interrupt status bits write all ones
+    
+BLINK:
+    MOV r2, 7<<22
+    MOV r3, GPIO1 | GPIO_SETDATAOUT
+    SBBO r2, r3, 0, 4
+
+   
+//reset interrupt status bits write all ones
 
     MOV r4, 0x960
     MOV r5, MCSPI1 | MCSPI_SYST
@@ -106,13 +113,6 @@ CONFIG:
     MOV r8, MCSPI1 | MCSPI_CH0CTRL
     MOV r11, 0x1
     SBBO r11, r8, 0, 4
-
-BLINK:
-    MOV r2, 7<<22
-    MOV r3, GPIO1 | GPIO_SETDATAOUT
-    SBBO r2, r3, 0, 4
-
-   
 
 
     //write to spi tx register
