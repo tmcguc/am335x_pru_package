@@ -121,14 +121,14 @@ BLINK:
     SBBO r9, r10,0,4
 
 
-    MOV r0, 0x00f00000
+    MOV r0, 0x000f0000
 DELAY:
     SUB r0, r0, 1
     QBNE DELAY, r0, 0
 
     //spi reset enable
-    //MOV r11, 0x0
-    //SBBO r11, r8, 0, 4
+    MOV r11, 0x0
+    SBBO r11, r8, 0, 4
     //CLR r8.t0
     
     MOV r2, 7<<22
