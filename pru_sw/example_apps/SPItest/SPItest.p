@@ -127,8 +127,8 @@ DELAY:
     QBNE DELAY, r0, 0
 
     //spi reset enable
-    MOV r11, 0x0
-    SBBO r11, r8, 0, 4
+    //MOV r11, 0x0
+    //SBBO r11, r8, 0, 4
     //CLR r8.t0
     
     MOV r2, 7<<22
