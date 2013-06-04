@@ -20,6 +20,7 @@
 #define MCSPI_SYSSTATUS 0x114
 #define MCSPI_IRQSTATUS 0x118
 #define MCSPI_IRQENABLE 0x11c
+#define MCSPI_WAKEUPENABLE 0x120
 #define MCSPI_SYST 0x124
 #define MCSPI_MODULCTRL 0x128
 
@@ -82,16 +83,20 @@ CHECKRESET:
 CONFIG:
 
 
+    // settup sysconfig  for clocks and idle mode
+    MOV  r18, 0x3<<8 | 0x0<<0
+    SBBO r18, r14, 0, 4
+    
+
     // need to change modulctrl to set master used same configuration as in mcspi.c
     MOV r19, MCSPI1 | MCSPI_MODULCTRL
     MOV r20, 0<<3 | 0<<2 | 1<<0
     LBBO r19, r20 , 0, 4
 
+    MOV r21, MCSPI1 | MCSPI_WAKEUPENABLE
+    MOV r22, 0x0
+    LBBO r22, r21, 0, 4
 
-    // settup sysconfig  for clocks and idle mode
-    MOV  r18, 0x3<<8 | 0x0<<0
-    SBBO r18, r14, 0, 4
-    
 
 
 
