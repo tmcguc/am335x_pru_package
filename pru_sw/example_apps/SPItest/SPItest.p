@@ -83,7 +83,7 @@ CONFIG:
 
 
     // need to change modulctrl to set master used same configuration as in mcspi.c
-    MOV r19, MCSP1 | MCSPI_MODULCTRL
+    MOV r19, MCSPI1 | MCSPI_MODULCTRL
     MOV r20, 0<<3 | 0<<2 | 1<<0
     LBBO r19, r20 , 0, 4
 
