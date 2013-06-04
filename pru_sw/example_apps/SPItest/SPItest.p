@@ -83,9 +83,9 @@ CONFIG:
 
 
     // need to change modulctrl to set master used same configuration as in mcspi.c
-    //MOV r19, MCSPI1 | MCSPI_MODULCTRL
-    //MOV r20, 0<<3 | 0<<2 | 1<<0
-    //LBBO r19, r20 , 0, 4
+    MOV r19, MCSPI1 | MCSPI_MODULCTRL
+    MOV r20, 0<<3 | 0<<2 | 1<<0
+    LBBO r19, r20 , 0, 4
 
 
     // settup sysconfig  for clocks and idle mode
@@ -128,7 +128,7 @@ BLINK:
     SBBO r9, r10,0,4
 
 
-    MOV r0, 0x000f0000
+    MOV r0, 0x00f00000
 DELAY:
     SUB r0, r0, 1
     QBNE DELAY, r0, 0
