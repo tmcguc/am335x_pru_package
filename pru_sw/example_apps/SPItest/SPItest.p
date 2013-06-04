@@ -50,7 +50,7 @@ START:
     CLR r0, r0, 4
     SBCO r0, C4, 4, 4
 
-    MOV r1, 100
+    MOV r1, 1000
 // 
 
 
