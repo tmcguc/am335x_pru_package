@@ -112,7 +112,7 @@ BLINK:
    
 //reset interrupt status bits write all ones
 
-    MOV r4, 0x960
+    MOV r4, 0x1<<11|0x0<<10|0x0<<9|0x1<<8|0x0<<6|0x0<<5|0x0<<4|0x0<<3
     MOV r5, MCSPI1 | MCSPI_SYST
     SBBO r4, r5, 0, 4
     
