@@ -90,7 +90,7 @@ CONFIG:
 
     // need to change modulctrl to set master used same configuration as in mcspi.c
     MOV r19, MCSPI1 | MCSPI_MODULCTRL
-    MOV r20, 0<<3 | 0<<2 | 1<<0
+    MOV r20, 0x0<<3 | 0x0<<2 | 0x1<<0
     LBBO r19, r20 , 0, 4
 
     MOV r21, MCSPI1 | MCSPI_WAKEUPENABLE
