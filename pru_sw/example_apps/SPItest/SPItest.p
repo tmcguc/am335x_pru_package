@@ -128,7 +128,7 @@ BLINK:
     SBBO r9, r10,0,4
 
 
-    MOV r0, 0x00f00000
+    MOV r0, 0x000f0000
 DELAY:
     SUB r0, r0, 1
     QBNE DELAY, r0, 0
@@ -142,7 +142,7 @@ DELAY:
     MOV r3, GPIO1 | GPIO_CLEARDATAOUT
     SBBO r2, r3, 0, 4
 
-    MOV r0, 0x00f00000
+    MOV r0, 0x000f0000
 DELAY2:
     SUB r0, r0, 1
     QBNE DELAY2, r0, 0
