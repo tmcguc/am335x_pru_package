@@ -94,7 +94,7 @@ CONFIG:
     LBBO r19, r20 , 0, 4
 
     MOV r21, MCSPI1 | MCSPI_WAKEUPENABLE
-    MOV r22, 0x10
+    MOV r22, 0x2<<0
     LBBO r22, r21, 0, 4
 
 
