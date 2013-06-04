@@ -78,8 +78,15 @@ CHECKRESET:
     QBBC CHECKRESET, r17.t0
 
 
-    // for test no need to change modulctrl
+
 CONFIG:
+
+
+    // need to change modulctrl to set master used same configuration as in mcspi.c
+    MOV r19, MCSP1 | MCSPI_MODULCTRL
+    MOV r20, 0<<3 | 0<<2 | 1<<0
+    LBBO r19, r20 , 0, 4
+
 
     // settup sysconfig  for clocks and idle mode
     MOV  r18, 0x3<<8
