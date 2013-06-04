@@ -89,7 +89,7 @@ CONFIG:
 
 
     // settup sysconfig  for clocks and idle mode
-    MOV  r18, 0x3<<8
+    MOV  r18, 0x3<<8 | 0x0<<0
     SBBO r18, r14, 0, 4
     
 
@@ -112,7 +112,7 @@ BLINK:
     SBBO r4, r5, 0, 4
     
     // transmit only|spien polarity held low |spi word is 24 bits| clock is dived by 2 
-    MOV r6, 0x2<<12 | 0x1<<6 |0x17<<7 | 0x1<<2
+    MOV r6, 0x2<<12 | 0x0<<6 |0x17<<7 | 0x1<<2
     MOV r7, MCSPI1 | MCSPI_CH0CONF     
     SBBO r6, r7, 0, 4
 
