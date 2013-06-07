@@ -45,11 +45,11 @@
 // This is where we can change the register configuartions values and put them all together
 
 // sysconfig register setup
-#define CLOCKACTIVITY           0X3 << 8  // 0x3 ocp and functional clocks maintained
+#define CLOCKACTIVITY           0x3 << 8  // 0x3 ocp and functional clocks maintained
 #define SIDLEMODE               0x1 << 3      // 0x1 idle request ignored
 #define AUTOIDLE                0x0               // 0x1 automatic ocp clock strategy is applied
 
-#define SYSCONFIG  CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
+#define SYSCONFIG 0x0000| CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
 
 
 #define EOWKE                   0x0 << 17

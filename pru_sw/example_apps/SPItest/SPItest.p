@@ -62,7 +62,7 @@ BLINK:
     SBBO r4, r5, 0, 4
     
      
-    MOV r6, CH_CONF
+    MOV r6, CH_CONF_1
     MOV r7, MCSPI1 | MCSPI_CH0CONF     
     SBBO r6, r7, 0, 4
 
