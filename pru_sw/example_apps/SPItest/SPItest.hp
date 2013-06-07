@@ -45,39 +45,39 @@
 // This is where we can change the register configuartions values and put them all together
 
 // sysconfig register setup
-#define CLOCKACTIVITY           (0X3 << 8)  // 0x3 ocp and functional clocks maintained
-#define SIDLEMODE               (0x1 << 3)      // 0x1 idle request ignored
+#define CLOCKACTIVITY           0X3 << 8  // 0x3 ocp and functional clocks maintained
+#define SIDLEMODE               0x1 << 3      // 0x1 idle request ignored
 #define AUTOIDLE                0x0               // 0x1 automatic ocp clock strategy is applied
 
 #define SYSCONFIG  0x0000 | CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
 
 
-#define EOWKE                   (0x0 << 17)
-#define RX0_OVERFLOWENABLE      (0x0 << 3)
-#define RX0_FULL_ENABLE         (0x0 << 3)
-#define TX0_UNDERFLOW_ENABLE    (0x0 << 1)
+#define EOWKE                   0x0 << 17
+#define RX0_OVERFLOWENABLE      0x0 << 3
+#define RX0_FULL_ENABLE         0x0 << 3
+#define TX0_UNDERFLOW_ENABLE    0x0 << 1
 #define TX0_EMPTY_ENABLE        0x0
 
 #define IRQENABLE 0x0000 | EOWKE | RX0_OVERFLOWENABLE | RX0_FULL_ENABLE | TX0_UNDERFLOW_ENABLE | TX0_EMPTY_ENABLE
 
 //#define SSB  ?
-#define SPIENDIR                (0x0 << 10)     // output in master mode
-#define SPIDATDIR1              (0x0 << 9)      // 0x0 output
-#define SPIDATDIR0              (0x1 << 8)      // 0x1 input
-#define SPICLK                  (0x0 << 6)      // driven low
-#define SPIDAT_1                (0x0 << 5)
-#define SPIDAT_0                (0x0 << 4)      // driven low if output
-#define SPIEN_1                 (0x0 << 1)      // driven low
+#define SPIENDIR                0x0 << 10     // output in master mode
+#define SPIDATDIR1              0x0 << 9      // 0x0 output
+#define SPIDATDIR0              0x1 << 8      // 0x1 input
+#define SPICLK                  0x0 << 6      // driven low
+#define SPIDAT_1                0x0 << 5
+#define SPIDAT_0                0x0 << 4      // driven low if output
+#define SPIEN_1                 0x0 << 1      // driven low
 #define SPIEN_0                 0x0             // driven low
 #define SYSTEMREG 0x0000 | SPIENDIR | SPIDATDIR1 | SPIDATDIR0 | SPICLK | SPIDAT_1 |SPIDAT_0 | SPIEN_1 | SPIEN_0
 
 
-#define FDAA                    (0x0 << 8)      // 0x0 FIFO manged by CSPI_tx and rx registers
-#define MOA                     (0x0 << 7)      // multiple word access disabled
-#define INITDLY                 (0x0 << 4)      // no intial delay
-#define SYSTEM_TEST             (0x0 << 3)      // Functional mode
-#define MS                      (0x0 << 2)      // This module is a master
-#define PIN34                   (0x0 << 1)      // 0x0 SPIEN is used as chip select 
+#define FDAA                    0x0 << 8      // 0x0 FIFO manged by CSPI_tx and rx registers
+#define MOA                     0x0 << 7      // multiple word access disabled
+#define INITDLY                 0x0 << 4      // no intial delay
+#define SYSTEM_TEST             0x0 << 3      // Functional mode
+#define MS                      0x0 << 2      // This module is a master
+#define PIN34                   0x0 << 1      // 0x0 SPIEN is used as chip select 
 #define SINGLE                  0x0             // 0x0 more than one channel will be used in master mode
 #define MODCONTROL 0x0000 | FDAA| MOA | INITDLY | SYSTEM_TEST | MS | PIN34 | SINGLE
 
@@ -104,5 +104,6 @@
 #define POL                     0x0 << 1        // SPI clock is held high during ative state
 #define PHA                     0x1             // data latched on odd numbered edges of SPICLK
 #define CH_CONF 0x0000|CLKG|FFER|FFEW|TCS|SBPOL|SBE|SPIENSLV|FORCE|TURBO|IS|DPE1|DPE0|DMAR|DMAW|TRM|WL|EPOL|CLKD|POL|PHA
+#define CH_CONF_1 CH_CONF
 
   
