@@ -84,9 +84,9 @@ BLINK:
 
 
     //write to spi tx register
-//    MOV r9, 0x0f0f0f0f
-//    MOV r10 , MCSPI1 | MCSPI_TX0
-//    SBBO r9, r10,0,4
+    MOV r9, 0x0f0f0f0f
+    MOV r10 , MCSPI1 | MCSPI_TX0
+    SBBO r9, r10,0,4
 
 
     MOV r0, 0x000f0000
