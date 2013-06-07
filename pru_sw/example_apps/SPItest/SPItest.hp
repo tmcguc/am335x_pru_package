@@ -1,0 +1,103 @@
+#define PRU0_ARM_INTERRUPT 19
+#define AM33XX
+
+#define GPIO1 0x4804c000
+#define GPIO_CLEARDATAOUT 0x190
+#define GPIO_SETDATAOUT 0x194
+
+#define MCSPI0 0x48030000
+#define MCSPI1 0x481a0000
+
+
+// Cn is the constants table for spi0 it is c6 address of 0x4803_0000
+// c16 is for spi10x481a_0000
+
+#define MCSPI_REVISION 0x000
+#define MCSPI_SYSCONFIG 0x110
+#define MCSPI_SYSSTATUS 0x114
+#define MCSPI_IRQSTATUS 0x118
+#define MCSPI_IRQENABLE 0x11c
+#define MCSPI_WAKEUPENABLE 0x120
+#define MCSPI_SYST 0x124
+#define MCSPI_MODULCTRL 0x128
+
+#define MCSPI_XFERLEVEL 0x17c
+#define MCSPI_DAFTX 0x180   // DMA address aligned FIFO TX register
+#define MCSPI_DAFRX 0x1a0   // DMA address aligned FIFO RX register
+
+#define MCSPI_CH0CONF 0x12c
+#define MCSPI_CH0STAT 0x130
+#define MCSPI_CH0CTRL 0x134
+#define MCSPI_TX0 0x138
+#define MCSPI_RX0 0x13c
+
+#define MCSPI_CH1CONF 0x140
+#define MCSPI_CH1STAT 0x144
+#define MCSPI_CH1CTRL 0x148
+#define MCSPI_TX1 0x14c
+#define MCSPI_RX1 0x150
+
+// This is where we can change the register configuartions values and put them all together
+
+// sysconfig register setup
+#define CLOCKACTIVITY           (0X3 << 8)  // 0x3 ocp and functional clocks maintained
+#define SIDLEMODE               (0x1 << 3)      // 0x1 idle request ignored
+#define AUTOIDLE                0x1               // 0x1 automatic ocp clock strategy is applied
+
+#define SYSCONFIG  0x0000 | CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
+
+
+#define EOWKE                   (0x0 << 17)
+#define RX0_OVERFLOWENABLE      (0x0 << 3)
+#define RX0_FULL_ENABLE         (0x0 << 3)
+#define TX0_UNDERFLOW_ENABLE    (0x0 << 1)
+#define TX0_EMPTY_ENABLE        0x0
+
+#define IRQENABLE 0x0000 | EOWKE | RX0_OVERFLOWENABLE | RX0_FULL_ENABLE | TX0_UNDERFLOW_ENABLE | TX0_EMPTY_ENABLE
+
+//#define SSB  ?
+#define SPIENDIR                (0x0 << 10)     // output in master mode
+#define SPIDATDIR1              (0x0 << 9)      // 0x0 output
+#define SPIDATDIR0              (0x1 << 8)      // 0x1 input
+#define SPICLK                  (0x0 << 6)      // driven low
+#define SPIDAT_1                (0x0 << 5)
+#define SPIDAT_0                (0x0 << 4)      // driven low if output
+#define SPIEN_1                 (0x0 << 1)      // driven low
+#define SPIEN_0                 0x0             // driven low
+#define SYSTEMREG 0x0000 | SPIENDIR | SPIDATDIR1 | SPIDATDIR0 | SPICLK | SPIDAT_1 |SPIDAT_0 | SPIEN_1 | SPIEN_0
+
+
+#define FDAA                    (0x0 << 8)      // 0x0 FIFO manged by CSPI_tx and rx registers
+#define MOA                     (0x0 << 7)      // multiple word access disabled
+#define INITDLY                 (0x0 << 4)      // no intial delay
+#define SYSTEM_TEST             (0x0 << 3)      // Functional mode
+#define MS                      (0x0 << 2)      // This module is a master
+#define PIN34                   (0x0 << 1)      // 0x0 SPIEN is used as chip select 
+#define SINGLE                  0x0             // 0x0 more than one channel will be used in master mode
+#define MODCONTROL 0x0000 | FDAA| MOA | INITDLY | SYSTEM_TEST | MS | PIN34 | SINGLE
+
+
+
+#define CLKG                    0x0 << 29       // 0x0 clock divider granularity power of 2
+#define FFER                    0x0 << 28       // FIFO enabled for recieve, 0x0 not used
+#define FFEW                    0x0 << 27       // FIFO enabled for transmit, 0x0 not used
+#define TCS                     0x0 << 25       // 0.5 clock cycle delay 
+#define SBPOL                   0x0 << 24       //start bit held to zero
+#define SBE                     0x0 << 23       // start bit enable  , 0x0 default set by WL
+#define SPIENSLV                0x0 << 21       // spi select signal detection on ch 0
+#define FORCE                   0x0 << 20       // manual assertion to keep SPIEN active between SPI words
+#define TURBO                   0x0 << 19       // 0x0 turbo is deactivated 
+#define IS                      0x1 << 18       // Input select SPIDAT1 selected for reception
+#define DPE1                    0x1 << 17       // 0x1 no Transmission enable for data line 1
+#define DPE0                    0x0 << 16       // data line zero selected for transmission
+#define DMAR                    0x0 << 15       // DMA read request is disabled
+#define DMAW                    0x0 << 14       // DMA write request is disabled
+#define TRM                     0x2 << 12       //Transmit only   
+#define WL                      0x3 << 7        //word length 4 bits long
+#define EPOL                    0x0 << 6        // spien is held low during active state
+#define CLKD                    0x1 << 2        // Clk frequency divider
+#define POL                     0x0 << 1        // SPI clock is held high during ative state
+#define PHA                     0x0             // data latched on odd numbered edges of SPICLK
+#define CH_CONF 0x0000|CLKG|FFER|FFEW|TCS|SBPOL|SBE|SPIENSLV|FORCE|TURBO|IS|DPE1|DPE0|DMAR|DMAW|TRM|WL|EPOL|CLKD|POL|PHA
+
+  
