@@ -70,24 +70,23 @@ BLINK:
     MOV r7, MCSPI1 | MCSPI_CH0CONF     
     SBBO r6, r7, 0, 4
 
+    //write to spi tx register
+    MOV r9, 0x0f0f0f0f
+    MOV r10 , MCSPI1 | MCSPI_TX0
+    SBBO r9, r10,0,4
+
+
+
     //enable channel
     MOV r8, MCSPI1 | MCSPI_CH0CTRL
     MOV r11, 0x1
     SBBO r11, r8, 0, 4
 
-    MOV r4, 0x1<<11| SYSTEMREG
-    MOV r5, MCSPI1 | MCSPI_SYST
-    SBBO r4, r5, 0, 4
-
-    MOV r21, MCSPI1 | MCSPI_IRQENABLE
-    MOV r22, IRQENABLE
-    SBBO r22, r21, 0, 4
-
 
     //write to spi tx register
-    MOV r9, 0x0f0f0f0f
-    MOV r10 , MCSPI1 | MCSPI_TX0
-    SBBO r9, r10,0,4
+//    MOV r9, 0x0f0f0f0f
+//    MOV r10 , MCSPI1 | MCSPI_TX0
+//    SBBO r9, r10,0,4
 
 
     MOV r0, 0x000f0000
