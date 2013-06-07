@@ -60,6 +60,10 @@ BLINK:
     MOV r4, 0x1<<11| SYSTEMREG
     MOV r5, MCSPI1 | MCSPI_SYST
     SBBO r4, r5, 0, 4
+
+    MOV r21, MCSPI1 | MCSPI_IRQENABLE
+    MOV r22, IRQENABLE
+    SBBO r22, r21, 0, 4
     
      
     MOV r6, CH_CONF
