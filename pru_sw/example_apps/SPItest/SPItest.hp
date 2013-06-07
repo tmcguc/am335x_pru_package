@@ -103,7 +103,8 @@
 #define CLKD                    (0x1 << 2)        // Clk frequency divider
 #define POL                     (0x0 << 1)        // SPI clock is held high during ative state
 #define PHA                     (0x1)             // data latched on odd numbered edges of SPICLK
-//#define CH_CONF 0x0000|CLKG|FFER|FFEW|TCS|SBPOL|SBE|SPIENSLV|FORCE|TURBO|IS|DPE1|DPE0|DMAR|DMAW|TRM|WL|EPOL|CLKD|POL|PHA
+#define CH_CONF 0x0000|CLKG|FFER|FFEW|TCS|SBPOL|SBE|\
+SPIENSLV|FORCE|TURBO|IS|DPE1|DPE0|DMAR|DMAW|TRM|WL|EPOL|CLKD|POL|PHA
 
-#define CH_CONF 0x0000|IS|DPE1|TRM|WL|EPOL|CLKD|POL|PHA
+//#define CH_CONF 0x0000|IS|DPE1|TRM|WL|EPOL|CLKD|POL|PHA
   
