@@ -1,48 +1,6 @@
 .origin 0
 .entrypoint START
-
-#define PRU0_ARM_INTERRUPT 19
-#define AM33XX
-
-#define GPIO1 0x4804c000
-#define GPIO_CLEARDATAOUT 0x190
-#define GPIO_SETDATAOUT 0x194
-
-#define MCSPI0 0x48030000
-#define MCSPI1 0x481a0000
-
-
-// Cn is the constants table for spi0 it is c6 address of 0x4803_0000
-// c16 is for spi10x481a_0000
-
-#define MCSPI_REVISION 0x000
-#define MCSPI_SYSCONFIG 0x110
-#define MCSPI_SYSSTATUS 0x114
-#define MCSPI_IRQSTATUS 0x118
-#define MCSPI_IRQENABLE 0x11c
-#define MCSPI_WAKEUPENABLE 0x120
-#define MCSPI_SYST 0x124
-#define MCSPI_MODULCTRL 0x128
-
-#define MCSPI_XFERLEVEL 0x17c
-#define MCSPI_DAFTX 0x180   // DMA address aligned FIFO TX register
-#define MCSPI_DAFRX 0x1a0   // DMA address aligned FIFO RX register
-
-#define MCSPI_CH0CONF 0x12c
-#define MCSPI_CH0STAT 0x130
-#define MCSPI_CH0CTRL 0x134
-#define MCSPI_TX0 0x138
-#define MCSPI_RX0 0x13c
-
-#define MCSPI_CH1CONF 0x140
-#define MCSPI_CH1STAT 0x144
-#define MCSPI_CH1CTRL 0x148
-#define MCSPI_TX1 0x14c
-#define MCSPI_RX1 0x150
-
-
-
-
+#include "SPItest.hp"
 
 
 START:
@@ -57,11 +15,8 @@ START:
 
 SETUP:
 
-
-
-
     //enable clkspiref and clk
-    MOV r12, 0x44e00050
+    MOV r12, CM_PER_SPI1_CLK_CTRL
     LBBO r13, r12, 0, 4
     SET r13, 1
     SBBO r13, r12, 0, 4
@@ -84,7 +39,7 @@ CONFIG:
 
 
     // settup sysconfig  for clocks and idle mode
-    MOV  r18, 0x3<<8 | 0x1<<3| 0x0<<0
+    MOV  r18, SYSCONFIG
     SBBO r18, r14, 0, 4
     
 

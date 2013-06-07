@@ -8,6 +8,11 @@
 #define MCSPI0 0x48030000
 #define MCSPI1 0x481a0000
 
+#define CM_PER 0x44E00000
+#define CM_PER_SPI1_CLK_CTRL 0x50 | CM_PER
+#define CM_PER_SPI0_CLK_CTRL 0x4C | CM_PER
+
+
 
 // Cn is the constants table for spi0 it is c6 address of 0x4803_0000
 // c16 is for spi10x481a_0000
@@ -42,7 +47,7 @@
 // sysconfig register setup
 #define CLOCKACTIVITY           (0X3 << 8)  // 0x3 ocp and functional clocks maintained
 #define SIDLEMODE               (0x1 << 3)      // 0x1 idle request ignored
-#define AUTOIDLE                0x1               // 0x1 automatic ocp clock strategy is applied
+#define AUTOIDLE                0x0               // 0x1 automatic ocp clock strategy is applied
 
 #define SYSCONFIG  0x0000 | CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
 
