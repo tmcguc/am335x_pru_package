@@ -37,27 +37,17 @@ CHECKRESET:
 
 CONFIG:
 
-
-    // settup sysconfig  for clocks and idle mode
     MOV  r18, SYSCONFIG
     SBBO r18, r14, 0, 4
     
-
-    // need to change modulctrl to set master used same configuration as in mcspi.c
     MOV r19, MCSPI1 | MCSPI_MODULCTRL
-    MOV r20, 0x0<<3 | 0x0<<2 | 0x1<<0
+    MOV r20, MODCONTROL
     LBBO r19, r20 , 0, 4
 
-    MOV r21, MCSPI1 | MCSPI_WAKEUPENABLE
-    MOV r22, 0x0<<0
-    LBBO r22, r21, 0, 4
+    //MOV r21, MCSPI1 | MCSPI_WAKEUPENABLE
+    //MOV r22, 0x0<<0
+    //LBBO r22, r21, 0, 4
 
-
-
-
-
-
-   
     
 BLINK:
     MOV r2, 7<<22
@@ -65,14 +55,14 @@ BLINK:
     SBBO r2, r3, 0, 4
 
    
-//reset interrupt status bits write all ones
+//reset interrupt status bits write all ones set ssb
 
-    MOV r4, 0x1<<11|0x0<<10|0x0<<9|0x1<<8|0x0<<6|0x0<<5|0x0<<4|0x0<<3
+    MOV r4, 0x1<<11| SYSTEMREG
     MOV r5, MCSPI1 | MCSPI_SYST
     SBBO r4, r5, 0, 4
     
-    // transmit only|spien polarity held low |spi word is 24 bits| clock is dived by 2 
-    MOV r6, 0x2<<12 | 0x0<<6 |0x17<<7 | 0x1<<2
+     
+    MOV r6, CH_CONF
     MOV r7, MCSPI1 | MCSPI_CH0CONF     
     SBBO r6, r7, 0, 4
 
@@ -83,7 +73,7 @@ BLINK:
 
 
     //write to spi tx register
-    MOV r9, 0x00f0f0f0
+    MOV r9, 0x0f0f0f0f
     MOV r10 , MCSPI1 | MCSPI_TX0
     SBBO r9, r10,0,4
 

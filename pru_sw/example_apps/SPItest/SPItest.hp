@@ -98,11 +98,11 @@
 #define DMAR                    0x0 << 15       // DMA read request is disabled
 #define DMAW                    0x0 << 14       // DMA write request is disabled
 #define TRM                     0x2 << 12       //Transmit only   
-#define WL                      0x3 << 7        //word length 4 bits long
+#define WL                      0x1f << 7        //word length 4 bits long
 #define EPOL                    0x0 << 6        // spien is held low during active state
 #define CLKD                    0x1 << 2        // Clk frequency divider
 #define POL                     0x0 << 1        // SPI clock is held high during ative state
-#define PHA                     0x0             // data latched on odd numbered edges of SPICLK
+#define PHA                     0x1             // data latched on odd numbered edges of SPICLK
 #define CH_CONF 0x0000|CLKG|FFER|FFEW|TCS|SBPOL|SBE|SPIENSLV|FORCE|TURBO|IS|DPE1|DPE0|DMAR|DMAW|TRM|WL|EPOL|CLKD|POL|PHA
 
   
