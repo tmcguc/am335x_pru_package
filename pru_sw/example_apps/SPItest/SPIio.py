@@ -98,8 +98,7 @@ EPOL                   = (0x0 << 6)        # spien is held low during active sta
 CLKD                   = (0x1 << 2)        # Clk frequency divider
 POL                    = (0x0 << 1)        # SPI clock is held high during ative state
 PHA                    = (0x1)             # data latched on odd numbered edges of SPICLK
-CH_CONF = 0x0000 | CLKG | FFER | FFEW | TCS | SBPOL | SBE | SPIENSLV
-    | FORCE | TURBO | IS | DPE1 | DPE0 | DMAR | DMAW | TRM | WL | EPOL | CLKD | POL | PHA
+CH_CONF = 0x0000 | CLKG | FFER | FFEW | TCS | SBPOL | SBE | SPIENSLV| FORCE | TURBO | IS | DPE1 | DPE0 | DMAR | DMAW | TRM | WL | EPOL | CLKD | POL | PHA
 
  
 f = open("/dev/mem", "r+b")
