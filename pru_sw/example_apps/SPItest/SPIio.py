@@ -7,7 +7,7 @@ MCSPI1_size = 0xfff
 
 CM_PER = 0x44E00000
 
-CM_PER_SPI1_CLK_CTRL =  0x50 | CM_PER
+CM_PER_SPI1_CLK_CTRL =  0x50
 
 
 
@@ -101,4 +101,40 @@ PHA                    = (0x1)             # data latched on odd numbered edges 
 CH_CONF = 0x0000 | CLKG | FFER | FFEW | TCS | SBPOL | SBE | SPIENSLV
     | FORCE | TURBO | IS | DPE1 | DPE0 | DMAR | DMAW | TRM | WL | EPOL | CLKD | POL | PHA
 
-  
+ 
+f = open("/dev/mem", "r+b")
+
+spimem = mmap(f.fileno(), MCSPI1_size, offset = MCSPI1_offset)
+Cmem = mmap(f.fileno(), 0xfff, offset = CM_PER)
+
+
+def getReg(address, mapped, length=32):
+    """ Returns unpacked 16 or 32 bit register value starting from address. """
+    if (length == 32):
+        return struct.unpack("<L", mapped[address:address+4])[0]
+    elif (length == 16):
+        return struct.unpack("<H", mapped[address:address+2])[0]
+    else:
+        raise ValueError("Invalid register length: %i - must be 16 or 32" % length)
+
+
+def setReg(address, mapped, new_value, length=32):
+    """ Sets 16 or 32 bits at given address to given value. """
+    if (length == 32):
+        mapped[address:address+4] = struct.pack("<L", new_value)
+    elif (length == 16):
+        mapped[address:address+2] = struct.pack("<H", new_value)
+    else:
+        raise ValueError("Invalid register length: %i - must be 16 or 32" % length)
+
+def printValue(register):
+        print"byte 1=" +str(bin(register & 0x000000ff)) +"\n"
+        print"byte 2=" +str(bin(register & 0x0000ff00)) +"\n"
+        print"byte 3=" +str(bin(register & 0x00ff0000)) +"\n"
+        print"byte 4=" +str(bin(register & 0xff000000)) +"\n"
+
+
+setReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2)
+CMvalue = getReg(CM_PER_SPI1_CLK_CTRL, Cmem)
+printValue(CMvalue)
+
