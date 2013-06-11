@@ -154,6 +154,7 @@ def checkValue(address, mapped, bit = 0, value = 1, name = "Reg"):
 def waitTillSet(address, mapped, bit = 0, value =1, name = "Reg", maxNum = 10):
     checkAgain = True
     count = 0
+    check = True
     while(check and (count < maxNum)):
         if (checkValue(address, mapped, bit, value, name) == True):
             check = False
