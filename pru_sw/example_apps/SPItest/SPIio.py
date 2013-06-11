@@ -127,13 +127,33 @@ def setReg(address, mapped, new_value, length=32):
         raise ValueError("Invalid register length: %i - must be 16 or 32" % length)
 
 def printValue(register):
-        print"byte 1=" +str(bin(register & 0x000000ff)) +"\n"
-        print"byte 2=" +str(bin(register & 0x0000ff00)) +"\n"
-        print"byte 3=" +str(bin(register & 0x00ff0000)) +"\n"
-        print"byte 4=" +str(bin(register & 0xff000000)) +"\n"
+        print"byte 1=" +str(bin(register & 0x000000ff))
+        print"byte 2=" +str(bin(register & 0x0000ff00))
+        print"byte 3=" +str(bin(register & 0x00ff0000))
+        print"byte 4=" +str(bin(register & 0xff000000))
 
 
 setReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2)
 CMvalue = getReg(CM_PER_SPI1_CLK_CTRL, Cmem)
+print"register value of CM_PER_SPI1_CLK_CTRL:"
 printValue(CMvalue)
+
+
+sys = getReg(MCSPI_SYSCONFIG, spimem)
+print"register value of SYSCONFIG:"
+printValue(sys)
+reset = 0x1<<1
+sysReset = sys | reset
+setReg(MCSPI_SYSCONFIG, spimem, sysReset)
+
+check = True
+while(check):
+    stat = getReg(MCSPI_SYSSTATUS, spimem)
+    resetdone = 0x1 & stat
+    if (resetdone == 0x1):
+        check = False
+print"register value of SysStatus:"
+printValue(stat)
+
+
 
