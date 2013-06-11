@@ -159,7 +159,7 @@ while(check):
     if (resetdone == 0x1):
         check = False
 print"register value of SysStatus:"
-print"Count:" + count
+print"Count:" + str(count)
 printValue(stat)
 
 setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
