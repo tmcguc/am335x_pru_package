@@ -132,7 +132,7 @@ def printValue(register):
     print"byte 3=" +str(bin(register & 0x00ff0000))
     print"byte 4=" +str(bin(register & 0xff000000)) + "\n"
 
-def setAndCheckReg(address, mapped, new_value, name = "Reg")
+def setAndCheckReg(address, mapped, new_value, name = "Reg"):
     setReg(address,mapped, new_value)
     value = getReg(address, mapped)
     print"register value of " + name +":"
