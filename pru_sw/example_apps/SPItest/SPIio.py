@@ -127,17 +127,21 @@ def setReg(address, mapped, new_value, length=32):
         raise ValueError("Invalid register length: %i - must be 16 or 32" % length)
 
 def printValue(register):
-        print"byte 1=" +str(bin(register & 0x000000ff))
-        print"byte 2=" +str(bin(register & 0x0000ff00))
-        print"byte 3=" +str(bin(register & 0x00ff0000))
-        print"byte 4=" +str(bin(register & 0xff000000))
+    print"byte 1=" +str(bin(register & 0x000000ff))
+    print"byte 2=" +str(bin(register & 0x0000ff00))
+    print"byte 3=" +str(bin(register & 0x00ff0000))
+    print"byte 4=" +str(bin(register & 0xff000000)) + "\n"
+
+def setAndCheckReg(address, mapped, new_value, name = "Reg"
+    setReg(address,mapped, new_value)
+    value = getReg(address, mapped)
+    print"register value of " + name +":"
+    printValue(value)
+    
 
 
-setReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2)
-CMvalue = getReg(CM_PER_SPI1_CLK_CTRL, Cmem)
-print"register value of CM_PER_SPI1_CLK_CTRL:"
-printValue(CMvalue)
 
+setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
 
 sys = getReg(MCSPI_SYSCONFIG, spimem)
 print"register value of SYSCONFIG:"
@@ -155,8 +159,12 @@ while(check):
     if (resetdone == 0x1):
         check = False
 print"register value of SysStatus:"
-print count
+print"Count:" + count
 printValue(stat)
+
+setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
+
+setAndCheckReg(MCSPI_SYSCONFIG, spimem, SYSCONFIG, name = "MCSPI_SYSCONFIG")
 
 
 
