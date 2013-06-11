@@ -144,7 +144,7 @@ def setAndCheckReg(address, mapped, new_value, name = "Reg"):
 setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
 
 sys = getReg(MCSPI_SYSCONFIG, spimem)
-print"register value of SYSCONFIG:"
+print"register value of MCSPI_SYSCONFIG:"
 printValue(sys)
 reset = 0x1<<1
 sysReset = sys | reset
@@ -158,7 +158,7 @@ while(check):
     resetdone = 0x1 & stat
     if (resetdone == 0x1):
         check = False
-print"register value of SysStatus:"
+print"register value of MCSPI_SYSSTATUS:"
 print"Count:" + str(count)
 printValue(stat)
 
@@ -166,5 +166,8 @@ setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
 
 setAndCheckReg(MCSPI_SYSCONFIG, spimem, SYSCONFIG, name = "MCSPI_SYSCONFIG")
 
+irq = getReg(MCSPI_IRQSTATUS, spimem)
+print"inital status of MCSPI_IRQSTATUS :"
+printValue(irq)
 
 
