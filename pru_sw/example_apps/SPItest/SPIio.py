@@ -170,4 +170,5 @@ irq = getReg(MCSPI_IRQSTATUS, spimem)
 print"inital status of MCSPI_IRQSTATUS :"
 printValue(irq)
 
+setAndCheckReg(MCSPI_IRQSTATUS, spimem, 0xffffffff, name = "MCSPI_IRQSTATUS")
 
