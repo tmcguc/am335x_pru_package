@@ -137,7 +137,30 @@ def setAndCheckReg(address, mapped, new_value, name = "Reg"):
     value = getReg(address, mapped)
     print"register value of " + name +":"
     printValue(value)
-    
+
+
+def checkValue(address, mapped, bit = 0, value = 1, name = "Reg"):
+    reg = getReg(address, mapped)
+    flag = value << bit
+    print"check value of resgister" + name +":\n"
+    printValue(reg)
+    if ((reg & flag) == value):
+        return True
+    else:
+        return False
+
+
+#TODO finsh writing this function and setup channel config , enable and then wait for txs bit to be set
+def waitTillSet(address, mapped, bit = 0, value =1, name = "Reg", maxNum = 10):
+    checkAgain = True
+    count = 0
+    while(check and (count < maxNum)):
+        if (checkValue(address, mapped, bit, value, name) == True):
+            check = False
+        time.sleep(0.000001)
+        count += 1
+    print count
+
 
 
 
@@ -173,6 +196,16 @@ printValue(irq)
 setAndCheckReg(MCSPI_IRQSTATUS, spimem, 0xffffffff, name = "MCSPI_IRQSTATUS")
 
 setAndCheckReg(MCSPI_IRQENABLE, spimem, IRQENABLE, name = "MCSPI_IRQENABLE")
+
+setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
+
+setReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable MCSPI_CH0CTRL")
+
+waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
+
+
+
+
 
 
 
