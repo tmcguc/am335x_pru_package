@@ -128,9 +128,9 @@ def setReg(address, mapped, new_value, length=32):
 
 def printValue(register):
     print"byte 1=" +str(bin(register & 0x000000ff))
-    print"byte 2=" +str(bin(register & 0x0000ff00))
-    print"byte 3=" +str(bin(register & 0x00ff0000))
-    print"byte 4=" +str(bin(register & 0xff000000)) + "\n"
+    print"byte 2=" +str(bin((register & 0x0000ff00) >> 8))
+    print"byte 3=" +str(bin((register & 0x00ff0000) >> 16))
+    print"byte 4=" +str(bin((register & 0xff000000) >> 24)) + "\n"
 
 def setAndCheckReg(address, mapped, new_value, name = "Reg"):
     setReg(address,mapped, new_value)
