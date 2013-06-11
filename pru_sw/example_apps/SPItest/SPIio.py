@@ -155,7 +155,7 @@ def waitTillSet(address, mapped, bit = 0, value =1, name = "Reg", maxNum = 10):
     checkAgain = True
     count = 0
     check = True
-    while(check and (count < maxNum)):
+    while((check == True) and (count < maxNum)):
         if (checkValue(address, mapped, bit, value, name) == True):
             check = False
         time.sleep(0.000001)
