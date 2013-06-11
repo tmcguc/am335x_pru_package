@@ -199,7 +199,7 @@ setAndCheckReg(MCSPI_IRQENABLE, spimem, IRQENABLE, name = "MCSPI_IRQENABLE")
 
 setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 
-setReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable MCSPI_CH0CTRL")
+setReg(MCSPI_CH0CTRL, spimem, 0x00000001)
 
 waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
