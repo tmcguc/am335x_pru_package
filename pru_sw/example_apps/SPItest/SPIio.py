@@ -147,12 +147,15 @@ sysReset = sys | reset
 setReg(MCSPI_SYSCONFIG, spimem, sysReset)
 
 check = True
+count = 0
 while(check):
     stat = getReg(MCSPI_SYSSTATUS, spimem)
+    count +=1 
     resetdone = 0x1 & stat
     if (resetdone == 0x1):
         check = False
 print"register value of SysStatus:"
+print count
 printValue(stat)
 
 
