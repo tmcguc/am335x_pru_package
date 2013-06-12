@@ -79,7 +79,7 @@ MODCONTROL = 0x0000 | FDAA| MOA | INITDLY | SYSTEM_TEST | MS | PIN34 | SINGLE
 
 
 CLKG                   = (0x0 << 29)       # 0x0 clock divider granularity power of 2
-FFER                   = (0x1 << 28)       # FIFO enabled for recieve, 0x0 not used
+FFER                   = (0x0 << 28)       # FIFO enabled for recieve, 0x0 not used
 FFEW                   = (0x0 << 27)       # FIFO enabled for transmit, 0x0 not used
 TCS                    = (0x0 << 25)       # 0.5 clock cycle delay 
 SBPOL                  = (0x0 << 24)       #start bit held to zero
@@ -204,7 +204,7 @@ setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 
 setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
-setReg(MCSPI_CH0CTRL, spimem, 0x00000001)
+setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 
 setAndCheckReg(MCSPI_TX1, spimem, 0x0f0f0f0f, name ="MCSPI_TX1")
 
