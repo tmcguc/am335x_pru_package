@@ -47,11 +47,11 @@ AUTOIDLE            = 0x0               # 0x1 automatic ocp clock strategy is ap
 SYSCONFIG = 0x0000| CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
 
 
-EOWKE                   = 0x0 << 17
+EOWKE                   = 0x1 << 17
 RX0_OVERFLOWENABLE      = 0x0 << 3
 RX0_FULL_ENABLE         = 0x0 << 3
-TX0_UNDERFLOW_ENABLE    = 0x0 << 1
-TX0_EMPTY_ENABLE        = 0x0
+TX0_UNDERFLOW_ENABLE    = 0x1 << 1
+TX0_EMPTY_ENABLE        = 0x1
 
 IRQENABLE = 0x0000 | EOWKE | RX0_OVERFLOWENABLE | RX0_FULL_ENABLE | TX0_UNDERFLOW_ENABLE | TX0_EMPTY_ENABLE
 
