@@ -159,7 +159,7 @@ def waitTillSet(address, mapped, bit = 0, value =1, name = "Reg", maxNum = 10):
         result = checkValue(address, mapped, bit, value, name)
         if (result == True):
             check = False
-        else if(result == False): 
+        elif(result == False): 
             time.sleep(0.000001)
             count += 1
     print count
