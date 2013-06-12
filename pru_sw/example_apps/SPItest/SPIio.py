@@ -80,7 +80,7 @@ MODCONTROL = 0x0000 | FDAA| MOA | INITDLY | SYSTEM_TEST | MS | PIN34 | SINGLE
 
 CLKG                   = (0x0 << 29)       # 0x0 clock divider granularity power of 2
 FFER                   = (0x0 << 28)       # FIFO enabled for recieve, 0x0 not used
-FFEW                   = (0x0 << 27)       # FIFO enabled for transmit, 0x0 not used
+FFEW                   = (0x1 << 27)       # FIFO enabled for transmit, 0x0 not used
 TCS                    = (0x0 << 25)       # 0.5 clock cycle delay 
 SBPOL                  = (0x0 << 24)       #start bit held to zero
 SBE                    = (0x0 << 23)       # start bit enable  , 0x0 default set by WL
@@ -88,7 +88,7 @@ SPIENSLV               = (0x0 << 21)       # spi select signal detection on ch 0
 FORCE                  = (0x0 << 20)       # manual assertion to keep SPIEN active between SPI words
 TURBO                  = (0x0 << 19)       # 0x0 turbo is deactivated 
 IS                     = (0x1 << 18)       # Input select SPIDAT1 selected for reception
-DPE1                   = (0x1 << 17)       # 0x1 no Transmission enable for data line 1
+DPE1                   = (0x0 << 17)       # 0x1 no Transmission enable for data line 1
 DPE0                   = (0x0 << 16)       # data line zero selected for transmission
 DMAR                   = (0x0 << 15)       # DMA read request is disabled
 DMAW                   = (0x0 << 14)       # DMA write request is disabled
