@@ -40,7 +40,7 @@ MCSPI_RX1           = 0x150
 # This is where we can change the register configuartions values and put them all together
 
 # sysconfig register setup
-CLOCKACTIVITY       = 0x0 << 8  # 0x3 ocp and functional clocks maintained
+CLOCKACTIVITY       = 0x3 << 8  # 0x3 ocp and functional clocks maintained
 SIDLEMODE           = 0x2 << 3      # 0x1 idle request ignored
 AUTOIDLE            = 0x1               # 0x1 automatic ocp clock strategy is applied
 
@@ -212,7 +212,7 @@ waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS
 
 setAndCheckReg(MCSPI_TX1, spimem, 0x0f0f0f0f, name ="MCSPI_TX1")
 
-waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
+waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
 
 tx = getReg(MCSPI_TX1, spimem)
 print "contents of TX1 register are after write and TXS set:"
