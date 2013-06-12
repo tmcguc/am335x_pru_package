@@ -206,10 +206,13 @@ setReg(MCSPI_CH0CTRL, spimem, 0x00000001)
 
 waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
+setAndCheckReg(MCSPI_TX1, spimem, 0x0f0f0f0f, name ="MCSPI_TX1"
 
+waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
-
-
+tx = getReg(MCSPI_TX1, spimem)
+print "contents of TX1 register are after write and TXS set:"
+printValue(tx)
 
 
 
