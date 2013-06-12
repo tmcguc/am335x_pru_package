@@ -144,7 +144,7 @@ def checkValue(address, mapped, bit = 0, value = 1, name = "Reg"):
     flag = value << bit
     print"check value of resgister" + name +":\n"
     printValue(reg)
-    if ((reg & flag) == value):
+    if ((reg & flag) == flag):
         return True
     else:
         return False
