@@ -206,7 +206,7 @@ setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
 setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 
-setAndCheckReg(MCSPI_TX1, spimem, 0x0f0f0f0f, name ="MCSPI_TX1")
+setAndCheckReg(MCSPI_TX0, spimem, 0x0f0f0f0f, name ="MCSPI_TX1")
 
 waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
@@ -214,10 +214,13 @@ setAndCheckReg(MCSPI_TX1, spimem, 0x0f0f0f0f, name ="MCSPI_TX1")
 
 waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
 
-tx = getReg(MCSPI_TX1, spimem)
+tx = getReg(MCSPI_TX0, spimem)
 print "contents of TX1 register are after write and TXS set:"
 printValue(tx)
 
+tx = getReg(MCSPI_CH0STAT, spimem)
+print "contents of TX1 register are after write and TXS set:"
+printValue(tx)
 
 setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
