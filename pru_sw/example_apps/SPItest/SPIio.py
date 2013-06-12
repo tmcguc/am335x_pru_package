@@ -40,14 +40,14 @@ MCSPI_RX1           = 0x150
 # This is where we can change the register configuartions values and put them all together
 
 # sysconfig register setup
-CLOCKACTIVITY       = 0x3 << 8  # 0x3 ocp and functional clocks maintained
-SIDLEMODE           = 0x1 << 3      # 0x1 idle request ignored
-AUTOIDLE            = 0x0               # 0x1 automatic ocp clock strategy is applied
+CLOCKACTIVITY       = 0x0 << 8  # 0x3 ocp and functional clocks maintained
+SIDLEMODE           = 0x2 << 3      # 0x1 idle request ignored
+AUTOIDLE            = 0x1               # 0x1 automatic ocp clock strategy is applied
 
 SYSCONFIG = 0x0000| CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
 
 
-EOWKE                   = 0x1 << 17
+EOWKE                   = 0x0 << 17
 RX0_OVERFLOWENABLE      = 0x0 << 3
 RX0_FULL_ENABLE         = 0x0 << 3
 TX0_UNDERFLOW_ENABLE    = 0x1 << 1
@@ -79,7 +79,7 @@ MODCONTROL = 0x0000 | FDAA| MOA | INITDLY | SYSTEM_TEST | MS | PIN34 | SINGLE
 
 
 CLKG                   = (0x0 << 29)       # 0x0 clock divider granularity power of 2
-FFER                   = (0x0 << 28)       # FIFO enabled for recieve, 0x0 not used
+FFER                   = (0x1 << 28)       # FIFO enabled for recieve, 0x0 not used
 FFEW                   = (0x0 << 27)       # FIFO enabled for transmit, 0x0 not used
 TCS                    = (0x0 << 25)       # 0.5 clock cycle delay 
 SBPOL                  = (0x0 << 24)       #start bit held to zero
