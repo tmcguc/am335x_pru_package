@@ -206,7 +206,7 @@ setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
 setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 
-setAndCheckReg(MCSPI_TX0, spimem, 0x0f0f0f0f, name ="MCSPI_TX0")
+setAndCheckReg(MCSPI_TX0, spimem, 0x5555aaaa, name ="MCSPI_TX0")
 
 waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
