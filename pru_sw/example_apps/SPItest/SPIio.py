@@ -202,9 +202,9 @@ setAndCheckReg(MCSPI_IRQENABLE, spimem, IRQENABLE, name = "MCSPI_IRQENABLE")
 
 setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 
-setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
+setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001)
 
-setReg(MCSPI_CH0CTRL, spimem, 0x00000001)
+setReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
 waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
@@ -217,7 +217,7 @@ print "contents of TX1 register are after write and TXS set:"
 printValue(tx)
 
 
-setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
+setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001)
 
 
 
