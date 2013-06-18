@@ -93,7 +93,7 @@ DPE0                   = (0x0 << 16)       # data line zero selected for transmi
 DMAR                   = (0x0 << 15)       # DMA read request is disabled
 DMAW                   = (0x0 << 14)       # DMA write request is disabled
 TRM                    = (0x2 << 12)       #Transmit only   
-WL                     = (0x1f << 7)        #word length 4 bits long
+WL                     = (0x17 << 7)       #word length 32 bits long
 EPOL                   = (0x0 << 6)        # spien is held low during active state
 CLKD                   = (0xf << 2)        # Clk frequency divider
 POL                    = (0x0 << 1)        # SPI clock is held high during ative state
@@ -210,7 +210,7 @@ setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 
 waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
-setAndCheckReg(MCSPI_TX0, spimem, 0x0f0f0f0f, name ="MCSPI_TX0")
+setAndCheckReg(MCSPI_TX0, spimem, 0x0f0f0f, name ="MCSPI_TX0")
 
 #waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
 
