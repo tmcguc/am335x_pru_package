@@ -97,7 +97,7 @@ WL                     = (0x17 << 7)       #word length 32 bits long
 EPOL                   = (0x1 << 6)        # spien is held low during active state
 CLKD                   = (0xf << 2)        # Clk frequency divider
 POL                    = (0x0 << 1)        # SPI clock is held high during ative state
-PHA                    = (0x1)             # data latched on odd numbered edges of SPICLK
+PHA                    = (0x0)             # data latched on odd numbered edges of SPICLK
 CH_CONF = 0x0000 | CLKG | FFER | FFEW | TCS | SBPOL | SBE | SPIENSLV| FORCE | TURBO | IS | DPE1 | DPE0 | DMAR | DMAW | TRM | WL | EPOL | CLKD | POL | PHA
 
  
