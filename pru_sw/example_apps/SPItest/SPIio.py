@@ -97,7 +97,7 @@ WL                     = (0x17 << 7)       #word length 32 bits long
 EPOL                   = (0x1 << 6)        # spien is held low during active state
 CLKD                   = (0x1 << 2)        # Clk frequency divider
 POL                    = (0x0 << 1)        # SPI clock is held high during ative state
-PHA                    = (0x1)             # data latched on odd numbered edges of SPICLK
+PHA                    = (0x1)             # data latched on even numbered edges of SPICLK
 CH_CONF = 0x0000 | CLKG | FFER | FFEW | TCS | SBPOL | SBE | SPIENSLV| FORCE | TURBO | IS | DPE1 | DPE0 | DMAR | DMAW | TRM | WL | EPOL | CLKD | POL | PHA
 
  
@@ -210,7 +210,7 @@ setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 
 waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
-setAndCheckReg(MCSPI_TX0, spimem, 0x0f0f0f, name ="MCSPI_TX0")
+setAndCheckReg(MCSPI_TX0, spimem, 0x999999, name ="MCSPI_TX0")
 
 #waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
 
