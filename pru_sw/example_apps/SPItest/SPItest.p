@@ -12,7 +12,7 @@ START:
 
 
 SETUP:
-
+    // setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
     //enable clkspiref and clk
     MOV addr, CM_PER_SPI1_CLK_CTRL
     MOV val, CM_PER_SPI1_CLK_EN
@@ -37,7 +37,7 @@ CHECKRESET:
 
 CONFIG:
 
-    
+    // setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
     MOV addr, MCSPI_MODULCTRL
     MOV val, MODCONTROL
     LBBO val, addr , 0, 4
