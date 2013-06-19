@@ -79,8 +79,8 @@ MODCONTROL = 0x0000 | FDAA| MOA | INITDLY | SYSTEM_TEST | MS | PIN34 | SINGLE
 
 
 CLKG                   = (0x1 << 29)       # 0x0 clock divider granularity power of 2
-FFER                   = (0x0 << 28)       # FIFO enabled for recieve, 0x0 not used
-FFEW                   = (0x1 << 27)       # FIFO enabled for transmit, 0x0 not used
+FFER                   = (0x1 << 28)       # FIFO enabled for recieve, 0x0 not used
+FFEW                   = (0x0 << 27)       # FIFO enabled for transmit, 0x0 not used
 TCS                    = (0x0 << 25)       # 0.5 clock cycle delay 
 SBPOL                  = (0x0 << 24)       #start bit held to zero
 SBE                    = (0x0 << 23)       # start bit enable  , 0x0 default set by WL
