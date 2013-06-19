@@ -73,7 +73,7 @@ INITDLY                = 0x0 << 4      # no intial delay
 SYSTEM_TEST            = 0x0 << 3      # Functional mode
 MS                     = 0x0 << 2      # This module is a master
 PIN34                  = 0x0 << 1      # 0x0 SPIEN is used as chip select 
-SINGLE                 = 0x1             # 0x0 more than one channel will be used in master mode
+SINGLE                 = 0x0             # 0x0 more than one channel will be used in master mode
 MODCONTROL = 0x0000 | FDAA| MOA | INITDLY | SYSTEM_TEST | MS | PIN34 | SINGLE
 
 
