@@ -47,6 +47,13 @@ AUTOIDLE            = 0x1               # 0x1 automatic ocp clock strategy is ap
 SYSCONFIG = 0x0000| CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
 
 
+WCNT                = 0x4 << 16 # word count for 
+AFL                 = 0x0 << 8  #
+AEL                 = 0x0       #
+
+XFER = 0x0000| WCNT | AFL |AEL
+
+
 EOWKE                   = 0x0 << 17
 RX0_OVERFLOWENABLE      = 0x0 << 3
 RX0_FULL_ENABLE         = 0x0 << 3
@@ -73,7 +80,7 @@ INITDLY                = 0x0 << 4      # no intial delay
 SYSTEM_TEST            = 0x0 << 3      # Functional mode
 MS                     = 0x0 << 2      # This module is a master
 PIN34                  = 0x0 << 1      # 0x0 SPIEN is used as chip select 
-SINGLE                 = 0x0             # 0x0 more than one channel will be used in master mode
+SINGLE                 = 0x1             # 0x0 more than one channel will be used in master mode
 MODCONTROL = 0x0000 | FDAA| MOA | INITDLY | SYSTEM_TEST | MS | PIN34 | SINGLE
 
 
@@ -85,7 +92,7 @@ TCS                    = (0x0 << 25)       # 0.5 clock cycle delay
 SBPOL                  = (0x0 << 24)       #start bit held to zero
 SBE                    = (0x0 << 23)       # start bit enable  , 0x0 default set by WL
 SPIENSLV               = (0x0 << 21)       # spi select signal detection on ch 0
-FORCE                  = (0x0 << 20)       # manual assertion to keep SPIEN active between SPI words
+FORCE                  = (0x1 << 20)       # manual assertion to keep SPIEN active between SPI words
 TURBO                  = (0x1 << 19)       # 0x0 turbo is deactivated 
 IS                     = (0x1 << 18)       # Input select SPIDAT1 selected for reception
 DPE1                   = (0x1 << 17)       # 0x1 no Transmission enable for data line 1
@@ -93,7 +100,7 @@ DPE0                   = (0x0 << 16)       # data line zero selected for transmi
 DMAR                   = (0x0 << 15)       # DMA read request is disabled
 DMAW                   = (0x0 << 14)       # DMA write request is disabled
 TRM                    = (0x2 << 12)       #Transmit only   
-WL                     = (0x11 << 7)       # 0x17 24bit wordlength DAC, 0x11 18bit Wordlength for ADC
+WL                     = (0x3 << 7)       # 0x17 24bit wordlength DAC, 0x11 18bit Wordlength for ADC
 EPOL                   = (0x1 << 6)        # spien is held low during active state
 CLKD                   = (0x2 << 2)        # Clk frequency divider 0x1 for DAC 24 MHz, 0x2 for ADC 16MHz
 POL                    = (0x0 << 1)        # SPI clock is held high during ative state
@@ -204,6 +211,8 @@ setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 
 setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
+setAndCheckReg(MCSPI_XFERLEVEL, spimem, XFER)
+
 setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 
 #setAndCheckReg(MCSPI_TX0, spimem, 0x5555aaaa, name ="MCSPI_TX0")
@@ -212,7 +221,7 @@ waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS
 
 for i in range(6):
 
-    setAndCheckReg(MCSPI_TX0, spimem, 0x29999, name ="MCSPI_TX0")
+    setAndCheckReg(MCSPI_TX0, spimem, 0xfff29999, name ="MCSPI_TX0")
 
 #waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
 
