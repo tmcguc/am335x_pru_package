@@ -19,14 +19,14 @@ SETUP:
     SBBO r2, r1, 0, 4
 
     // reset spi
-    MOV r3, MCSPI1 | MCSPI_SYSCONFIG
+    MOV r3, MCSPI_SYSCONFIG
     LBBO r4, r3, 0, 4
     SET r4, 1
     SBBO r4, r3, 0, 4
 
 //check if reset is done
 CHECKRESET:
-    MOV r5, MCSPI1 | MCSPI_SYSSTATUS
+    MOV r5, MCSPI_SYSSTATUS
     LBBO r6, r5, 0, 4
     QBBC CHECKRESET, r6.t0
 
@@ -35,7 +35,7 @@ CHECKRESET:
 CONFIG:
 
     
-    MOV r7, MCSPI1 | MCSPI_MODULCTRL
+    MOV r7, MCSPI_MODULCTRL
     MOV r8, MODCONTROL
     LBBO r8, r7 , 0, 4
 
@@ -44,40 +44,40 @@ CONFIG:
 
     //reset interrupt status bits write all ones
     MOV r10, RESET_IRQ_STAT 
-    MOV r11, MCSPI1 | MCSPI_IRQSTATUS
+    MOV r11, MCSPI_IRQSTATUS
     SBBO r11, r10, 0, 4
 
     //enable interupts for ADCs
-    MOV r12, MCSPI1 | MCSPI_IRQENABLE
+    MOV r12, MCSPI_IRQENABLE
     MOV r13, ADC_IRQENABLE
     SBBO r13, r12, 0, 4
     
     // configure the channel 
     MOV r14, ADC_TX_CH_CONF
-    MOV r15, MCSPI1 | MCSPI_CH0CONF     
+    MOV r15, MCSPI_CH0CONF     
     SBBO r15, r14, 0, 4
 
     //disable channel
-    MOV r16, MCSPI1 | MCSPI_CH0CTRL
+    MOV r16, MCSPI_CH0CTRL
     MOV r17, DIS_CH
     SBBO r17, r16, 0 ,4
 
 
     
     //enable channel
-    MOV r16, MCSPI1 | MCSPI_CH0CTRL
+    MOV r16, MCSPI_CH0CTRL
     MOV r17, EN_CH
     SBBO r17, r16, 0, 4
 
 CHECKTXS:
-    MOV r18, MCSPI1 | MCSPI_CH0STAT
+    MOV r18, MCSPI_CH0STAT
     LBBO r19, r18, 0, 4
     QBBC CHECKTXS, r19.t1
 
 
     //write to spi tx register
     MOV r20, TEST_PATT
-    MOV r21 , MCSPI1 | MCSPI_TX0
+    MOV r21 , MCSPI_TX0
     SBBO r21, r20,0,4
 
 

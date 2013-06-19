@@ -18,29 +18,29 @@
 // c16 is for spi10x481a_0000
 
 #define MCSPI_REVISION 0x000
-#define MCSPI_SYSCONFIG 0x110
-#define MCSPI_SYSSTATUS 0x114
-#define MCSPI_IRQSTATUS 0x118
-#define MCSPI_IRQENABLE 0x11c
-#define MCSPI_WAKEUPENABLE 0x120
-#define MCSPI_SYST 0x124
-#define MCSPI_MODULCTRL 0x128
+#define MCSPI_SYSCONFIG 0x481a0110
+#define MCSPI_SYSSTATUS 0x481a0114
+#define MCSPI_IRQSTATUS 0x481a0118
+#define MCSPI_IRQENABLE 0x481a011c
+#define MCSPI_WAKEUPENABLE 0x481a0120
+#define MCSPI_SYST 0x481a0124
+#define MCSPI_MODULCTRL 0x481a0128
 
-#define MCSPI_XFERLEVEL 0x17c
-#define MCSPI_DAFTX 0x180   // DMA address aligned FIFO TX register
-#define MCSPI_DAFRX 0x1a0   // DMA address aligned FIFO RX register
+#define MCSPI_XFERLEVEL 0x481a017c
+#define MCSPI_DAFTX 0x481a0180   // DMA address aligned FIFO TX register
+#define MCSPI_DAFRX 0x481a01a0   // DMA address aligned FIFO RX register
 
-#define MCSPI_CH0CONF 0x12c
-#define MCSPI_CH0STAT 0x130
-#define MCSPI_CH0CTRL 0x134
-#define MCSPI_TX0 0x138
-#define MCSPI_RX0 0x13c
+#define MCSPI_CH0CONF 0x481a012c
+#define MCSPI_CH0STAT 0x481a0130
+#define MCSPI_CH0CTRL 0x481a0134
+#define MCSPI_TX0 0x481a0138
+#define MCSPI_RX0 0x481a013c
 
-#define MCSPI_CH1CONF 0x140
-#define MCSPI_CH1STAT 0x144
-#define MCSPI_CH1CTRL 0x148
-#define MCSPI_TX1 0x14c
-#define MCSPI_RX1 0x150
+#define MCSPI_CH1CONF 0x481a0140
+#define MCSPI_CH1STAT 0x481a0144
+#define MCSPI_CH1CTRL 0x481a0148
+#define MCSPI_TX1 0x481a014c
+#define MCSPI_RX1 0x481a0150
 
 // This is where we can change the register configuartions values and put them all together
 
