@@ -64,3 +64,12 @@
 
 
 #define ADC_TX_CH_CONF  0x301e28c9
+#
+#
+#// ***************************************
+// *     Global Register Assignments     *
+// ***************************************
+
+#define addr        r1
+#define val        r2
+

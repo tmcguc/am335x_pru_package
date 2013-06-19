@@ -14,116 +14,98 @@ START:
 SETUP:
 
     //enable clkspiref and clk
-    MOV r1, CM_PER_SPI1_CLK_CTRL
-    MOV r2, CM_PER_SPI1_CLK_EN
-    SBBO r2, r1, 0, 4
+    MOV addr, CM_PER_SPI1_CLK_CTRL
+    MOV val, CM_PER_SPI1_CLK_EN
+    SBBO val, addr, 0, 4
 
     CALL DELAY
 
 
     // reset spi
-    MOV r3, MCSPI_SYSCONFIG
-    LBBO r4, r3, 0, 4
-    SET r4.t1
-    SBBO r4, r3, 0, 4
+    MOV addr, MCSPI_SYSCONFIG
+    LBBO val, addr, 0, 4
+    SET val.t1
+    SBBO val, addr, 0, 4
 
 //check if reset is done
 CHECKRESET:
-    MOV r5, MCSPI_SYSSTATUS
-    LBBO r6, r5, 0, 4
-    QBBC CHECKRESET, r6.t0
+    MOV addr, MCSPI_SYSSTATUS
+    LBBO val, addr, 0, 4
+    QBBC CHECKRESET, val.t0
 
 
 
 CONFIG:
 
     
-    MOV r7, MCSPI_MODULCTRL
-    MOV r8, MODCONTROL
-    LBBO r8, r7 , 0, 4
+    MOV addr, MCSPI_MODULCTRL
+    MOV val, MODCONTROL
+    LBBO val, addr , 0, 4
 
     
     CALL DELAY
 
-
-    MOV  r9, ADC_SYSCONFIG
-    SBBO r9, r3, 0, 4
+    MOV  addr, MCSPI_SYSCONFIG
+    MOV  val, ADC_SYSCONFIG
+    SBBO val, addr, 0, 4
 
     CALL DELAY
 
     //reset interrupt status bits write all ones
-    MOV r10, RESET_IRQ_STAT 
-    MOV r11, MCSPI_IRQSTATUS
-    SBBO r11, r10, 0, 4
+    MOV addr, MCSPI_IRQSTATUS
+    MOV val, RESET_IRQ_STAT 
+    SBBO val, addr, 0, 4
 
     CALL DELAY
 
     //enable interupts for ADCs
-    MOV r12, MCSPI_IRQENABLE
-    MOV r13, ADC_IRQENABLE
-    SBBO r13, r12, 0, 4
+    MOV addr, MCSPI_IRQENABLE
+    MOV val, ADC_IRQENABLE
+    SBBO val, addr, 0, 4
     
     CALL DELAY
 
     // configure the channel 
-    MOV r14, ADC_TX_CH_CONF
-    MOV r15, MCSPI_CH0CONF     
-    SBBO r15, r14, 0, 4
+    MOV addr, ADC_TX_CH_CONF
+    MOV val, MCSPI_CH0CONF     
+    SBBO val, addr, 0, 4
 
     CALL DELAY
 
     //disable channel
-    //MOV r16, MCSPI_CH0CTRL
-    //MOV r17, DIS_CH
-    //SBBO r17, r16, 0 ,4
+    MOV addr, MCSPI_CH0CTRL
+    MOV val, DIS_CH
+    SBBO val, addr, 0 ,4
 
     CALL DELAY
 
-    MOV r22, MCSPI_XFERLEVEL
-    MOV r23, ADC_XFER
-    SBBO r23, r22, 0, 4
+    MOV addr, MCSPI_XFERLEVEL
+    MOV val, ADC_XFER
+    SBBO val, addr, 0, 4
     
     CALL DELAY
 
     //enable channel
-    MOV r16, MCSPI_CH0CTRL
-    MOV r17, EN_CH
-    SBBO r17, r16, 0, 4
+    MOV addr, MCSPI_CH0CTRL
+    MOV val, EN_CH
+    SBBO val, addr, 0, 4
 
     CALL DELAY
 
 CHECKTXS:
-    MOV r18, MCSPI_CH0STAT
-    LBBO r19, r18, 0, 4
-    QBBC CHECKTXS, r19.t1
+    MOV addr, MCSPI_CH0STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXS, val.t1
 
 
     CALL DELAY
 
     //write to spi tx register
-    MOV r20, TEST_PATT
-    MOV r21 , MCSPI_TX0
-    SBBO r21, r20,0,4
+    MOV addr, MCSPI_TX0
+    MOV val, TEST_PATT
+    SBBO val, addr,0,4
 
     CALL DELAY
-
-    SBBO r21, r20,0,4
-
-    CALL DELAY
-
-    SBBO r21, r20,0,4
-
-    CALL DELAY
-
-    SBBO r21, r20,0,4
-
-
-    CALL DELAY
-
-
-
-
-
 
 
 
