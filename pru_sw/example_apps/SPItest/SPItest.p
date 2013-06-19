@@ -58,9 +58,9 @@ CONFIG:
     SBBO r15, r14, 0, 4
 
     //disable channel
-    MOV r16, MCSPI_CH0CTRL
-    MOV r17, DIS_CH
-    SBBO r17, r16, 0 ,4
+    //MOV r16, MCSPI_CH0CTRL
+    //MOV r17, DIS_CH
+    //SBBO r17, r16, 0 ,4
 
     MOV r22, MCSPI_XFERLEVEL
     MOV r23, ADC_XFER
@@ -82,8 +82,12 @@ CHECKTXS:
     MOV r21 , MCSPI_TX0
     SBBO r21, r20,0,4
 
+    SBBO r21, r20,0,4
 
-    
+    SBBO r21, r20,0,4
+
+    SBBO r21, r20,0,4
+
 
 
 
