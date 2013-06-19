@@ -21,13 +21,13 @@ SETUP:
     SET r13, 1
     SBBO r13, r12, 0, 4
 
-
+    // reset spi
     MOV r14, MCSPI1 | MCSPI_SYSCONFIG
     LBBO r15, r14, 0, 4
     SET r15, 1
     SBBO r15, r14, 0, 4
 
-
+//check if reset is done
 CHECKRESET:
     MOV r16, MCSPI1 | MCSPI_SYSSTATUS
     LBBO r17, r16, 0, 4
@@ -37,16 +37,28 @@ CHECKRESET:
 
 CONFIG:
 
-    MOV  r18, SYSCONFIG
-    SBBO r18, r14, 0, 4
     
     MOV r19, MCSPI1 | MCSPI_MODULCTRL
     MOV r20, MODCONTROL
     LBBO r19, r20 , 0, 4
 
-    //MOV r21, MCSPI1 | MCSPI_WAKEUPENABLE
-    //MOV r22, 0x0<<0
-    //LBBO r22, r21, 0, 4
+    MOV  r18, ADC_SYSCONFIG
+    SBBO r18, r14, 0, 4
+
+    //reset interrupt status bits write all ones
+    MOV r4, RESET_IRQ_STAT 
+    MOV r5, MCSPI1 | MCSPI_IRQSTATUS
+    SBBO r4, r5, 0, 4
+
+    //enable interupts for ADCs
+    MOV r21, MCSPI1 | MCSPI_IRQENABLE
+    MOV r22, ADC_IRQENABLE
+    SBBO r22, r21, 0, 4
+    
+    // configure the channel 
+    MOV r6, ADC_TX_CH_CONF
+    MOV r7, MCSPI1 | MCSPI_CH0CONF     
+    SBBO r6, r7, 0, 4
 
     
 BLINK:
@@ -55,37 +67,20 @@ BLINK:
     SBBO r2, r3, 0, 4
 
    
-//reset interrupt status bits write all ones set ssb
-
-    MOV r4, 0x1<<11| SYSTEMREG
-    MOV r5, MCSPI1 | MCSPI_SYST
-    SBBO r4, r5, 0, 4
-
-    MOV r21, MCSPI1 | MCSPI_IRQENABLE
-    MOV r22, IRQENABLE
-    SBBO r22, r21, 0, 4
-    
-     
-    MOV r6, CH_CONF
-    MOV r7, MCSPI1 | MCSPI_CH0CONF     
-    SBBO r6, r7, 0, 4
 
     //enable channel
     MOV r8, MCSPI1 | MCSPI_CH0CTRL
-    MOV r11, 0x1
+    MOV r11, EN_CH
     SBBO r11, r8, 0, 4
 
-    MOV r4, 0x1<<11| SYSTEMREG
-    MOV r5, MCSPI1 | MCSPI_SYST
-    SBBO r4, r5, 0, 4
-
-    MOV r21, MCSPI1 | MCSPI_IRQENABLE
-    MOV r22, IRQENABLE
-    SBBO r22, r21, 0, 4
+CHECKTXS:
+    MOV r23, MCSPI1 | MCSPI_CH0STAT
+    LBBO r24, r23, 0, 4
+    QBBC CHECKTXS, r24.t
 
 
     //write to spi tx register
-    MOV r9, 0x0f0f0f0f
+    MOV r9, TEST_PATT
     MOV r10 , MCSPI1 | MCSPI_TX0
     SBBO r9, r10,0,4
 
@@ -96,7 +91,7 @@ DELAY:
     QBNE DELAY, r0, 0
 
     //spi reset enable
-    MOV r11, 0x0
+    MOV r11, DIS_CH
     SBBO r11, r8, 0, 4
     //CLR r8.t0
     
