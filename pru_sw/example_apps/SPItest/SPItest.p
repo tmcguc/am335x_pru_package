@@ -39,7 +39,7 @@ CONFIG:
     
     MOV r19, MCSPI1 | MCSPI_MODULCTRL
     MOV r20, MODCONTROL
-    LBBO r19, r20 , 0, 4
+    SBBO r19, r20 , 0, 4
 
     MOV  r18, ADC_SYSCONFIG
     SBBO r18, r14, 0, 4
