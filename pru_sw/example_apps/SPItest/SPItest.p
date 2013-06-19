@@ -61,13 +61,6 @@ CONFIG:
     SBBO r6, r7, 0, 4
 
     
-BLINK:
-    MOV r2, 7<<22
-    MOV r3, GPIO1 | GPIO_SETDATAOUT
-    SBBO r2, r3, 0, 4
-
-   
-
     //enable channel
     MOV r8, MCSPI1 | MCSPI_CH0CTRL
     MOV r11, EN_CH
@@ -85,27 +78,11 @@ CHECKTXS:
     SBBO r9, r10,0,4
 
 
-    MOV r0, 0x000f0000
-DELAY:
-    SUB r0, r0, 1
-    QBNE DELAY, r0, 0
-
     //spi reset enable
     MOV r11, DIS_CH
     SBBO r11, r8, 0, 4
     //CLR r8.t0
     
-    MOV r2, 7<<22
-    MOV r3, GPIO1 | GPIO_CLEARDATAOUT
-    SBBO r2, r3, 0, 4
-
-    MOV r0, 0x000f0000
-DELAY2:
-    SUB r0, r0, 1
-    QBNE DELAY2, r0, 0
-
-    SUB r1, r1, 1
-    QBNE BLINK, r1, 0
 
 
 
