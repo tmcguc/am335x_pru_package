@@ -17,7 +17,7 @@ SETUP:
 
     //enable clkspiref and clk
     MOV r12, CM_PER_SPI1_CLK_CTRL
-    MOV r13 CM_PER_SPI1_CLK_EN
+    MOV r13, CM_PER_SPI1_CLK_EN
     SBBO r13, r12, 0, 4
 
     // reset spi
