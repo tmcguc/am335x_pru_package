@@ -21,7 +21,7 @@ SETUP:
     // reset spi
     MOV r3, MCSPI_SYSCONFIG
     LBBO r4, r3, 0, 4
-    SET r4, 1
+    SET r4.t1
     SBBO r4, r3, 0, 4
 
 //check if reset is done
@@ -62,7 +62,9 @@ CONFIG:
     MOV r17, DIS_CH
     SBBO r17, r16, 0 ,4
 
-
+    MOV r22, MCSPI_XFERLEVEL
+    MOV r23, ADC_XFER
+    SBBO r23, r22, 0, 4
     
     //enable channel
     MOV r16, MCSPI_CH0CTRL

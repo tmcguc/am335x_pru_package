@@ -52,13 +52,13 @@
 #define ADC_SYSCONFIG           0x311 
 
 #define RESET_IRQ_STAT          0xffffffff
-#define DIS_CH                  0x0
-#define EN_CH                   0x1
+#define DIS_CH                  0x00000000
+#define EN_CH                   0x00000001
 #define TEST_PATT               0xfff29999
 
-#define ADC_IRQENABLE           0x0
+#define ADC_IRQENABLE           0x00000000
 
-#define MODCONTROL              0x1 
+#define MODCONTROL              0x00000001 
 
 #define ADC_XFER 0x40000
 
