@@ -5,9 +5,9 @@
 
 START:
 // clear that bit
-//    LBCO r0, C4, 4, 4
-//    CLR r0, r0, 4
-//    SBCO r0, C4, 4, 4
+    LBCO r0, C4, 4, 4
+    CLR r0, r0, 4
+    SBCO r0, C4, 4, 4
 
 //    MOV r1, 1000
 // 
@@ -39,7 +39,7 @@ CONFIG:
     
     MOV r19, MCSPI1 | MCSPI_MODULCTRL
     MOV r20, MODCONTROL
-    SBBO r19, r20 , 0, 4
+    LBBO r19, r20 , 0, 4
 
     MOV  r18, ADC_SYSCONFIG
     SBBO r18, r14, 0, 4
