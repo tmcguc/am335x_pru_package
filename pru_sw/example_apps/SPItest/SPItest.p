@@ -76,7 +76,7 @@ BLINK:
 CHECKTXS:
     MOV r23, MCSPI1 | MCSPI_CH0STAT
     LBBO r24, r23, 0, 4
-    QBBC CHECKTXS, r24.t
+    QBBC CHECKTXS, r24.t1
 
 
     //write to spi tx register

@@ -47,14 +47,14 @@
 // sysconfig register setup
 
 #define CM_PER_SPI1_CLK_EN      0x2
-#define RESET               0x2
+#define RESET                   0x2
 
 #define ADC_SYSCONFIG           0x311 
 
-#define RESET_IRQ_STAT 0xffffffff
-#define DIS_CH = 0x0
-#define EN_CH = 0x1
-#define TEST_PATT = 0xfff29999
+#define RESET_IRQ_STAT          0xffffffff
+#define DIS_CH                  0x0
+#define EN_CH                   0x1
+#define TEST_PATT               0xfff29999
 
 #define ADC_IRQENABLE           0x0
 
