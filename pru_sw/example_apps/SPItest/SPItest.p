@@ -72,7 +72,7 @@ CONFIG:
 
     // configure the channel 
     MOV addr, MCSPI_CH0CONF     
-    MOV val, ADC_TX_CH_CONF
+    MOV val, ADC_TX_TURBO
     SBBO val, addr, 0, 4
 
 //    CALL DELAY
