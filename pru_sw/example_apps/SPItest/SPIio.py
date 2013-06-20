@@ -209,9 +209,10 @@ setAndCheckReg(MCSPI_IRQSTATUS, spimem, 0xffffffff, name = "MCSPI_IRQSTATUS")
 
 setAndCheckReg(MCSPI_IRQENABLE, spimem, IRQENABLE, name = "MCSPI_IRQENABLE")
 
+setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
+
 setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 
-setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
 setAndCheckReg(MCSPI_XFERLEVEL, spimem, XFER, name ="XFERLevel")
 
