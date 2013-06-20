@@ -148,7 +148,7 @@ HALT
 
 
 DELAY:
-    MOV r24, 0xf
+    MOV r24, 0x1f
 DELAY0:
     SUB r24, r24, 1
     QBNE DELAY0 , r24, 0
