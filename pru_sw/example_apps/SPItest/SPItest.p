@@ -105,11 +105,17 @@ CHECKTXS:
     MOV val, TEST_PATT
     SBBO val, addr,0,4
 
-    CALL DELAY    
+//    CALL DELAY    
+CHECKTXS2:
+    MOV addr, MCSPI_CH0STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXS2, val.t1
+
 
     MOV addr, MCSPI_TX0
     MOV val, TEST_PATT
     SBBO val, addr,0,4
+
 
     //CALL DELAY
 
