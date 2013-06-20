@@ -94,13 +94,6 @@ CONFIG:
 //
     CALL CHECKTXS
 
-    MOV addr, MCSPI_CH0STAT
-    LBBO val, addr, 0, 4
-    QBBC CHECKTXS, val.t1
-//
-//
-//    CALL DELAY
-
     //write to spi tx register
     MOV addr, MCSPI_TX0
     MOV val, TEST_PATT
@@ -108,11 +101,6 @@ CONFIG:
 
 //    CALL DELAY    
     CALL CHECKTXS
-
-    MOV addr, MCSPI_CH0STAT
-    LBBO val, addr, 0, 4
-    QBBC CHECKTXS2, val.t1
-
 
     MOV addr, MCSPI_TX0
     MOV val, TEST_PATT
