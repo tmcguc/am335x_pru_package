@@ -92,7 +92,8 @@ CONFIG:
 
 //    CALL DELAY
 //
-CHECKTXS:
+    CALL CHECKTXS
+
     MOV addr, MCSPI_CH0STAT
     LBBO val, addr, 0, 4
     QBBC CHECKTXS, val.t1
@@ -106,7 +107,8 @@ CHECKTXS:
     SBBO val, addr,0,4
 
 //    CALL DELAY    
-CHECKTXS2:
+    CALL CHECKTXS
+
     MOV addr, MCSPI_CH0STAT
     LBBO val, addr, 0, 4
     QBBC CHECKTXS2, val.t1
@@ -158,4 +160,11 @@ DELAY:
 DELAY0:
     SUB r24, r24, 1
     QBNE DELAY0 , r24, 0
-    RET 
+    RET
+
+CHECKTXS:
+    MOV addr, MCSPI_CH0STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXS, val.t1
+    RET
+
