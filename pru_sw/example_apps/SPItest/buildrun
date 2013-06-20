@@ -1,0 +1,5 @@
+#! /bin/bash
+
+../../utils/pasm -b SPItest.p
+
+./SPItest

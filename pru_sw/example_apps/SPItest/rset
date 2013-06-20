@@ -1,0 +1,3 @@
+#! /bin/bash
+
+echo  "01234567" >> /dev/spidev2.0

@@ -1,0 +1,7 @@
+#! /bin/bash
+
+../../utils/pasm -b SPItest.p
+
+python SPIio.py
+
+./SPItest
