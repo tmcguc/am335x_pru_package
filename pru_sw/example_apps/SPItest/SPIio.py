@@ -197,7 +197,7 @@ print"register value of MCSPI_SYSSTATUS:"
 print"Count:" + str(count)
 printValue(stat)
 
-setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
+#setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
 
 #setAndCheckReg(MCSPI_SYSCONFIG, spimem, SYSCONFIG, name = "MCSPI_SYSCONFIG")
 

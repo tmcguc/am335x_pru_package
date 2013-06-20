@@ -35,13 +35,13 @@ START:
 //
 //
 //
-//CONFIG:
-//
-//    // setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
-//    MOV addr, MCSPI_MODULCTRL
-//    MOV val, MODCONTROL
-//    LBBO val, addr , 0, 4
-//
+CONFIG:
+
+    // setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
+    MOV addr, MCSPI_MODULCTRL
+    MOV val, MODCONTROL
+    SBBO val, addr , 0, 4
+
     
     CALL DELAY
 
