@@ -11,28 +11,28 @@ START:
 
 
 
-//SETUP:
-//    // setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
-//    //enable clkspiref and clk
-//    MOV addr, CM_PER_SPI1_CLK_CTRL
-//    MOV val, CM_PER_SPI1_CLK_EN
-//    SBBO val, addr, 0, 4
-//
-//    CALL DELAY
-//
-//
-//    // reset spi
-//    MOV addr, MCSPI_SYSCONFIG
-//    LBBO val, addr, 0, 4
-//    SET val.t1
-//    SBBO val, addr, 0, 4
+SETUP:
+    // setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
+    //enable clkspiref and clk
+    MOV addr, CM_PER_SPI1_CLK_CTRL
+    MOV val, CM_PER_SPI1_CLK_EN
+    SBBO val, addr, 0, 4
+
+    CALL DELAY
+
+
+    // reset spi
+    MOV addr, MCSPI_SYSCONFIG
+    LBBO val, addr, 0, 4
+    SET val.t1
+    SBBO val, addr, 0, 4
 //
 ////check if reset is done
-//CHECKRESET:
-//    MOV addr, MCSPI_SYSSTATUS
-//    LBBO val, addr, 0, 4
-//    QBBC CHECKRESET, val.t0
-//
+CHECKRESET:
+    MOV addr, MCSPI_SYSSTATUS
+    LBBO val, addr, 0, 4
+    QBBC CHECKRESET, val.t0
+
 //
 //
 CONFIG:
