@@ -65,6 +65,11 @@ CONFIG:
     
 //    CALL DELAY
 
+    //disable channel
+    MOV addr, MCSPI_CH0CTRL
+    MOV val, DIS_CH
+    SBBO val, addr, 0 ,4
+
     // configure the channel 
     MOV addr, MCSPI_CH0CONF     
     MOV val, ADC_TX_CH_CONF
@@ -72,10 +77,6 @@ CONFIG:
 
 //    CALL DELAY
 
-    //disable channel
-    MOV addr, MCSPI_CH0CTRL
-    MOV val, DIS_CH
-    SBBO val, addr, 0 ,4
 
 //    CALL DELAY
 
@@ -100,60 +101,33 @@ CONFIG:
     SBBO val, addr,0,4
 
 //    CALL DELAY    
-    CALL CHECKTXS
+//    CALL CHECKTXS
 
     MOV addr, MCSPI_TX0
     MOV val, TEST_PATT
     SBBO val, addr,0,4
-    CALL CHECKTXS
+//    CALL CHECKTXS
 
     MOV addr, MCSPI_TX0
     MOV val, TEST_PATT
     SBBO val, addr,0,4
-    CALL CHECKTXS
-
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
-
-    CALL CHECKTXS
-
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
-    CALL CHECKTXS
-
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
-    CALL CHECKTXS
+//    CALL CHECKTXS
 
     MOV addr, MCSPI_TX0
     MOV val, TEST_PATT
     SBBO val, addr,0,4
 
-    //CALL DELAY
+//    CALL CHECKTXS
 
-    //write to spi tx register
-    //MOV addr, MCSPI_TX0
-    //MOV val, 0xba98
-    //SBBO val, addr,0,4
+    MOV addr, MCSPI_TX0
+    MOV val, TEST_PATT
+    SBBO val, addr,0,4
+//    CALL CHECKTXS
 
-    //CALL DELAY
-
-    //write to spi tx register
-    //MOV addr, MCSPI_TX0
-    //MOV val, TEST_PATT
-    //SBBO val, addr,0,4
-
-    //CALL DELAY
-
-    //write to spi tx register
-    //MOV addr, MCSPI_TX0
-    //MOV val, TEST_PATT
-    //SBBO val, addr,0,4
-
-    //CALL DELAY
+    MOV addr, MCSPI_TX0
+    MOV val, TEST_PATT
+    SBBO val, addr,0,4
+//    CALL CHECKTXS
 
 
 
