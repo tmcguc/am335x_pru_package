@@ -105,6 +105,8 @@ CHECKTXS:
     MOV val, TEST_PATT
     SBBO val, addr,0,4
 
+    CALL DELAY    
+
     MOV addr, MCSPI_TX0
     MOV val, TEST_PATT
     SBBO val, addr,0,4
