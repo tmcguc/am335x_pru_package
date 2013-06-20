@@ -105,6 +105,10 @@ CHECKTXS:
     MOV val, TEST_PATT
     SBBO val, addr,0,4
 
+    MOV addr, MCSPI_TX0
+    MOV val, TEST_PATT
+    SBBO val, addr,0,4
+
     //CALL DELAY
 
     //write to spi tx register
