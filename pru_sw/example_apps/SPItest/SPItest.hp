@@ -49,7 +49,7 @@
 #define CM_PER_SPI1_CLK_EN      0x2
 #define RESET                   0x2
 
-#define ADC_SYSCONFIG           0x311 
+#define ADC_SYSCONFIG           0x00000311 
 
 #define RESET_IRQ_STAT          0xffffffff
 #define DIS_CH                  0x00000000

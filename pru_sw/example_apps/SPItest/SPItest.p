@@ -42,55 +42,55 @@ START:
 //    MOV val, MODCONTROL
 //    LBBO val, addr , 0, 4
 //
-//    
-//    CALL DELAY
-//
-//    MOV  addr, MCSPI_SYSCONFIG
-//    MOV  val, ADC_SYSCONFIG
-//    SBBO val, addr, 0, 4
-//
-//    CALL DELAY
-//
-//    //reset interrupt status bits write all ones
-//    MOV addr, MCSPI_IRQSTATUS
-//    MOV val, RESET_IRQ_STAT 
-//    SBBO val, addr, 0, 4
-//
-//    CALL DELAY
-//
-//    //enable interupts for ADCs
-//    MOV addr, MCSPI_IRQENABLE
-//    MOV val, ADC_IRQENABLE
-//    SBBO val, addr, 0, 4
-//    
-//    CALL DELAY
-//
-//    // configure the channel 
-//    MOV addr, ADC_TX_CH_CONF
-//    MOV val, MCSPI_CH0CONF     
-//    SBBO val, addr, 0, 4
-//
-//    CALL DELAY
-//
-//    //disable channel
-//    MOV addr, MCSPI_CH0CTRL
-//    MOV val, DIS_CH
-//    SBBO val, addr, 0 ,4
-//
-//    CALL DELAY
-//
-//    MOV addr, MCSPI_XFERLEVEL
-//    MOV val, ADC_XFER
-//    SBBO val, addr, 0, 4
-//    
-//    CALL DELAY
-//
-//    //enable channel
-//    MOV addr, MCSPI_CH0CTRL
-//    MOV val, EN_CH
-//    SBBO val, addr, 0, 4
-//
-//    CALL DELAY
+    
+    CALL DELAY
+
+    MOV  addr, MCSPI_SYSCONFIG
+    MOV  val, ADC_SYSCONFIG
+    SBBO val, addr, 0, 4
+
+    CALL DELAY
+
+    //reset interrupt status bits write all ones
+    MOV addr, MCSPI_IRQSTATUS
+    MOV val, RESET_IRQ_STAT 
+    SBBO val, addr, 0, 4
+
+    CALL DELAY
+
+    //enable interupts for ADCs
+    MOV addr, MCSPI_IRQENABLE
+    MOV val, ADC_IRQENABLE
+    SBBO val, addr, 0, 4
+    
+    CALL DELAY
+
+    // configure the channel 
+    MOV addr, MCSPI_CH0CONF     
+    MOV val, ADC_TX_CH_CONF
+    SBBO val, addr, 0, 4
+
+    CALL DELAY
+
+    //disable channel
+    MOV addr, MCSPI_CH0CTRL
+    MOV val, DIS_CH
+    SBBO val, addr, 0 ,4
+
+    CALL DELAY
+
+    MOV addr, MCSPI_XFERLEVEL
+    MOV val, ADC_XFER
+    SBBO val, addr, 0, 4
+    
+    CALL DELAY
+
+    //enable channel
+    MOV addr, MCSPI_CH0CTRL
+    MOV val, EN_CH
+    SBBO val, addr, 0, 4
+
+    CALL DELAY
 //
 //CHECKTXS:
 //    MOV addr, MCSPI_CH0STAT
@@ -98,35 +98,35 @@ START:
 //    QBBC CHECKTXS, val.t1
 //
 //
-    CALL DELAY
+    //CALL DELAY
 
     //write to spi tx register
     MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
+    MOV val, 0x03AE
     SBBO val, addr,0,4
 
-    CALL DELAY
+    //CALL DELAY
 
     //write to spi tx register
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
+    //MOV addr, MCSPI_TX0
+    //MOV val, 0xba98
+    //SBBO val, addr,0,4
 
-    CALL DELAY
-
-    //write to spi tx register
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
-
-    CALL DELAY
+    //CALL DELAY
 
     //write to spi tx register
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
+    //MOV addr, MCSPI_TX0
+    //MOV val, TEST_PATT
+    //SBBO val, addr,0,4
 
-    CALL DELAY
+    //CALL DELAY
+
+    //write to spi tx register
+    //MOV addr, MCSPI_TX0
+    //MOV val, TEST_PATT
+    //SBBO val, addr,0,4
+
+    //CALL DELAY
 
 
 
@@ -142,7 +142,7 @@ HALT
 
 
 DELAY:
-    MOV r24, 0xfffff
+    MOV r24, 0xff
 DELAY0:
     SUB r24, r24, 1
     QBNE DELAY0 , r24, 0

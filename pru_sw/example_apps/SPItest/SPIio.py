@@ -199,43 +199,42 @@ printValue(stat)
 
 setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
 
-setAndCheckReg(MCSPI_SYSCONFIG, spimem, SYSCONFIG, name = "MCSPI_SYSCONFIG")
+#setAndCheckReg(MCSPI_SYSCONFIG, spimem, SYSCONFIG, name = "MCSPI_SYSCONFIG")
 
-irq = getReg(MCSPI_IRQSTATUS, spimem)
-print"inital status of MCSPI_IRQSTATUS :"
-printValue(irq)
+#irq = getReg(MCSPI_IRQSTATUS, spimem)
+#print"inital status of MCSPI_IRQSTATUS :"
+#printValue(irq)
 
-setAndCheckReg(MCSPI_IRQSTATUS, spimem, 0xffffffff, name = "MCSPI_IRQSTATUS")
+#setAndCheckReg(MCSPI_IRQSTATUS, spimem, 0xffffffff, name = "MCSPI_IRQSTATUS")
 
-setAndCheckReg(MCSPI_IRQENABLE, spimem, IRQENABLE, name = "MCSPI_IRQENABLE")
+#setAndCheckReg(MCSPI_IRQENABLE, spimem, IRQENABLE, name = "MCSPI_IRQENABLE")
 
-setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
+#setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 
-setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
+#setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
-setAndCheckReg(MCSPI_XFERLEVEL, spimem, XFER, name ="XFERLevel")
+#setAndCheckReg(MCSPI_XFERLEVEL, spimem, XFER, name ="XFERLevel")
 
-setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
+#setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 
 #setAndCheckReg(MCSPI_TX0, spimem, 0x5555aaaa, name ="MCSPI_TX0")
 
-waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
+#waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
-for i in range(6):
-
-    setAndCheckReg(MCSPI_TX0, spimem, 0xfff29999, name ="MCSPI_TX0")
+#for i in range(6):
+    #setAndCheckReg(MCSPI_TX0, spimem, 0xfff29999, name ="MCSPI_TX0")
 
 #waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
 
-tx = getReg(MCSPI_TX0, spimem)
-print "contents of TX0 register are after write and TXS set:"
-printValue(tx)
+#tx = getReg(MCSPI_TX0, spimem)
+#print "contents of TX0 register are after write and TXS set:"
+#printValue(tx)
 
-txsSet = getReg(MCSPI_CH0STAT, spimem)
-print "TXS set:"
-printValue(txsSet)
+#txsSet = getReg(MCSPI_CH0STAT, spimem)
+#print "TXS set:"
+#printValue(txsSet)
 
-setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
+#setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
 
 
