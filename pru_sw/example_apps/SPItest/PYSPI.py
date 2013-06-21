@@ -11,7 +11,7 @@ class SPI_REG_SETUP():
         vAUTOIDLE            = AUTOIDLE               # 0x1 automatic ocp clock strategy is applied
     
         SYSCONFIG = 0x0000| CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
-    
+        print hex(SYSCONFIG) 
         return SYSCONFIG
     
     
@@ -26,6 +26,7 @@ class SPI_REG_SETUP():
         vAEL                 = (AEL - 1)       #
     
         XFER = 0x00000000| vWCNT | vAFL |vAEL
+        print hex(XFER)
         return XFER
     
     
@@ -55,7 +56,8 @@ class SPI_REG_SETUP():
         vTX0_EMPTY_ENABLE        = TX0_EMPTY_ENABLE
         
         IRQENABLE = 0x00000000 | vEOWKE | vRX3_FULL_ENABLE| vTX3_UNDERFLOW_ENABLE|vTX3_EMPTY_ENABLE|vRX2_FULL_ENABLE|vTX2_UNDERFLOW_ENABLE|vTX2_EMPTY_ENABLE|vRX1_FULL_ENABLE|vTX1_UNDERFLOW_ENABLE|vTX1_EMPTY_ENABLE |vRX0_OVERFLOWENABLE | vRX0_FULL_ENABLE | vTX0_UNDERFLOW_ENABLE | vTX0_EMPTY_ENABLE
-    
+        
+        print hex(IRQENABLE)
         return IRQENABLE
     
     
@@ -75,6 +77,7 @@ class SPI_REG_SETUP():
         vSPIEN_0                 = SPIEN_0             # driven low
         SYST = 0x00000000 | vSPIENDIR | vSPIDATDIR1 | vSPIDATDIR0 | vSPICLK | vSPIDAT_1 |vSPIDAT_0 | vSPIEN_1 | vSPIEN_0
         
+        print hex(SYST)
         return SYST
     
     
@@ -93,6 +96,7 @@ class SPI_REG_SETUP():
         vSINGLE                 = (SINGLE)             # 0x0 more than one channel will be used in master mode
         MODCONTROL = 0x00000000 | vFDAA| vMOA | vINITDLY | vSYSTEM_TEST | vMS | vPIN34 | vSINGLE
     
+        print hex(MODCONTROL)
         return MODCONTROL
     
     
@@ -126,6 +130,7 @@ class SPI_REG_SETUP():
         vPHA                    = (PHA)             # data latched on even numbered edges of SPICLK
         CH_CONF = 0x00000000 | vCLKG | vFFER | vFFEW | vTCS | vSBPOL | vSBE | vSPIENSLV| vFORCE | vTURBO | vIS | vDPE1 | vDPE0 | vDMAR | vDMAW | vTRM | vWL | vEPOL | vCLKD | vPOL | vPHA
     
+        print hex(CH_CONF)
         return CH_CONF
     
      
