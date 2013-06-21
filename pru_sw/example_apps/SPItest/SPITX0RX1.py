@@ -37,21 +37,32 @@ MCSPI_CH1CTRL       = 0x148
 MCSPI_TX1           = 0x14c
 MCSPI_RX1           = 0x150
 
+
 # This is where we can change the register configuartions values and put them all together
+def setSYSCONFIG(CLOCKACTIVITY = 0x3, SIDLEMODE = 0x2, AUTOIDLE = 0x1):
+    """
+    sysconfig register setup
+    """
+    vCLOCKACTIVITY       = CLOCKACTIVITY << 8  # 0x3 ocp and functional clocks maintained
+    vSIDLEMODE           = SIDLEMODE << 3      # 0x1 idle request ignored
+    vAUTOIDLE            = AUTOIDLE               # 0x1 automatic ocp clock strategy is applied
 
-# sysconfig register setup
-CLOCKACTIVITY       = 0x3 << 8  # 0x3 ocp and functional clocks maintained
-SIDLEMODE           = 0x2 << 3      # 0x1 idle request ignored
-AUTOIDLE            = 0x1               # 0x1 automatic ocp clock strategy is applied
+    SYSCONFIG = 0x0000| CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
 
-SYSCONFIG = 0x0000| CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
+    return SYSCONFIG
 
 
-WCNT                = 0x4 << 16 # word count for 
-AFL                 = 0x0 << 8  #
-AEL                 = 0x0       #
+def setXFERLEVEL(WCNT = 0x0, AFL = 1, AEL = 1 ):
+    """
+    Used to configure value to write to MCSPI_XFERLEVEL register
+    units of AFL and AEL are in bytes
+    """
+    vWCNT                = WCNT << 16 # word count for 
+    vAFL                 = (AFL - 1) << 8  #
+    vAEL                 = (AEL - 1)       #
 
-XFER = 0x0000| WCNT | AFL |AEL
+    XFER = 0x00000000| vWCNT | vAFL |vAEL
+    return XFER
 
 
 def setIRQENABLE(EOWKE = 0x0, RX3_FULL_ENABLE = 0x0, TX3_UNDERFLOW_ENABLE = 0x0, TX3_EMPTY_ENABLE = 0x0,
@@ -59,7 +70,7 @@ RX2_FULL_ENABLE = 0x0, TX2_UNDERFLOW_ENABLE = 0x0, TX2_EMPTY_ENABLE = 0x0,
 RX1_FULL_ENABLE = 0x0, TX1_UNDERFLOW_ENABLE = 0x0, TX1_EMPTY_ENABLE = 0x0,
 RX0_OVERFLOW_ENABLE = 0x0, RX0_FULL_ENABLE = 0x0, TX0_UNDERFLOW_ENABLE = 0x0, TX0_EMPTY_ENABLE = 0x0):
     """
-
+    helper function that sets the interupts and outputs the value for the register
     There is an EWOK in the register!!
     """
 
@@ -76,10 +87,9 @@ RX0_OVERFLOW_ENABLE = 0x0, RX0_FULL_ENABLE = 0x0, TX0_UNDERFLOW_ENABLE = 0x0, TX
     vRX0_OVERFLOWENABLE      = RX0_OVERFLOWENABLE << 3
     vRX0_FULL_ENABLE         = RX0_FULL_ENABLE << 2
     vTX0_UNDERFLOW_ENABLE    = TX0_UNDERFLOW_ENABLE << 1
-    vTX0_EMPTY_ENABLE        = TX0_EMPTY_ENABLE 0x0
+    vTX0_EMPTY_ENABLE        = TX0_EMPTY_ENABLE
     
-    #TODO:insert rest of parameters here
-    IRQENABLE = 0x0000 | EOWKE | RX0_OVERFLOWENABLE | RX0_FULL_ENABLE | TX0_UNDERFLOW_ENABLE | TX0_EMPTY_ENABLE
+    IRQENABLE = 0x00000000 | vEOWKE | vRX3_FULL_ENABLE| vTX3_UNDERFLOW_ENABLE|vTX3_EMPTY_ENABLE|vRX2_FULL_ENABLE|vTX2_UNDERFLOW_ENABLE|vTX2_EMPTY_ENABLE|vRX1_FULL_ENABLE|vTX1_UNDERFLOW_ENABLE|vTX1_EMPTY_ENABLE |vRX0_OVERFLOWENABLE | vRX0_FULL_ENABLE | vTX0_UNDERFLOW_ENABLE | vTX0_EMPTY_ENABLE
 
     return IRQENABLE
 
@@ -151,11 +161,6 @@ def setCH_CONF(CLKG = 0x1, FFER = 0x0, FFEW = 0x0, TCS = 0x0, SBPOL = 0x0, SBE =
     return CH_CONF
 
  
-f = open("/dev/mem", "r+b")
-
-spimem = mmap(f.fileno(), MCSPI1_size, offset = MCSPI1_offset)
-Cmem = mmap(f.fileno(), 0xfff, offset = CM_PER)
-
 
 def getReg(address, mapped, length=32):
     """ Returns unpacked 16 or 32 bit register value starting from address. """
@@ -216,6 +221,11 @@ def waitTillSet(address, mapped, bit = 0, value =1, name = "Reg", maxNum = 10):
             count += 1
     print count
 
+
+f = open("/dev/mem", "r+b")
+
+spimem = mmap(f.fileno(), MCSPI1_size, offset = MCSPI1_offset)
+Cmem = mmap(f.fileno(), 0xfff, offset = CM_PER)
 
 
 
