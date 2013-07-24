@@ -1,5 +1,5 @@
 
-class SPI_REG_SETUP():
+class SPI_SETUP():
 
     @staticmethod    
     def setSYSCONFIG(CLOCKACTIVITY = 0x3, SIDLEMODE = 0x2, AUTOIDLE = 0x1):
@@ -132,8 +132,10 @@ class SPI_REG_SETUP():
     
         print hex(CH_CONF)
         return CH_CONF
-    
-     
+  
+
+
+class Reg_Helper():   
     
     @staticmethod    
     def getReg(address, mapped, length=32):
