@@ -1,3 +1,4 @@
+import struct
 
 class SPI_SETUP():
 
