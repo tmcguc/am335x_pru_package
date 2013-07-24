@@ -167,7 +167,7 @@ class Reg_Helper():
     def setAndCheckReg(self,address, mapped, new_value, name = "Reg"):
         print"value written" + hex(new_value)
         self.setReg(address,mapped, new_value)
-        value = getReg(address, mapped)
+        value = self.getReg(address, mapped)
         print"register value of " + name +":"
         printValue(value)
     
