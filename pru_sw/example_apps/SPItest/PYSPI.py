@@ -169,7 +169,7 @@ class Reg_Helper():
     @staticmethod    
     def setAndCheckReg(address, mapped, new_value, name = "Reg"):
         print"value written" + hex(new_value)
-        setReg(address,mapped, new_value)
+        self.setReg(address,mapped, new_value)
         value = getReg(address, mapped)
         print"register value of " + name +":"
         printValue(value)
@@ -177,7 +177,7 @@ class Reg_Helper():
         
     @staticmethod    
     def checkValue(address, mapped, bit = 0, value = 1, name = "Reg"):
-        reg = getReg(address, mapped)
+        reg = self.getReg(address, mapped)
         flag = value << bit
         print"check value of resgister" + name +":\n"
         printValue(reg)
@@ -193,7 +193,7 @@ class Reg_Helper():
         count = 0
         check = True
         while((check == True) and (count < maxNum)):
-            result = checkValue(address, mapped, bit, value, name)
+            result = self.checkValue(address, mapped, bit, value, name)
             if (result == True):
                 check = False
             elif(result == False): 
