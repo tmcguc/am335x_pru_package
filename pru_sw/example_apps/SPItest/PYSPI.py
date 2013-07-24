@@ -11,7 +11,7 @@ class SPI_SETUP():
         vSIDLEMODE           = SIDLEMODE << 3      # 0x1 idle request ignored
         vAUTOIDLE            = AUTOIDLE               # 0x1 automatic ocp clock strategy is applied
     
-        SYSCONFIG = 0x0000| CLOCKACTIVITY | SIDLEMODE | AUTOIDLE
+        SYSCONFIG = 0x0000| vCLOCKACTIVITY | vSIDLEMODE | vAUTOIDLE
         print hex(SYSCONFIG) 
         return SYSCONFIG
     
