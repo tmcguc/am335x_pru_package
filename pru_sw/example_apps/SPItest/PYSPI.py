@@ -137,8 +137,7 @@ class SPI_SETUP():
 
 class Reg_Helper():   
     
-    @staticmethod    
-    def getReg(address, mapped, length=32):
+    def getReg(self,address, mapped, length=32):
         """ Returns unpacked 16 or 32 bit register value starting from address. """
         if (length == 32):
             return struct.unpack("<L", mapped[address:address+4])[0]
@@ -148,8 +147,7 @@ class Reg_Helper():
             raise ValueError("Invalid register length: %i - must be 16 or 32" % length)
     
     
-    @staticmethod    
-    def setReg(address, mapped, new_value, length=32):
+    def setReg(self,address, mapped, new_value, length=32):
         """ Sets 16 or 32 bits at given address to given value. """
         if (length == 32):
             mapped[address:address+4] = struct.pack("<L", new_value)
@@ -158,16 +156,14 @@ class Reg_Helper():
         else:
             raise ValueError("Invalid register length: %i - must be 16 or 32" % length)
     
-    @staticmethod    
-    def printValue(register):
+    def printValue(self,register):
         print hex(register)
         print"byte 1=" +str(bin(register & 0x000000ff))
         print"byte 2=" +str(bin((register & 0x0000ff00) >> 8))
         print"byte 3=" +str(bin((register & 0x00ff0000) >> 16))
         print"byte 4=" +str(bin((register & 0xff000000) >> 24)) + "\n"
     
-    @staticmethod    
-    def setAndCheckReg(address, mapped, new_value, name = "Reg"):
+    def setAndCheckReg(self,address, mapped, new_value, name = "Reg"):
         print"value written" + hex(new_value)
         self.setReg(address,mapped, new_value)
         value = getReg(address, mapped)
@@ -175,8 +171,7 @@ class Reg_Helper():
         printValue(value)
     
         
-    @staticmethod    
-    def checkValue(address, mapped, bit = 0, value = 1, name = "Reg"):
+    def checkValue(self, address, mapped, bit = 0, value = 1, name = "Reg"):
         reg = self.getReg(address, mapped)
         flag = value << bit
         print"check value of resgister" + name +":\n"
@@ -187,8 +182,7 @@ class Reg_Helper():
             return False
     
     
-    @staticmethod    
-    def waitTillSet(address, mapped, bit = 0, value =1, name = "Reg", maxNum = 10):
+    def waitTillSet(self, address, mapped, bit = 0, value =1, name = "Reg", maxNum = 10):
         checkAgain = True
         count = 0
         check = True
