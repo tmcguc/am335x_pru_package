@@ -5,9 +5,14 @@ from PYSPI import *
 MCSPI1_offset = 0x481a0000
 MCSPI1_size = 0xfff
 
+MCSPI0_offset = 0x48030000
+MCSPI0_size = 0xfff
+
+
 CM_PER = 0x44E00000
 
 CM_PER_SPI1_CLK_CTRL =  0x50
+CM_PER_SPI0_CLK_CTRL =  0x4C
 
 
 
@@ -58,6 +63,9 @@ reset = 0x1<<1
 sysReset = sys | reset
 reg.setReg(MCSPI_SYSCONFIG, spimem, sysReset)
 
+
+
+
 check = True
 count = 0
 while(check):
@@ -69,6 +77,12 @@ while(check):
 print"register value of MCSPI_SYSSTATUS:"
 print"Count:" + str(count)
 reg.printValue(stat)
+
+
+#check MCSPI is reset
+#reg.waitTillSet(MCSPI_SYSSTATUS, spimem, bit = 0, value = 0x1, name = "MCspi1SYSstatus")
+
+
 
 
 
