@@ -197,11 +197,11 @@ class Reg_Helper():
         print count
 
     def grabAndSet(self, address, mapped, bit = 1, value = 0x1, name = "Reg"):
-        sys = self.reg.getReg(address, mapped)
+        sys = self.getReg(address, mapped)
         print"register value of" + name + ":\n"
-        self.reg.printValue(sys)
+        self.printValue(sys)
         reset = value << bit
         sysReset = sys | reset
-        self.reg.setReg(address, mapped, sysReset)
+        self.setReg(address, mapped, sysReset)
 
 
