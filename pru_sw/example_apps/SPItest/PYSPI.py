@@ -199,7 +199,7 @@ class Reg_Helper():
     def grabAndSet(self, address, mapped, bit = 1, value = 0x1, name = "Reg"):
         sys = self.reg.getReg(address, mapped)
         print"register value of" + name + ":\n"
-        reg.printValue(sys)
+        self.reg.printValue(sys)
         reset = value << bit
         sysReset = sys | reset
         self.reg.setReg(address, mapped, sysReset)
