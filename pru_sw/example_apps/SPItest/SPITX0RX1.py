@@ -66,21 +66,21 @@ reg.setReg(MCSPI_SYSCONFIG, spimem, sysReset)
 
 
 
-check = True
-count = 0
-while(check):
-    stat = reg.getReg(MCSPI_SYSSTATUS, spimem)
-    count +=1 
-    resetdone = 0x1 & stat
-    if (resetdone == 0x1):
-        check = False
-print"register value of MCSPI_SYSSTATUS:"
-print"Count:" + str(count)
-reg.printValue(stat)
+#check = True
+#count = 0
+#while(check):
+#    stat = reg.getReg(MCSPI_SYSSTATUS, spimem)
+#    count +=1 
+#    resetdone = 0x1 & stat
+#    if (resetdone == 0x1):
+#        check = False
+#print"register value of MCSPI_SYSSTATUS:"
+#print"Count:" + str(count)
+#reg.printValue(stat)
 
 
 #check MCSPI is reset
-#reg.waitTillSet(MCSPI_SYSSTATUS, spimem, bit = 0, value = 0x1, name = "MCspi1SYSstatus")
+reg.waitTillSet(MCSPI_SYSSTATUS, spimem, bit = 0, value = 0x1, name = "MCspi1SYSstatus")
 
 
 
