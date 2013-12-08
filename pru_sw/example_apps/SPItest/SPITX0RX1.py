@@ -56,24 +56,13 @@ Cmem = mmap(f.fileno(), 0xfff, offset = CM_PER)
 
 reg.setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
 
-#sys = reg.getReg(MCSPI_SYSCONFIG, spimem)
-#print"register value of MCSPI_SYSCONFIG:"
-#reg.printValue(sys)
-#reset = 0x1<<1
-#sysReset = sys | reset
-#reg.setReg(MCSPI_SYSCONFIG, spimem, sysReset)
-
 
 #Reset MCSPI:
 reg.grabAndSet(MCSPI_SYSCONFIG, spimem, bit = 1, value = 0x1, name = "MCSPI SYS COnfig")
         
 
-
-
 #check MCSPI is reset
 reg.waitTillSet(MCSPI_SYSSTATUS, spimem, bit = 0, value = 0x1, name = "MCspi1SYSstatus")
-
-
 
 
 
