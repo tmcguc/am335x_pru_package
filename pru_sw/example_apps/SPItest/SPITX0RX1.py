@@ -85,7 +85,7 @@ reg.waitTillSet(MCSPI_SYSSTATUS, spimem0, bit = 0, value = 0x1, name = "MCspi1SY
 ####SETUP SPI1 Master#####
 
 #setup modcontrol with default values
-MODCONTROL = spi_setup.setMODCONTROL(SINGLE = 1)
+MODCONTROL = spi_setup.setMODCONTROL(SINGLE = 0)
 reg.setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
 
 #set up the sysconfig register with defaults
