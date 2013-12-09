@@ -173,7 +173,7 @@ reg.waitTillSet(MCSPI_CH0STAT, spimem0, bit = 1, value = 1, name = "MCSPI_CH0STA
 
 #send 6 values
 for i in range(1):
-    reg.setAndCheckReg(MCSPI_TX0, spimem, 0xfff29999, name ="MCSPI_TX0")
+    reg.setAndCheckReg(MCSPI_TX0, spimem, 0x29999, name ="MCSPI_TX0")
 
 #reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
 
