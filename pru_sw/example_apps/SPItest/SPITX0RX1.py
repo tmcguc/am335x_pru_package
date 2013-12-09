@@ -50,50 +50,62 @@ reg = Reg_Helper()
 
 f = open("/dev/mem", "r+b")
 
+
+#Memory maping SPI1
 spimem = mmap(f.fileno(), MCSPI1_size, offset = MCSPI1_offset)
 Cmem = mmap(f.fileno(), 0xfff, offset = CM_PER)
 
+#Memory mapping SPI0
+spimem0 = mmap(f.fileno(), MCSPI0_size, offset = MCSPI0_offset)
 
+
+
+#write 0x2 to enable clocks explicitly
 reg.setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
+reg.setAndCheckReg(CM_PER_SPI0_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI0_CLK_CTRL")
 
 
-#Reset MCSPI:
+
+#Reset MCSPI1:
 reg.grabAndSet(MCSPI_SYSCONFIG, spimem, bit = 1, value = 0x1, name = "MCSPI SYS COnfig")
-        
-
 #check MCSPI is reset
 reg.waitTillSet(MCSPI_SYSSTATUS, spimem, bit = 0, value = 0x1, name = "MCspi1SYSstatus")
 
 
+#Reset MCSPI0:
+reg.grabAndSet(MCSPI_SYSCONFIG, spimem0, bit = 1, value = 0x1, name = "MCSPI SYS COnfig")
+#check MCSPI0 is reset
+reg.waitTillSet(MCSPI_SYSSTATUS, spimem0, bit = 0, value = 0x1, name = "MCspi1SYSstatus")
+
+
+
+
+
+
+####SETUP SPI1 Master#####
 
 #setup modcontrol with default values
-MODCONTROL = spi_setup.setMODCONTROL()
+MODCONTROL = spi_setup.setMODCONTROL(SINGLE = 1)
 reg.setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
-
 
 #set up the sysconfig register with defaults
 SYSCONFIG = spi_setup.setSYSCONFIG()
 reg.setAndCheckReg(MCSPI_SYSCONFIG, spimem, SYSCONFIG, name = "MCSPI_SYSCONFIG")
-
 
 #get value of interupt register status
 irq = reg.getReg(MCSPI_IRQSTATUS, spimem)
 print"inital status of MCSPI_IRQSTATUS :"
 reg.printValue(irq)
 
-
 #clear interupt status bits write all ones
 reg.setAndCheckReg(MCSPI_IRQSTATUS, spimem, 0xffffffff, name = "MCSPI_IRQSTATUS")
-
 
 #set up interupts
 IRQENABLE = spi_setup.setIRQENABLE()
 reg.setAndCheckReg(MCSPI_IRQENABLE, spimem, IRQENABLE, name = "MCSPI_IRQENABLE")
 
-
 #make sure channel is disabled
 reg.setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
-
 
 #set up channel configuration
 CH_CONF = spi_setup.setCH_CONF(FFEW = 1, FORCE = 1, TURBO = 1, CLKD = 2, TRM = 2, WL = 0x11 )
@@ -103,7 +115,6 @@ reg.setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 XFER = spi_setup.setXFERLEVEL(WCNT= 0x4)
 reg.setAndCheckReg(MCSPI_XFERLEVEL, spimem, XFER, name ="XFERLevel")
 
-
 #enable channel
 reg.setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 
@@ -111,8 +122,57 @@ reg.setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
 
+
+
+
+
+
+####setup Slave#####
+
+
+MODCONTROLslave = spi_setup.setMODCONTROL(MS = 1, SINGLE = 0)
+reg.setAndCheckReg(MCSPI_MODULCTRL, spimem0, MODCONTROLslave, name = " MCSPI0 MODCONTRL Slave")
+
+#set up the sysconfig register with defaults
+SYSCONFIG = spi_setup.setSYSCONFIG()
+reg.setAndCheckReg(MCSPI_SYSCONFIG, spimem0, SYSCONFIG, name = "MCSPI0_SYSCONFIG")
+
+#get value of interupt register status
+irq = reg.getReg(MCSPI_IRQSTATUS, spimem0)
+print"inital status of MCSPI_IRQSTATUS :"
+reg.printValue(irq)
+
+#clear interupt status bits write all ones
+reg.setAndCheckReg(MCSPI_IRQSTATUS, spimem0, 0xffffffff, name = "MCSPI0_IRQSTATUS")
+
+#set up interupts
+IRQENABLE = spi_setup.setIRQENABLE()
+reg.setAndCheckReg(MCSPI_IRQENABLE, spimem0, IRQENABLE, name = "MCSPI0_IRQENABLE")
+
+#make sure channel is disabled
+reg.setAndCheckReg(MCSPI_CH0CTRL, spimem0, 0x00000000)
+
+#set up channel configuration
+CH_CONF = spi_setup.setCH_CONF(FFER = 1, FORCE = 0, TURBO = 1, CLKD = 2, IS = 0, DPE0 = 1, DPE1 = 1, TRM = 1, WL = 0x11 )
+reg.setAndCheckReg(MCSPI_CH0CONF, spimem0, CH_CONF, name = "MCSPI0_CH0CONF")
+
+#setup transfer level for turbo mode
+XFER = spi_setup.setXFERLEVEL(WCNT= 0x4)
+reg.setAndCheckReg(MCSPI_XFERLEVEL, spimem0, XFER, name ="XFERLevel")
+
+#enable channel
+reg.setAndCheckReg(MCSPI_CH0CTRL, spimem0, 0x00000001, name = "enable CH")
+
+#check if txs status bit is cleared
+reg.waitTillSet(MCSPI_CH0STAT, spimem0, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
+
+
+
+
+
+
 #send 6 values
-for i in range(6):
+for i in range(1):
     reg.setAndCheckReg(MCSPI_TX0, spimem, 0xfff29999, name ="MCSPI_TX0")
 
 #reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
