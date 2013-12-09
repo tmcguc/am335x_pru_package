@@ -1,4 +1,5 @@
 import struct
+import time
 
 class SPI_SETUP():
 
