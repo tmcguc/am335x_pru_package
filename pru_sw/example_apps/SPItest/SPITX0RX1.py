@@ -108,7 +108,7 @@ reg.setAndCheckReg(MCSPI_IRQENABLE, spimem, IRQENABLE, name = "MCSPI_IRQENABLE")
 reg.setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
 #set up channel configuration
-CH_CONF = spi_setup.setCH_CONF(FFEW = 1, FORCE = 0, TURBO = 1, CLKD = 2, TRM = 2, WL = 0x11 )
+CH_CONF = spi_setup.setCH_CONF(FFEW = 1, FORCE = 1 , TURBO = 1, CLKD = 2, TRM = 2, WL = 0x11 )
 reg.setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 
 #setup transfer level for turbo mode
@@ -189,3 +189,4 @@ reg.printValue(txsSet)
 
 #disbale the channel
 reg.setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
+reg.setAndCheckReg(MCSPI_CH0CTRL, spimem0, 0x00000000)
