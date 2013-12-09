@@ -164,7 +164,7 @@ class Reg_Helper():
         #print"byte 2=" +str(bin((register & 0x0000ff00) >> 8))
         #print"byte 3=" +str(bin((register & 0x00ff0000) >> 16))
         #print"byte 4=" +str(bin((register & 0xff000000) >> 24)) + "\n"
-        print "byte4|byte3|byte2|byte1\n"
+        print "byte4|byte3|byte2|byte1"
         print str(bin((register & 0xff000000) >> 24)) +"|"+ str(bin((register & 0x00ff0000) >> 16)) +"|"+ str(bin((register & 0x0000ff00) >> 8)) +"|"+ str(bin(register & 0x000000ff)) +"\n"
 
     
