@@ -169,7 +169,7 @@ class Reg_Helper():
 
     
     def setAndCheckReg(self,address, mapped, new_value, name = "Reg"):
-        print"value written" + hex(new_value)
+        print"value written: " + hex(new_value)
         self.setReg(address,mapped, new_value)
         value = self.getReg(address, mapped)
         print"register value of " + name +":"
@@ -179,7 +179,7 @@ class Reg_Helper():
     def checkValue(self, address, mapped, bit = 0, value = 1, name = "Reg"):
         reg = self.getReg(address, mapped)
         flag = value << bit
-        print"check value of resgister" + name +":\n"
+        print"check value of resgister" + name +":"
         self.printValue(reg)
         if ((reg & flag) == flag):
             return True
