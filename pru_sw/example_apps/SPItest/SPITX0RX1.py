@@ -153,7 +153,7 @@ reg.setAndCheckReg(MCSPI_IRQENABLE, spimem0, IRQENABLE, name = "MCSPI0_IRQENABLE
 reg.setAndCheckReg(MCSPI_CH0CTRL, spimem0, 0x00000000)
 
 #set up channel configuration
-CH_CONF = spi_setup.setCH_CONF(FFER = 0, FORCE = 0, TURBO = 0, CLKD = 0, IS = 0, DPE0 = 1, DPE1 = 1, TRM = 1, WL = 0x11 )
+CH_CONF = spi_setup.setCH_CONF(FFER = 0, FORCE = 0, TURBO = 0, CLKD = 2, IS = 0,SPIENSLV = 0, DPE0 = 1, DPE1 = 1, TRM = 1, WL = 0x11 )
 reg.setAndCheckReg(MCSPI_CH0CONF, spimem0, CH_CONF, name = "MCSPI0_CH0CONF")
 
 #setup transfer level for turbo mode
@@ -173,7 +173,7 @@ reg.waitTillSet(MCSPI_CH0STAT, spimem0, bit = 1, value = 1, name = "MCSPI_CH0STA
 
 #send 6 values
 for i in range(1):
-    reg.setAndCheckReg(MCSPI_TX0, spimem, 0x29999, name ="MCSPI_TX0")
+    reg.setAndCheckReg(MCSPI_TX0, spimem, 0x2222f, name ="MCSPI_TX0")
 
 #reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
 
