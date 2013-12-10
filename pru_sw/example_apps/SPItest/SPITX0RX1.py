@@ -191,6 +191,7 @@ reg.printValue(txsSet)
 for i in range(6):
     #Check value for RX register of SPI
     data = reg.getReg(MCSPI_DAFRX, spimem0)
+    date = data & 0x3ffff
     print "RX SLave data is"
     reg.printValue(data)
 
