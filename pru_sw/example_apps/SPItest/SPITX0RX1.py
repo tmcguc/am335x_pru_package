@@ -191,7 +191,9 @@ reg.printValue(txsSet)
 for i in range(6):
     #Check value for RX register of SPI
     data = reg.getReg(MCSPI_DAFRX, spimem0)
-    data = data & 0x3ffff
+    data = data & 0x3ffff 
+    ## TODO: this is needed to get rid of data from previous call  data in FIFO includes previous 16 LSB from last
+    ## write into FIFO data is not padded.  
     print "RX SLave data is"
     reg.printValue(data)
 
