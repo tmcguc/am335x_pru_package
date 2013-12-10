@@ -130,7 +130,7 @@ reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT
 ####setup Slave#####
 
 
-MODCONTROLslave = spi_setup.setMODCONTROL(MS = 1, SINGLE = 0)
+MODCONTROLslave = spi_setup.setMODCONTROL( FDAA = 1, MS = 1, SINGLE = 0)
 reg.setAndCheckReg(MCSPI_MODULCTRL, spimem0, MODCONTROLslave, name = " MCSPI0 MODCONTRL Slave")
 
 #set up the sysconfig register with defaults
@@ -153,11 +153,11 @@ reg.setAndCheckReg(MCSPI_IRQENABLE, spimem0, IRQENABLE, name = "MCSPI0_IRQENABLE
 reg.setAndCheckReg(MCSPI_CH0CTRL, spimem0, 0x00000000)
 
 #set up channel configuration
-CH_CONF = spi_setup.setCH_CONF(FFER = 0, FORCE = 0, TURBO = 0, CLKD = 2, IS = 0,SPIENSLV = 0, DPE0 = 1, DPE1 = 1, TRM = 1, WL = 0x11 )
+CH_CONF = spi_setup.setCH_CONF(FFER = 1, FORCE = 0, TURBO = 0, CLKD = 2, IS = 0,SPIENSLV = 0, DPE0 = 1, DPE1 = 1, DMAR = 1,TRM = 1, WL = 0x11 )
 reg.setAndCheckReg(MCSPI_CH0CONF, spimem0, CH_CONF, name = "MCSPI0_CH0CONF")
 
 #setup transfer level for turbo mode
-XFER = spi_setup.setXFERLEVEL(WCNT= 0x4)
+XFER = spi_setup.setXFERLEVEL(WCNT= 0x6, AFL = 0x18)
 reg.setAndCheckReg(MCSPI_XFERLEVEL, spimem0, XFER, name ="XFERLevel")
 
 #enable channel
@@ -172,7 +172,7 @@ reg.waitTillSet(MCSPI_CH0STAT, spimem0, bit = 1, value = 1, name = "MCSPI_CH0STA
 
 
 #send 6 values
-for i in range(1):
+for i in range(6):
     reg.setAndCheckReg(MCSPI_TX0, spimem, 0x2222f, name ="MCSPI_TX0")
 
 #reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
@@ -189,7 +189,7 @@ reg.printValue(txsSet)
 
 
 #Check value for RX register of SPI
-data = reg.getReg(MCSPI_RX0, spimem0)
+data = reg.getReg(MCSPI_DAFRX, spimem0)
 print "RX SLave data is"
 reg.printValue(data)
 
