@@ -92,7 +92,7 @@
 #define pF          r11     //Points fast initial value
 #define pFc         r12     //Points fast count, used to decrement
 #define sF          r13     //Points slow count
-#define samples     r14     //Samples per point initial value
+#define samp     r14     //Samples per point initial value
 #define sampc       r15     //Samples count
 
 

@@ -166,7 +166,7 @@ reg.setAndCheckReg(MCSPI_CH0CTRL, spimem0, 0x00000001, name = "enable CH")
 #check if txs status bit is cleared
 reg.waitTillSet(MCSPI_CH0STAT, spimem0, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
-
+#TODO make sure chip keeps previous configuration
 
 
 

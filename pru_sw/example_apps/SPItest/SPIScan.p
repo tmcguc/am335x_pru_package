@@ -1,6 +1,6 @@
 .origin 0
 .entrypoint START
-#include "SPItest.hp"
+#include "SPIScan.hp"
 
 
 START:
@@ -156,4 +156,40 @@ ENABLE:
     RET
 
 
+// * ===================================================
+// *  This is where we define the scanning functionality !!!
+// * ===================================================
+
+LOOP1:
+    SBBO Sx, Fx, 0, 4       // store Sx in Fx
+    SBBO Sy, Fy, 0, 4       // store Sy in Fy 
+    Call LOOP2              // LOOP2 is where we call the DAC and ADC subroutines 
+    ADD Sx, Sx, sdx         // update Sx 
+    ADD Sy, Sy, sdx         // update Sy
+    SUB sF, sF, 1           // decrement count
+    // TODO: add something here to check if we should stop the scan
+    QBNE LOOP1, sF, 0       // check if we are done
+    RET
+
+
+LOOP2:
+    MOV pFc, pF             // reintialize fast count value
+SUBLOOP2:
+    CALL DACUPDATE          // write out values to DACs
+    CALL LOOP3              // Loop samples ADCs multiple times
+    ADD Fx, Fx, dx          // update Fx, TODO: check if I need to do a MOV first and use another register
+    ADD Fy, Fy, dy          // update Fy
+    SUB pFc, pFc, 1         // decrement count
+    QBNE SUBLOOP2, pFc, 0   // see if we are going to the next line
+    RET
+
+
+LOOP3:
+    MOV sampc, samp         // reintialize the how many samples perpoint to take
+SUBLOOP3:
+    CALL ADCREAD            // read in the ADC values
+    SUB sampc, sampc, 1     // update samples per point counter
+    QBNE SUBLOOP3, sampc, 0 // see if we go to the next point
+    RET
+    
 
