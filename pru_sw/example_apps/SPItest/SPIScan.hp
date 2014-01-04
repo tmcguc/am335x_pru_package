@@ -92,7 +92,9 @@
 #define pF          r11     //Points fast initial value
 #define pFc         r12     //Points fast count, used to decrement
 #define sF          r13     //Points slow count
-#define samp     r14     //Samples per point initial value
+#define samp        r14     //Samples per point initial value
 #define sampc       r15     //Samples count
+#define DACA        r16     // output for DAC A
+#define DACB        r17     // output for DAC B
 
 

@@ -79,7 +79,7 @@ CONFIG:
 
     //CALL CHECKTXS
 
-    CALL ENABLE
+    CALL ENABLEADC
 
 
 Transfer:
@@ -140,25 +140,12 @@ DELAY2L:
     RET
 
 
-CHECKTXS:
-    MOV addr, MCSPI_CH0STAT
-    LBBO val, addr, 0, 4
-    QBBC CHECKTXS, val.t1
-    RET
 
 
-ENABLE:
-    MOV addr, MCSPI_CH0CTRL
-    MOV val, EN_CH
-    SBBO val, addr, 0, 4
 
-    CALL CHECKTXS
-    RET
-
-
-// * ===================================================
+// * =======================================================
 // *  This is where we define the scanning functionality !!!
-// * ===================================================
+// * =======================================================
 
 LOOP1:
     SBBO Sx, Fx, 0, 4       // store Sx in Fx
@@ -186,10 +173,133 @@ SUBLOOP2:
 
 LOOP3:
     MOV sampc, samp         // reintialize the how many samples perpoint to take
+    CALL ENABLEADC
 SUBLOOP3:
     CALL ADCREAD            // read in the ADC values
     SUB sampc, sampc, 1     // update samples per point counter
     QBNE SUBLOOP3, sampc, 0 // see if we go to the next point
+    CALL DISABLEADC
     RET
     
+//*=============================================================
+//*This is where we are defining the DAC functionality !!!!
+//*=============================================================
+
+
+DACUPDATE:
+    CALL ENABLEDAC          // Enable the DAC SPI channels TODO: need to write seperate ENABLE DAC 
+    OR DACA, Fx.w0, 0b00010000 << 16    // This takes the position Fx and adds the prefix for the DAC to go to DACA 
+    OR DACB, Fx.w0, 0b00010001 << 16    // Same thing for DACB
+
+    MOV addr, MCSPI_TX0     //TODO: make sure this is going to the right peripheral
+    SBBO DACA, addr,0,4     //send out the data to DACA Yo
+    SBBO DACB, addr,0,4     //send out the data to DACB Yo
+    CALL LOADDAC            //TODO: write separate LOADDAC function need to determine right GPIOS
+    CALL DISABLEDAC         //TODO: write DAISABLEDAC function
+    CALL DELAYSET           //TODO: need to include a seperate delay that allows sample to reacvh steady state before measurement
+    RET
+
+
+LOADDAC:
+    MOV val, 0xac           // need a dealy of 1.7 us before we take pulse LDAC  low
+DELAYLOADDAC:
+    SUB val, val, 1
+    QBNE DELAYLOADDAC , val , 0
+    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
+    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
+    RET
+
+ENABLEDAC:
+    RET
+
+
+DISABLEDAC:
+    RET
+
+DELAYSET:
+    RET
+
+
+//*================================================================
+//* ADC functions
+//*================================================================
+
+
+
+ADCREAD:
+    CALL CONVERT
+    //CALL WAITBUSY // Don't need this until we have ADC Board to test!!!
+    MOV sampc, 8 // this is just a test value  need to init sampc with value that is passed from memory
+    MOV val, sampc
+READCH:
+    CALL SPI0TX
+    SUB val, val ,1    
+    QBNE READCH, val, 0     // keep on sending tx and reading into rx SPI0 slave unitl we got all of the channels
+    RET
+
+
+CHECKTXSADC:
+    MOV addr, MCSPI_CH0STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXS, val.t1
+    RET
+
+
+ENABLEADC:
+    MOV addr, MCSPI_CH0CTRL
+    MOV val, EN_CH
+    SBBO val, addr, 0, 4
+    CALL CHECKTXSADC
+    RET
+
+
+DISABLEADC:
+    MOV addr, MCSPI_CH0CTRL
+    MOV val, DIS_CH
+    SBBO val, addr, 0 ,4
+
+
+
+SPI0TX:
+    MOV addr, MCSPI_TX0
+    MOV val, 0x00000000     // Send DUMMY data only need to supply clock and cs to recieve on slave channel
+    SBBO val, addr,0,4
+    RET
+
+
+ADCRESET:
+    MOV val, 0x6            // need minmum pulse high of 50ns for reset
+    SET r30.t7              //MOV r30, 1 << 7
+RESETCOUNT:
+    SUB val, val, 1
+    QBNE RESETCOUNT, val, 0
+    CLR r30.t7              //MOV r30, 0 << 7
+    RET
+
+
+CONVERT:
+    MOV val, 0x3        // need pulse low for convert signal of at least 25 ns
+    CLR r30.t15         //MOV r30, 0 << 15
+CONCOUNT:
+    SUB val, val, 1
+    QBNE CONCOUNT, val, 0
+    SET r30.t15         //MOV r30, 1 << 15
+    RET
+
+
+WAITBUSY:
+    MOV val, 0x5        // wait for at least 40 ns to make surte BUSY signal latches
+DELAYBUSY:
+    SUB val, val, 1
+    QBNE DELAYBUSY, val, 0
+    WBC r31.t15         // wait until this bit is clear !!
+    RET
+    
+    
+
+
+
 
