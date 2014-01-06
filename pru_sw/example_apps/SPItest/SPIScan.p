@@ -89,25 +89,6 @@ Transfer:
     MOV val, TEST_PATT
     SBBO val, addr,0,4
 
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
-
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
-
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
-
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
-
-    MOV addr, MCSPI_TX0
-    MOV val, TEST_PATT
-    SBBO val, addr,0,4
 
 
 
@@ -212,14 +193,30 @@ DELAYLOADDAC:
     SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
     RET
 
-ENABLEDAC:
+
+CHECKTXSDAC:
+    MOV addr, MCSPI_CH1STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXSDAC, val.t1
     RET
 
+
+ENABLEDAC:
+    MOV addr, MCSPI_CH1CTRL
+    MOV val, EN_CH
+    SBBO val, addr, 0, 4
+    CALL CHECKTXSDAC
+    RET
 
 DISABLEDAC:
+    MOV addr, MCSPI_CH1CTRL
+    MOV val, DIS_CH
+    SBBO val, addr, 0 ,4
     RET
 
+
 DELAYSET:
+    CALL DELAY
     RET
 
 
@@ -244,7 +241,7 @@ READCH:
 CHECKTXSADC:
     MOV addr, MCSPI_CH0STAT
     LBBO val, addr, 0, 4
-    QBBC CHECKTXS, val.t1
+    QBBC CHECKTXSADC, val.t1
     RET
 
 
