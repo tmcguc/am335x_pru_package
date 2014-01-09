@@ -18,7 +18,6 @@
 	/* state the resources this cape uses */
 	exclusive-use =
 		/* the pin header P8 uses */
-		"
 		"P8.15", /* ADC BUSY pru0: pr1_pru0_pru_r31_15	*/
 		"P8.11", /* ADC CONV pru0: pr1_pru0_pru_r30_15	*/
 		"P8.12", /* LDAC     pru0: pr1_pru0_pru_r30_14	*/
