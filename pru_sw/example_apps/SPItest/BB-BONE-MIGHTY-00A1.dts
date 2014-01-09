@@ -1,0 +1,113 @@
+/*
+ * Copyright (C) 2013 Ephemeron Labs Inc.	<terrence@ephemeron-labs.com>
+ *
+ * This program is mine...  
+ * 
+ * 
+ */
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "ti,beaglebone", "ti,beaglebone-black";
+
+	/* identification */
+	part-number = "BB-BONE-MIGHTY";
+	version = "00A1";
+
+	/* state the resources this cape uses */
+	exclusive-use =
+		/* the pin header P8 uses */
+		"
+		"P8.15", /* ADC BUSY pru0: pr1_pru0_pru_r31_15	*/
+		"P8.11", /* ADC CONV pru0: pr1_pru0_pru_r30_15	*/
+		"P8.12", /* LDAC     pru0: pr1_pru0_pru_r30_14	*/
+		/* the pin header P9 uses */
+		"P9.17", /* SPI0_CS0	*/
+		"P9.18", /* SPI0_D1_MOSI  */
+		"P9.19", /* SPI1_CS1 TODO: find pin number and mux etc...  */
+		"P9.21", /* SPI0_D0_MISO  */
+		"P9.22", /* SPI0_SCLK */
+		"P9.25", /* ADC RESET pru0: pr1_pru0_pru_r30_7	*/
+		"P9.28", /* SPI1_CS0 	*/
+		"P9.29", /* SPI1_MISO   */
+		"P9.30", /* SPI1_MOSI	*/
+		"P9.31", /* SPI1_SCLK	*/
+		/* Hardware IP cores in use */
+		"spi0",
+		"spi1",
+		"pruss";
+
+	fragment@0 {
+		target = <&am33xx_pinmux>;
+		__overlay__ {
+			spi1_pins: pinmux_spi1_pins {
+				pinctrl-single,pins = <
+					0x190 0x13	/* P9_31 = mcasp0_aclkx.spi1_sclk , OUTPUT_PULLUP | MODE3 */
+					0x194 0x33	/* P9_29 = mcasp0_fsx.spi1_d0	  , INPUT_PULLUP  | MODE3 */
+					0x198 0x13	/* P9_30 = mcasp0_axr0.spi1_d1	  , OUTPUT_PULLUP | MODE3 */
+					0x19c 0x13	/* P9_28 = mcasp0_ahclkr.spi1_cs0 , OUTPUT_PULLUP | MODE3 */
+					0x17c 0x14      /* P9_19 = spi1_cs1,                OUTPUT_PULLUP | MODE4 */
+				>;
+			};
+
+			spi0_pins: pinmux_spi0_pins {
+                		pinctrl-single,pins = <
+                  			0x150 0x30  	/* spi0_sclk, INPUT_PULLUP | MODE0 */
+                  			0x154 0x10  	/* spi0_d0, OUTPUT_PULLUP | MODE0 */
+                  			0x158 0x30  	/* spi0_d1, INPUT_PULLUP | MODE0 */
+                  			0x15c 0x10  	/* spi0_cs0, OUTPUT_PULLUP | MODE0 */
+                		>;
+            		};
+			pruicss_pins: pinmux_pruicss_pins{
+				pinctrl-single,pins = <
+					0x03c 0x26 	/* P8_15 = BUSY,  INPUT_PULLDOWN  | MODE6 */
+					0x034 0x16 	/* P8_11 = CONV,  OUTPUT_PULLUP   | MODE6 */
+					0x030 0x16 	/* P8_12 = LDAC,  OUTPUT_PULLUP   | MODE6 */
+					0x1aC 0x05 	/* P9_25 = RESET, OUTPUT_PULLDOWN | MODE5 */
+				>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&spi1>;
+		__overlay__ {
+			#address-cells 	= <1>;
+			#size-cells 	= <0>;
+			status			= "okay";
+			pinctrl-names	= "default";
+			pinctrl-0		= <&spi1_pins>;
+
+			};
+
+		};
+
+	fragment@2 {
+		target = <&pruss>;
+		__overlay__{
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 	  = <&pruicss_pins>;
+
+			};
+		};
+
+
+
+	fragment@3 {
+        	target = <&spi0>;
+        	__overlay__ {
+             		#address-cells = <1>;
+            		#size-cells = <0>;
+             		status = "okay";
+             		pinctrl-names = "default";
+             		pinctrl-0 = <&spi0_pins>;
+
+			};
+		};
+	
+
+
+
+};
