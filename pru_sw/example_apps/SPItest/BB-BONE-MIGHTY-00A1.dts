@@ -24,7 +24,6 @@
 		/* the pin header P9 uses */
 		"P9.17", /* SPI0_CS0	*/
 		"P9.18", /* SPI0_D1_MOSI  */
-		"P9.19", /* SPI1_CS1 TODO: find pin number and mux etc...  */
 		"P9.21", /* SPI0_D0_MISO  */
 		"P9.22", /* SPI0_SCLK */
 		"P9.25", /* ADC RESET pru0: pr1_pru0_pru_r30_7	*/
@@ -32,6 +31,8 @@
 		"P9.29", /* SPI1_MISO   */
 		"P9.30", /* SPI1_MOSI	*/
 		"P9.31", /* SPI1_SCLK	*/
+		"P9.42", /* SPI1_CS1	*/
+
 		/* Hardware IP cores in use */
 		"spi0",
 		"spi1",
@@ -47,7 +48,8 @@
 					0x194 0x33	/* P9_29 = mcasp0_fsx.spi1_d0	  , INPUT_PULLUP  | MODE3 */
 					0x198 0x13	/* P9_30 = mcasp0_axr0.spi1_d1	  , OUTPUT_PULLUP | MODE3 */
 					0x19c 0x13	/* P9_28 = mcasp0_ahclkr.spi1_cs0 , OUTPUT_PULLUP | MODE3 */
-					0x17c 0x14      /* P9_19 = spi1_cs1,                OUTPUT_PULLUP | MODE4 */
+					0x164 0x12  /* P9_42 = GPIO0_7 =  eCAP0_in_PWM0_out.gpio0[7] , OUTPUT_PULLUP | MODE2 */
+
 				>;
 			};
 
