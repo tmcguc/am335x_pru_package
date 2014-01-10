@@ -80,7 +80,6 @@
 			pinctrl-0		= <&spi1_pins>;
 
 
-			};
 
 		};
 	};
