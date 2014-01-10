@@ -45,8 +45,8 @@
 			spi1_pins: pinmux_spi1_pins {
 				pinctrl-single,pins = <
 					0x190 0x13	/* P9_31 = mcasp0_aclkx.spi1_sclk , OUTPUT_PULLUP | MODE3 */
-					0x194 0x33	/* P9_29 = mcasp0_fsx.spi1_d0	  , INPUT_PULLUP  | MODE3 */
-					0x198 0x13	/* P9_30 = mcasp0_axr0.spi1_d1	  , OUTPUT_PULLUP | MODE3 */
+					0x194 0x13	/* P9_29 = mcasp0_fsx.spi1_d0	  , OUTPUT_PULLUP  | MODE3 */
+					0x198 0x33	/* P9_30 = mcasp0_axr0.spi1_d1	  , INPUT_PULLUP | MODE3 */
 					0x19c 0x13	/* P9_28 = mcasp0_ahclkr.spi1_cs0 , OUTPUT_PULLUP | MODE3 */
 					0x164 0x12  /* P9_42 = GPIO0_7 =  eCAP0_in_PWM0_out.gpio0[7] , OUTPUT_PULLUP | MODE2 */
 
@@ -56,9 +56,9 @@
 			spi0_pins: pinmux_spi0_pins {
                 		pinctrl-single,pins = <
                   			0x150 0x30  	/* spi0_sclk, INPUT_PULLUP | MODE0 */
-                  			0x154 0x10  	/* spi0_d0, OUTPUT_PULLUP | MODE0 */
+                  			0x154 0x30  	/* spi0_d0, INPUT_PULLUP | MODE0 */
                   			0x158 0x30  	/* spi0_d1, INPUT_PULLUP | MODE0 */
-                  			0x15c 0x10  	/* spi0_cs0, OUTPUT_PULLUP | MODE0 */
+                  			0x15c 0x30  	/* spi0_cs0, INPUT_PULLUP | MODE0 */
                 		>;
             		};
 			pruicss_pins: pinmux_pruicss_pins{
