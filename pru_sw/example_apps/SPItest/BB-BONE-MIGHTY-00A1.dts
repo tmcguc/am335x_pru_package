@@ -35,7 +35,8 @@
 		/* Hardware IP cores in use */
 		"spi0",
 		"spi1",
-		"pruss";
+		"pruss",
+		"pru0";
 
 	fragment@0 {
 		target = <&am33xx_pinmux>;
@@ -78,9 +79,26 @@
 			pinctrl-names	= "default";
 			pinctrl-0		= <&spi1_pins>;
 
+            		spi1_0{
+                		#address-cells       = <1>;
+               			#size-cells       = <0>;
+                		compatible           = "spidev";
+                		reg               = <0>;
+                		spi-max-frequency = <16000000>;
+                		spi-cpha;
+            		};
+            		spi1_1{
+                		#address-cells       = <1>;
+                	#size-cells       = <0>;
+                	compatible           = "spidev";
+                	reg               = <1>;
+                	spi-max-frequency = <16000000>;
+                	// Mode 0 (CPOL = 0, CPHA = 0)
+
 			};
 
 		};
+	};
 
 	fragment@2 {
 		target = <&pruss>;
@@ -89,8 +107,8 @@
 			pinctrl-names = "default";
 			pinctrl-0 	  = <&pruicss_pins>;
 
-			};
 		};
+	};
 
 
 
@@ -103,8 +121,15 @@
              		pinctrl-names = "default";
              		pinctrl-0 = <&spi0_pins>;
 
-			};
+             		spidev@0 {
+                 	spi-max-frequency = <24000000>;
+                 	reg = <0>;
+                 	compatible = "linux,spidev";
+            		};
+
+
 		};
+	};
 	
 
 
