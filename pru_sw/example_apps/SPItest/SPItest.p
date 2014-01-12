@@ -73,13 +73,13 @@ CONFIG:
     
 
     //enable channel
-    //MOV addr, MCSPI_CH0CTRL
-    //MOV val, EN_CH
-    //SBBO val, addr, 0, 4
+    MOV addr, MCSPI_CH0CTRL
+    MOV val, EN_CH
+    SBBO val, addr, 0, 4
 
-    //CALL CHECKTXS
+    CALL CHECKTXS
 
-    CALL ENABLE
+    //CALL ENABLE
 
 
 Transfer:
@@ -144,7 +144,7 @@ CHECKTXS:
     MOV addr, MCSPI_CH0STAT
     LBBO val, addr, 0, 4
     QBBC CHECKTXS, val.t1
-    //RET
+    RET
 
 
 ENABLE:
