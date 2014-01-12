@@ -12,7 +12,7 @@ TARGET=$(BINDIR)/SPItest
 _DEPS = 
 DEPS = $(patsubst %,$(INCDIR_APP_LOADER)/%,$(_DEPS))
 
-_OBJ = SPIScan.o
+_OBJ = SPItest.o
 OBJ = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 
 
