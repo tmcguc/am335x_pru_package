@@ -257,6 +257,7 @@ DISABLEADC:
     MOV addr, MCSPI_CH0CTRL
     MOV val, DIS_CH
     SBBO val, addr, 0 ,4
+    RET
 
 
 

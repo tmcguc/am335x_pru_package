@@ -144,7 +144,7 @@ CHECKTXS:
     MOV addr, MCSPI_CH0STAT
     LBBO val, addr, 0, 4
     QBBC CHECKTXS, val.t1
-    RET
+    //RET
 
 
 ENABLE:
