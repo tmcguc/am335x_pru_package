@@ -7,7 +7,7 @@ BINDIR?=../bin
 CFLAGS+= -Wall -I$(INCDIR_APP_LOADER) -D__DEBUG -O2 -mtune=cortex-a8 -march=armv7-a
 LDFLAGS+=-L$(LIBDIR_APP_LOADER) -lprussdrv -lpthread
 OBJDIR=obj
-TARGET=$(BINDIR)/SPIScan
+TARGET=$(BINDIR)/SPItest
 
 _DEPS = 
 DEPS = $(patsubst %,$(INCDIR_APP_LOADER)/%,$(_DEPS))
