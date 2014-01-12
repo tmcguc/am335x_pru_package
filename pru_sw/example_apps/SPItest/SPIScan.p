@@ -89,7 +89,7 @@ Transfer:
     MOV val, TEST_PATT
     SBBO val, addr,0,4
 
-
+    CALL CONVERT
 
 
 //#ifdef AM33XX
