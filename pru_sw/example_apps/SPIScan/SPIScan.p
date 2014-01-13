@@ -91,14 +91,6 @@ CHECKTXS:
     QBBC CHECKTXS, val.t1
 
 
-    MOV r30, 1 << 15
-    MOV r30, 0 << 15
-    MOV r30, 0 << 15
-    MOV r30, 0 << 15
-    MOV r30, 0 << 15
-    MOV r30, 0 << 15       
-    MOV r30, 1 << 15
-
     JMP CONVERT    
 
 Transfer:
