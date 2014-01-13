@@ -205,7 +205,7 @@ ENABLEDAC:
     MOV addr, MCSPI_CH1CTRL
     MOV val, EN_CH
     SBBO val, addr, 0, 4
-    CALL CHECKTXSDAC
+    JMP CHECKTXSDAC
     RET
 
 DISABLEDAC:
@@ -249,7 +249,7 @@ ENABLEADC:
     MOV addr, MCSPI_CH0CTRL
     MOV val, EN_CH
     SBBO val, addr, 0, 4
-    CALL CHECKTXSADC
+    JMP CHECKTXSADC
     RET
 
 
