@@ -118,11 +118,11 @@ HALT
 
 
 DELAY:
-    MOV r24, 0x10
+    MOV r24, 0x96  //Test to delay LDAC until CS goes high
 DELAY0:
     SUB r24, r24, 1
     QBNE DELAY0 , r24, 0
-    RET
+    JMP RDELAY
 
 
 //Delay2 is nested with Delay 1
@@ -186,7 +186,7 @@ DACUPDATE:
     //OR DACA, Fx.w0, 0b00010000 << 16    // This takes the position Fx and adds the prefix for the DAC to go to DACA 
     //OR DACB, Fy.w0, 0b00010001 << 16    // Same thing for DACB
 
-    MOV addr, MCSPI_TX0     //TODO: make sure this is going to the right peripheral
+    MOV addr, MCSPI_TX0     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
     SBBO DACA, addr,0,4     //send out the data to DACA Yo
     SBBO DACB, addr,0,4     //send out the data to DACB Yo
     CALL LOADDAC            //TODO: write separate LOADDAC function need to determine right GPIOS
@@ -196,6 +196,8 @@ DACUPDATE:
 
 
 LOADDAC:
+    JMP DELAY
+RDELAY:
     MOV val, 0xac           // need a dealy of 1.7 us before we take pulse LDAC  low
 DELAYLOADDAC:
     SUB val, val, 1
