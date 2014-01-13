@@ -108,6 +108,10 @@ Transfer:
     MOV val, TEST_PATT
     SBBO val, addr,0,4
 
+    JMP LDAC
+
+RLDAC:
+
 
 
 //#ifdef AM33XX
@@ -209,7 +213,7 @@ DELAYLOADDAC:
     CLR r30.t14             //MOV r30, 0 << 14       // pulse low
     CLR r30.t14             //MOV r30, 0 << 14       // pulse low
     SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
-    RET
+    JMP RLDAC               // Temporary RET doesn't really work uses r.30 by default
 
 
 CHECKTXSDAC:
