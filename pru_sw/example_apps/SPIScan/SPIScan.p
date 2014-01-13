@@ -82,9 +82,13 @@ CONFIG:
     CALL ENABLEADC
 
 
-    CALL CONVERT
+    //CALL CONVERT
 
     MOV r30, 0 << 15
+    MOV r30, 0 << 15
+    MOV r30, 0 << 15
+    MOV r30, 0 << 15
+    MOV r30, 0 << 15       
     MOV r30, 1 << 15
 
 Transfer:
