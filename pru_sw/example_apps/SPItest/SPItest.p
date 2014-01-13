@@ -144,16 +144,15 @@ CHECKTXS:
     MOV addr, MCSPI_CH0STAT
     LBBO val, addr, 0, 4
     QBBC CHECKTXS, val.t1
-    RET
+    JMP r18.w0
 
 
 ENABLE:
     MOV addr, MCSPI_CH0CTRL
     MOV val, EN_CH
     SBBO val, addr, 0, 4
-
-    JMP CHECKTXS
-    //RET
+    JAL r18.w0,CHECKTXS
+    RET
 
 
 
