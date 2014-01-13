@@ -90,6 +90,9 @@ CHECKTXS:
     LBBO val, addr, 0, 4
     QBBC CHECKTXS, val.t1
 
+    JMP ADCRESET
+
+RADCRESET:
 
     JMP CONVERT    
 
@@ -291,7 +294,7 @@ RESETCOUNT:
     SUB val, val, 1
     QBNE RESETCOUNT, val, 0
     CLR r30.t7              //MOV r30, 0 << 7
-    RET
+    JMP RADCRESET
 
 
 CONVERT:
