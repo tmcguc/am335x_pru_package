@@ -82,6 +82,8 @@ CONFIG:
     CALL ENABLEADC
 
 
+    CALL CONVERT
+
 Transfer:
 
     //write to spi tx register
@@ -89,7 +91,6 @@ Transfer:
     MOV val, TEST_PATT
     SBBO val, addr,0,4
 
-    CALL CONVERT
 
 
 //#ifdef AM33XX
@@ -281,9 +282,9 @@ RESETCOUNT:
 CONVERT:
     MOV val, 0x1        // need pulse low for convert signal of at least 25 ns
     CLR r30.t15         //MOV r30, 0 << 15
-CONCOUNT:
-    SUB val, val, 1
-    QBNE CONCOUNT, val, 0
+//CONCOUNT:
+//    SUB val, val, 1
+//    QBNE CONCOUNT, val, 0
     SET r30.t15         //MOV r30, 1 << 15
     RET
 
