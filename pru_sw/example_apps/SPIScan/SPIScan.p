@@ -108,7 +108,7 @@ Transfer:
     MOV val, TEST_PATT
     SBBO val, addr,0,4
 
-    JMP LDAC
+    JMP LOADDAC
 
 RLDAC:
 
