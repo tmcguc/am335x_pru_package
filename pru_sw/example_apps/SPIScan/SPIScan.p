@@ -191,8 +191,10 @@ SUBLOOP3:
 
 DACUPDATE:
     CALL ENABLEDAC          // Enable the DAC SPI channels TODO: need to write seperate ENABLE DAC 
-    //OR DACA, Fx.w0, 0b00010000 << 16    // This takes the position Fx and adds the prefix for the DAC to go to DACA 
-    //OR DACB, Fy.w0, 0b00010001 << 16    // Same thing for DACB
+    MOV DACA, 0x100000
+    MOV DACB, 0x110000
+    OR DACA, Fx.w0, DACA    // This takes the position Fx and adds the prefix for the DAC to go to DACA 
+    OR DACB, Fy.w0, DACB    // Same thing for DACB
 
     MOV addr, MCSPI_TX0     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
     SBBO DACA, addr,0,4     //send out the data to DACA Yo
