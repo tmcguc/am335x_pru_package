@@ -90,6 +90,11 @@ CHECKTXS:
     LBBO val, addr, 0, 4
     QBBC CHECKTXS, val.t1
 
+    JMP WAITBUSY
+
+RWB:
+
+
     JMP ADCRESET
 
 RADCRESET:
@@ -313,7 +318,7 @@ DELAYBUSY:
     SUB val, val, 1
     QBNE DELAYBUSY, val, 0
     WBC r31.t15         // wait until this bit is clear !!
-    RET
+    JMP RWB
     
     
 
