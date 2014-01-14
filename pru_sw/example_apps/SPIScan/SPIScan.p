@@ -317,6 +317,7 @@ WAITBUSY:
 DELAYBUSY:
     SUB val, val, 1
     QBNE DELAYBUSY, val, 0
+    WBS r31.t15         // wait till goes high
     WBC r31.t15         // wait until this bit is clear !!
     JMP RWB
     
