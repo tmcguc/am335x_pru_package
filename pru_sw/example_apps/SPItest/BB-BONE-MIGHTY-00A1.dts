@@ -70,6 +70,12 @@
 					0x034 0x16 	/* P8_11 = CONV,  OUTPUT_PULLUP   | MODE6 */
 					0x030 0x16 	/* P8_12 = LDAC,  OUTPUT_PULLUP   | MODE6 */
 					0x1aC 0x05 	/* P9_25 = RESET, OUTPUT_PULLDOWN | MODE5 */
+
+				>;
+			};
+
+			gpio_helper_pins: pinmux_gpio_helper_pins {
+				pinctrl-single,pins = <
 					0x090 0x07 	/* P8_7  = OS_0 ,GPIO2_2,   OUTPUT_PULLDOWN | MODE 7 */
 					0x094 0x07 	/* P8_8  = OS_1,GPIO2_3    gpmc_oen_ren.gpio2[3], OUTPUT_PULLDOWN | MODE 7*/
 					0x09C 0x07 	/* P8_9  = OS_2,GPIO2_5,    OUTPUT_PULLDOWN | MODE 7*/
@@ -118,6 +124,41 @@
 		};
 	};
 	
+	fragment@4 {
+		target = <&ocp>;
+		__overlay__ {
+
+			gpio_helper {
+				compatible = "gpio-of-helper";
+				status = "okay";
+				pinctrl-names = "default";
+				pinctrl-0 = <&gpio_helper_pins>;
+
+				/* declare your gpios */
+				testOS_0 {
+					gpio-name = "test_led";
+					gpio = <&gpio1 2 0x00>;	/* gpio4 is gpio3 */
+					output;
+					init-low;
+				};
+
+				testOS_1 {
+					gpio-name = "test_input";
+					gpio = <&gpio1 3 0x00>;	/* gpio4 is gpio3 */
+					output;
+					init-low;
+				};
+
+				testOS_2 {
+					gpio-name = "test_input";
+					gpio = <&gpio1 5 0x00>;	/* gpio4 is gpio3 */
+					output;
+					init-low;
+				};
+
+			};
+		};
+	};
 
 
 
