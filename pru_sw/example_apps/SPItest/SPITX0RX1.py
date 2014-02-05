@@ -130,7 +130,7 @@ reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT
 ####setup Slave#####
 
 
-MODCONTROLslave = spi_setup.setMODCONTROL( FDAA = 1, MS = 1, SINGLE = 0)
+MODCONTROLslave = spi_setup.setMODCONTROL( FDAA = 1, MS = 1, PIN34 = 1,SINGLE = 0)
 reg.setAndCheckReg(MCSPI_MODULCTRL, spimem0, MODCONTROLslave, name = " MCSPI0 MODCONTRL Slave")
 
 #set up the sysconfig register with defaults
