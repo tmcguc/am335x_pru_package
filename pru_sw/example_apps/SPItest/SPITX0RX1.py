@@ -157,7 +157,7 @@ CH_CONF = spi_setup.setCH_CONF(FFER = 1, FORCE = 0, TURBO = 0, CLKD = 2, IS = 0,
 reg.setAndCheckReg(MCSPI_CH0CONF, spimem0, CH_CONF, name = "MCSPI0_CH0CONF")
 
 #setup transfer level for turbo mode
-XFER = spi_setup.setXFERLEVEL(WCNT= 0x6, AFL = 0x17) #AFL level is variable (4 x spiword -1)
+XFER = spi_setup.setXFERLEVEL(WCNT= 0x6, AFL = 17) #AFL level is variable (4 x spiword -1)
 reg.setAndCheckReg(MCSPI_XFERLEVEL, spimem0, XFER, name ="XFERLevel")
 
 #enable channel
