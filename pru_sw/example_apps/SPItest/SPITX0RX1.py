@@ -172,7 +172,7 @@ reg.waitTillSet(MCSPI_CH0STAT, spimem0, bit = 1, value = 1, name = "MCSPI_CH0STA
 
 
 #send 6 values
-for i in range(8):
+for i in range(4):
     send = 0x22220 + i
     reg.setAndCheckReg(MCSPI_TX0, spimem, send, name ="MCSPI_TX0")
 
@@ -188,7 +188,7 @@ txsSet = reg.getReg(MCSPI_CH0STAT, spimem)
 print "TXS set:"
 reg.printValue(txsSet)
 
-for i in range(8):
+for i in range(4):
     #Check value for RX register of SPI
     data = reg.getReg(MCSPI_DAFRX, spimem0)
     data = data & 0x3ffff 
