@@ -157,7 +157,7 @@ CH_CONF = spi_setup.setCH_CONF(FFER = 1, FORCE = 0, TURBO = 0, CLKD = 2, IS = 0,
 reg.setAndCheckReg(MCSPI_CH0CONF, spimem0, CH_CONF, name = "MCSPI0_CH0CONF")
 
 #setup transfer level for turbo mode
-XFER = spi_setup.setXFERLEVEL(WCNT= 0x6, AFL = 24) #AFL level is variable (4 x spiword -1)
+XFER = spi_setup.setXFERLEVEL(WCNT= 0x8, AFL = 32) #AFL level is variable (4 x spiword -1)
 reg.setAndCheckReg(MCSPI_XFERLEVEL, spimem0, XFER, name ="XFERLevel")
 
 #enable channel
@@ -172,7 +172,7 @@ reg.waitTillSet(MCSPI_CH0STAT, spimem0, bit = 1, value = 1, name = "MCSPI_CH0STA
 
 
 #send 6 values
-for i in range(6):
+for i in range(8):
     send = 0x22220 + i
     reg.setAndCheckReg(MCSPI_TX0, spimem, send, name ="MCSPI_TX0")
 
@@ -188,7 +188,7 @@ txsSet = reg.getReg(MCSPI_CH0STAT, spimem)
 print "TXS set:"
 reg.printValue(txsSet)
 
-for i in range(6):
+for i in range(8):
     #Check value for RX register of SPI
     data = reg.getReg(MCSPI_DAFRX, spimem0)
     data = data & 0x3ffff 
