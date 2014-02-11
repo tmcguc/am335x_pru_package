@@ -143,20 +143,20 @@ SETUPDAC:
     
 
     //disable channel
-    MOV addr, MCSPI1 |  MCSPI_CH0CTRL
+    MOV addr, MCSPI1 |  MCSPI_CH1CTRL
     MOV val, DIS_CH
     SBBO val, addr, 0 ,4
 
     // configure the channel 
-    MOV addr, MCSPI1 |  MCSPI_CH0CONF     
-    MOV val, ADC_TX_TURBO
+    MOV addr, MCSPI1 |  MCSPI_CH1CONF     
+    MOV val, DAC_TX_TURBO
     SBBO val, addr, 0, 4
 
 
     //TODO XFER level will be determined from passed values
     // set xfer level
     MOV addr, MCSPI1 | MCSPI_XFERLEVEL
-    MOV val, ADC_XFER
+    MOV val, DAC_XFER
     SBBO val, addr, 0, 4
 
 

@@ -80,6 +80,7 @@ reg.waitTillSet(MCSPI_SYSSTATUS, spimem0, bit = 0, value = 0x1, name = "MCspi1SY
 
 
 
+print("##########Master____Setup###################")
 
 
 ####SETUP SPI1 Master#####
@@ -123,7 +124,7 @@ reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT
 
 
 
-
+print("##########Slave____Setup###################")
 
 
 
