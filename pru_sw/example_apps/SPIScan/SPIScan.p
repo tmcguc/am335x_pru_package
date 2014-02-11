@@ -38,6 +38,26 @@ CHECKRESET:
     LBBO val, addr, 0, 4
     QBBC CHECKRESET, val.t0
 
+
+    // reset spi0
+    MOV addr, MCSPI0 | MCSPI_SYSCONFIG
+    LBBO val, addr, 0, 4
+    SET val.t1
+    SBBO val, addr, 0, 4
+//
+////check if reset is done
+CHECKRESET2:
+    MOV addr, MCSPI0 | MCSPI_SYSSTATUS
+    LBBO val, addr, 0, 4
+    QBBC CHECKRESET2, val.t0
+
+
+
+
+
+
+
+
 CONFIG:
 
 
@@ -77,7 +97,7 @@ SETUPADCM:
 
     // configure the channel 
     MOV addr, MCSPI1 |  MCSPI_CH0CONF     
-    MOV val, ADC_TX_TURBO
+    MOV val, ADC_MASTER_CONF
     SBBO val, addr, 0, 4
 
 
@@ -88,11 +108,6 @@ SETUPADCM:
     MOV val, ADC_XFER
     SBBO val, addr, 0, 4
     
-
-    //enable channel
-    //MOV addr, MCSPI1 | MCSPI_CH0CTRL
-    //MOV val, EN_CH
-    //SBBO val, addr, 0, 4
 
 
 SETUPADCS:
@@ -126,7 +141,7 @@ SETUPADCS:
 
     // configure the channel 
     MOV addr, MCSPI0 |  MCSPI_CH0CONF     
-    MOV val, ADC_TX_TURBO
+    MOV val, ADC_SLAVE_CONF
     SBBO val, addr, 0, 4
 
 
