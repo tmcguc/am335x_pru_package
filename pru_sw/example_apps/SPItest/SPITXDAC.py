@@ -110,7 +110,7 @@ reg.setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
 
 #set up channel configuration
 CH_CONF = spi_setup.setCH_CONF(FFEW = 1, FORCE = 1 , TURBO = 1, CLKD = 1, TRM = 2, WL = 0x17 )
-reg.setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
+reg.setAndCheckReg(MCSPI_CH0CONF, spimem, CH_CONF, name = "MCSPI_CH1CONF")
 
 #setup transfer level for turbo mode
 XFER = spi_setup.setXFERLEVEL(WCNT= 0x0)
