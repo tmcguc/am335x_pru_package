@@ -73,11 +73,14 @@
 
 #define ADC_MASTER_CONF         0x281e28c9
 #define ADC_SLAVE_CONF          0x300398c9
-
+#define DAC_TX_TURBO            0x281e28c9
+#define DAC_XFER                0x40000 
 
 //#define ADC_TX_TURBO            0x281e28c9 // force CH low
 //#define ADC_TX_TURBO_SINGLE     0x280e28c9 // No force CH low
 
+
+//
 // ***************************************
 // *     Global Register Assignments     *
 // ***************************************

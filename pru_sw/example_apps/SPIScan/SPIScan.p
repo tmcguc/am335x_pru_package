@@ -52,6 +52,8 @@ CHECKRESET2:
     QBBC CHECKRESET2, val.t0
 
 
+JMP ADCRESET
+RADCRESET:
 
 
 
@@ -253,7 +255,7 @@ RADCREAD:
     QBNE SUBLOOP3, sampc, 0 // see if we go to the next point
     JMP DISABLEADC
 RDISABLEADC:
-    JMP TEST
+    //JMP TEST
     JMP RLOOP3
    
  
@@ -295,8 +297,7 @@ DELAYLOADDAC:
     CLR r30.t14             //MOV r30, 0 << 14       // pulse low
     CLR r30.t14             //MOV r30, 0 << 14       // pulse low
     SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
-    JMP RLOADDAC               // Temporary RET doesn't really work uses r.30 by default
-
+    JMP RLOADDAC               
 
 
 ENABLEDAC:
