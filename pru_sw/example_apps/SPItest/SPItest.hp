@@ -61,7 +61,7 @@
 #define MODCONTROL_SINGLE       0x00000001 //
 #define MODCONTROL              0x00000000
 
-#define ADC_XFER 0x40000
+#define ADC_XFER                0x40000
 
 
 #define ADC_TX_TURBO            0x281e28c9 // force CH low
