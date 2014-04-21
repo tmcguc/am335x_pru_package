@@ -149,17 +149,17 @@ reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000001, name = "enable CH")
 #send 6 values
 for i in range(8):
     send = 0x22220 + i
-    reg.setAndCheckReg(MCSPI_TX0, spimem, send, name ="MCSPI_TX0")
+    reg.setAndCheckReg(MCSPI_TX1, spimem, send, name ="MCSPI_TX0")
 
 #reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 0, name = "MCSPI_CH0STAT TXS")
 
 #print value of tx register
-tx = reg.getReg(MCSPI_TX0, spimem)
+tx = reg.getReg(MCSPI_TX1, spimem)
 print "contents of TX0 register are after write and TXS set:"
 reg.printValue(tx)
 
 #print value of txs bit
-txsSet = reg.getReg(MCSPI_CH0STAT, spimem)
+txsSet = reg.getReg(MCSPI_CH1STAT, spimem)
 print "TXS set:"
 reg.printValue(txsSet)
 
