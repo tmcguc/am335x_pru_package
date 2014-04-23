@@ -120,7 +120,7 @@ print("##########DAC______SETUP")
 reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000000)
 
 #set up channel configuration
-CH_CONF = spi_setup.setCH_CONF(TURBO = 1, CLKD = 1, TRM = 2, WL = 0x17 )
+CH_CONF = spi_setup.setCH_CONF(FFEW = 1, FORCE = 1 ,TURBO = 1, CLKD = 1, TRM = 2, WL = 0x17 )
 reg.setAndCheckReg(MCSPI_CH1CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 
 #enable channel
