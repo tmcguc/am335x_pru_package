@@ -109,18 +109,14 @@ reg.setAndCheckReg(MCSPI_IRQENABLE, spimem, IRQENABLE, name = "MCSPI_IRQENABLE")
 reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000000)
 
 #set up channel configuration
-CH_CONF = spi_setup.setCH_CONF(FFEW = 1, FORCE = 1 , TURBO = 1, CLKD = 1, TRM = 2, WL = 0x17 )
-reg.setAndCheckReg(MCSPI_CH1CONF, spimem, CH_CONF, name = "MCSPI_CH1CONF")
+#CH_CONF = spi_setup.setCH_CONF(FFEW = 1, FORCE = 1 , TURBO = 1, CLKD = 1, TRM = 2, WL = 0x17 )
+#reg.setAndCheckReg(MCSPI_CH1CONF, spimem, CH_CONF, name = "MCSPI_CH1CONF")
 
 #setup transfer level for turbo mode
-XFER = spi_setup.setXFERLEVEL(WCNT= 0x0)
-reg.setAndCheckReg(MCSPI_XFERLEVEL, spimem, XFER, name ="XFERLevel")
+#XFER = spi_setup.setXFERLEVEL(WCNT= 0x0)
+#reg.setAndCheckReg(MCSPI_XFERLEVEL, spimem, XFER, name ="XFERLevel")
 
-#enable channel
-reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000001, name = "enable CH")
 
-#check if txs status bit is cleared
-reg.waitTillSet(MCSPI_CH1STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
 
 print("##########DAC______SETUP")
@@ -136,6 +132,8 @@ reg.setAndCheckReg(MCSPI_CH1CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 #enable channel
 reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000001, name = "enable CH")
 
+#check if txs status bit is cleared
+reg.waitTillSet(MCSPI_CH1STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH1STAT TXS")
 
 
 
@@ -146,7 +144,7 @@ reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000001, name = "enable CH")
 
 
 
-#send 6 values
+#send 8 values
 for i in range(8):
     send = 0x22220 + i
     reg.setAndCheckReg(MCSPI_TX1, spimem, send, name ="MCSPI_TX0")
@@ -166,4 +164,4 @@ reg.printValue(txsSet)
 
 
 #disbale the channel
-reg.setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
+reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000000)

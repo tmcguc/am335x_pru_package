@@ -64,11 +64,30 @@ CONFIG:
 
 
 PASSVALUES:
+//Sx          r3      //Slow x start position for line 
+//Sy          r4      //Slow y start position for line
+//sdx         r5      //Slow dx for each line
+//sdy         r6      //Slow dy for each line
+
+//Fx          r7      //new x position for Fast vector
+//Fy          r8      //new y position for Fast vector
+    MOV Fx, 0x7fff
+    MOV Fy, 0x7fff
+//dx          r9      //dx for Fast vector
+//dy          r10     //dy for Fast vector
+//pF          r11     //Points fast initial value
+//pFc         r12     //Points fast count, used to decrement
+//sF          r13     //Points slow count
+//samp        r14     //Samples per point initial value
+//sampc       r15     //Samples count
+// DACA        r16     // output for DAC A
+// DACB        r17     // output for DAC B
+//CH          r18     // Channel Count
 
 
 
 SETUPADCM:
-
+    
     // setAndCheckReg(MCSPI_MODULCTRL, spimem, MODCONTROL, name = "MCSPI_MODULCTRL")
     MOV addr, MCSPI1 |  MCSPI_MODULCTRL
     MOV val, MODCONTROL
@@ -170,23 +189,16 @@ SETUPDAC:
     SBBO val, addr, 0, 4
 
 
-    //TODO XFER level will be determined from passed values
-    // set xfer level
-   // MOV addr, MCSPI1 | MCSPI_XFERLEVEL
-   // MOV val, DAC_XFER
-   // SBBO val, addr, 0, 4
+TESTDAC:
+    JMP DACUPDATE
+TRDACUPDATE:
 
 
 
 
 
-
-//#ifdef AM33XX
     // Send notification to Host for program completion
     MOV R31.b0, PRU0_ARM_INTERRUPT+16
-//#else
-//    MOV R31.b0, PRU0_ARM_INTERRUPT
-//#endif
 
 HALT
 
@@ -282,8 +294,8 @@ RLOADDAC:
 RDISABLEDAC:
     //JMP DELAYSET           //TODO: need to include a seperate delay that allows sample to reacvh steady state before measurement
 RDELAYSET:
-    JMP RDACUPDATE
-
+    //JMP RDACUPDATE
+    JMP TRDACUPDATE
 
 LOADDAC:
     JMP DELAY
