@@ -65,23 +65,30 @@ CONFIG:
 
 PASSVALUES:
 //Sx          r3      //Slow x start position for line 
+    MOV Sx, 0x8000
+    MOV Sy, 0x8000
 //Sy          r4      //Slow y start position for line
 //sdx         r5      //Slow dx for each line
+    MOV sdx, 0x0000
+    MOV sdy, 0x0100
 //sdy         r6      //Slow dy for each line
 
 //Fx          r7      //new x position for Fast vector
 //Fy          r8      //new y position for Fast vector
-    MOV Fx, 0x7fff
-    MOV Fy, 0x7fff
+    MOV Fx, 0x0000
+    MOV Fy, 0x0000
 //dx          r9      //dx for Fast vector
+    MOV dx, 0x0100
+    MOV dy, 0x0000
 //dy          r10     //dy for Fast vector
 //pF          r11     //Points fast initial value
 //pFc         r12     //Points fast count, used to decrement
+    MOV pF, 0x0ff
+
 //sF          r13     //Points slow count
+    MOV sF, 0x0ff
 //samp        r14     //Samples per point initial value
 //sampc       r15     //Samples count
-// DACA        r16     // output for DAC A
-// DACB        r17     // output for DAC B
 //CH          r18     // Channel Count
 
 
@@ -189,11 +196,16 @@ SETUPDAC:
     SBBO val, addr, 0, 4
 
 
-TESTDAC:
-    JMP DACUPDATE
-TRDACUPDATE:
+//DAC TEST 
+//TESTDAC:
+//    JMP DACUPDATE
+//TRDACUPDATE:
 
 
+//Test loop
+TESTLOOP:
+    JMP LOOP1
+RTESTLOOP:
 
 
 
@@ -239,6 +251,7 @@ RLOOP2:
     SUB sF, sF, 1           // decrement count
     // TODO: add something here to check if we should stop the scan
     QBNE LOOP1, sF, 0       // check if we are done
+    JMP RTESTLOOP
     RET
 
 
@@ -247,7 +260,7 @@ LOOP2:
 SUBLOOP2:
     JMP DACUPDATE          // write out values to DACs
 RDACUPDATE:
-    JMP LOOP3              // Loop samples ADCs multiple times
+    //JMP LOOP3   //Test scan without looping ADCS           // Loop samples ADCs multiple times
 RLOOP3:
     ADD Fx, Fx, dx          // update Fx, TODO: check if I need to do a MOV first and use another register
     ADD Fy, Fy, dy          // update Fy
@@ -306,10 +319,10 @@ CHECKTXSB:
 RLOADDAC:
     JMP DISABLEDAC         //TODO: write DAISABLEDAC function
 RDISABLEDAC:
-    //JMP DELAYSET           //TODO: need to include a seperate delay that allows sample to reacvh steady state before measurement
+    JMP DELAYSET           //TODO: need to include a seperate delay that allows sample to reacvh steady state before measurement
 RDELAYSET:
-    //JMP RDACUPDATE
-    JMP TRDACUPDATE
+    JMP RDACUPDATE
+    //JMP TRDACUPDATE   //Removed just for testing
 
 LOADDAC:
     JMP DELAY
@@ -345,9 +358,13 @@ DISABLEDAC:
     JMP RDISABLEDAC
 
 
+//Need to figure out othermethod foe setting delays this is just a test
 DELAYSET:
-    CALL DELAY
-    RET
+    MOV r24, 0x8ff  
+DELAYSET0:
+    SUB r24, r24, 1
+    QBNE DELAYSET0 , r24, 0
+    JMP RDELAYSET
 
 
 //*================================================================
