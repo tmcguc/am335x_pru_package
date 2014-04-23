@@ -62,7 +62,7 @@ spimem0 = mmap(f.fileno(), MCSPI0_size, offset = MCSPI0_offset)
 
 #write 0x2 to enable clocks explicitly
 reg.setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
-reg.setAndCheckReg(CM_PER_SPI0_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI0_CLK_CTRL")
+#reg.setAndCheckReg(CM_PER_SPI0_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI0_CLK_CTRL")
 
 
 
@@ -70,12 +70,6 @@ reg.setAndCheckReg(CM_PER_SPI0_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI0_CLK_CTRL
 reg.grabAndSet(MCSPI_SYSCONFIG, spimem, bit = 1, value = 0x1, name = "MCSPI SYS COnfig")
 #check MCSPI is reset
 reg.waitTillSet(MCSPI_SYSSTATUS, spimem, bit = 0, value = 0x1, name = "MCspi1SYSstatus")
-
-
-#Reset MCSPI0:
-reg.grabAndSet(MCSPI_SYSCONFIG, spimem0, bit = 1, value = 0x1, name = "MCSPI SYS COnfig")
-#check MCSPI0 is reset
-reg.waitTillSet(MCSPI_SYSSTATUS, spimem0, bit = 0, value = 0x1, name = "MCspi1SYSstatus")
 
 
 
@@ -165,3 +159,6 @@ reg.printValue(txsSet)
 
 #disbale the channel
 reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000000)
+
+#disbale the channel
+reg.setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000000)
