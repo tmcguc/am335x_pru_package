@@ -77,6 +77,11 @@
 
 //#define ADC_TX_TURBO            0x281e28c9 // force CH low
 //#define ADC_TX_TURBO_SINGLE     0x280e28c9 // No force CH low
+#define INIT_DACA               0x100000
+#define INIT_DACB               0x110000
+#define INIT_DACC               0x120000
+#define INIT_DACD               0x130000
+#define INIT_DAC_ALL            0x140000
 
 
 //

@@ -280,8 +280,8 @@ RDISABLEADC:
 DACUPDATE:
     JMP ENABLEDAC          // Enable the DAC SPI channels TODO: need to write seperate ENABLE DAC 
 RENABLEDAC:
-    MOV DACA, 0x140000
-    MOV DACB, 0x110000
+    MOV DACA, INIT_DACA
+    MOV DACB, INIT_DACB
     OR DACA, Fx.w0, DACA    // This takes the position Fx and adds the prefix for the DAC to go to DACA 
     OR DACB, Fy.w0, DACB    // Same thing for DACB
 
