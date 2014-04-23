@@ -73,7 +73,7 @@
 
 #define ADC_MASTER_CONF         0x281e28c9
 #define ADC_SLAVE_CONF          0x300398c9
-#define DAC_MASTER_CONF         0x281e2bc5
+#define DAC_MASTER_CONF         0x20062bc5 //0x281e2bc5
 
 //#define ADC_TX_TURBO            0x281e28c9 // force CH low
 //#define ADC_TX_TURBO_SINGLE     0x280e28c9 // No force CH low

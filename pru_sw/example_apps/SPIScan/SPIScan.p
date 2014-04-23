@@ -287,7 +287,20 @@ RENABLEDAC:
 
     MOV addr, MCSPI1 | MCSPI_TX1     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
     SBBO DACA, addr,0,4     //send out the data to DACA Yo
+
+CHECKTXSA:
+    MOV addr, MCSPI1 |  MCSPI_CH1STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXSA, val.t1
+
     SBBO DACB, addr,0,4     //send out the data to DACB Yo
+
+CHECKTXSB:
+    MOV addr, MCSPI1 |  MCSPI_CH1STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXSB, val.t1
+
+
     JMP LOADDAC            //TODO: write separate LOADDAC function need to determine right GPIOS
 RLOADDAC:
     JMP DISABLEDAC         //TODO: write DAISABLEDAC function
