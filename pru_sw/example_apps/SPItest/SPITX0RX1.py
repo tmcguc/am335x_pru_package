@@ -123,18 +123,18 @@ reg.setAndCheckReg(MCSPI_CH0CTRL, spimem, 0x00000001, name = "enable CH")
 reg.waitTillSet(MCSPI_CH0STAT, spimem, bit = 1, value = 1, name = "MCSPI_CH0STAT TXS")
 
 
-print("##########DAC______SETUP")
+#print("##########DAC______SETUP")
 
 
 #make sure channel is disabled
-reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000000)
+#reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000000)
 
 #set up channel configuration
-CH_CONF = spi_setup.setCH_CONF(TURBO = 1, CLKD = 1, TRM = 2, WL = 0x17 )
-reg.setAndCheckReg(MCSPI_CH1CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
+#CH_CONF = spi_setup.setCH_CONF(TURBO = 1, CLKD = 1, TRM = 2, WL = 0x17 )
+#reg.setAndCheckReg(MCSPI_CH1CONF, spimem, CH_CONF, name = "MCSPI_CH0CONF")
 
 #enable channel
-reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000001, name = "enable CH")
+#reg.setAndCheckReg(MCSPI_CH1CTRL, spimem, 0x00000001, name = "enable CH")
 
 
 
