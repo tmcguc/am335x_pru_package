@@ -285,7 +285,7 @@ RENABLEDAC:
     OR DACA, Fx.w0, DACA    // This takes the position Fx and adds the prefix for the DAC to go to DACA 
     OR DACB, Fy.w0, DACB    // Same thing for DACB
 
-    MOV addr, MCSPI1 | MCSPI_TX0     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
+    MOV addr, MCSPI1 | MCSPI_TX1     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
     SBBO DACA, addr,0,4     //send out the data to DACA Yo
     SBBO DACB, addr,0,4     //send out the data to DACB Yo
     JMP LOADDAC            //TODO: write separate LOADDAC function need to determine right GPIOS
