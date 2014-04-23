@@ -293,6 +293,7 @@ CHECKTXSA:
     LBBO val, addr, 0, 4
     QBBC CHECKTXSA, val.t1
 
+    MOV addr, MCSPI1 | MCSPI_TX1     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
     SBBO DACB, addr,0,4     //send out the data to DACB Yo
 
 CHECKTXSB:
