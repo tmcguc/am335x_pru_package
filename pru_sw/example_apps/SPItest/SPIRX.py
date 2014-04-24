@@ -60,9 +60,6 @@ spimem0 = mmap(f.fileno(), MCSPI0_size, offset = MCSPI0_offset)
 
 
 
-#write 0x2 to enable clocks explicitly
-reg.setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
-reg.setAndCheckReg(CM_PER_SPI0_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI0_CLK_CTRL")
 
 
 for i in range(8):
