@@ -90,6 +90,7 @@ PASSVALUES:
 //samp        r14     //Samples per point initial value
 //sampc       r15     //Samples count
 //CH          r18     // Channel Count
+    MOV CH, 0x8
 
 
 
@@ -207,6 +208,13 @@ TESTLOOP:
     JMP LOOP1
 RTESTLOOP:
 
+
+TESTADC:
+    JMP ENABLEADC
+RTEST_ENABLEADC:
+
+    JMP ADCREAD
+RTEST_ADCREAD:
 
 
     // Send notification to Host for program completion
@@ -377,7 +385,7 @@ DELAYSET0:
 ADCREAD:
     JMP CONVERT
 RCONVERT:
-    //CALL WAITBUSY // Don't need this until we have ADC Board to test!!!
+    JMP WAITBUSY // Don't need this until we have ADC Board to test!!!
 RWB:        //Return location for WaitBUSY
     MOV CH, 8 // this is just a test value  TODO:need to init CH with value that is passed from memory
     MOV val, CH
@@ -386,8 +394,8 @@ READCH:
 RSPI0TX:
     SUB val, val ,1    
     QBNE READCH, val, 0     // keep on sending tx and reading into rx SPI0 slave unitl we got all of the channels
-    JMP RADCREAD
-
+    //JMP RADCREAD
+    JMP RTEST_ADCREAD
 
 
 ENABLEADC:
@@ -398,7 +406,8 @@ CHECKTXSADC:
     MOV addr, MCSPI1 | MCSPI_CH0STAT
     LBBO val, addr, 0, 4
     QBBC CHECKTXSADC, val.t1
-    JMP RENABLEADC
+    //JMP RENABLEADC
+    JMP RTEST_ENABLEADC
 
 
 DISABLEADC:
