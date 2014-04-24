@@ -60,10 +60,13 @@
 #define ADC_IRQENABLE           0x00000000
 
 #define MODCONTROL_SINGLE       0x00000001 //
-#define MODCONTROL              0x00000000
-#define ADC_MODCONTROL          0x106
+#define MODCONTROL              0x0
+#define ADC_SLAVE_MODCONTROL    0x106
 
-#define ADC_XFER 0x40000
+
+#define ADC_SLAVE_XFER          0x81f00 // This needs to be user define perahps a macro
+#define ADC_MASTER_XFER         0x0
+#define DAC_MASTER_XFER         0x4000
 
 //*****************************
 //* ADC and DAC CONFIGS        *
@@ -75,8 +78,6 @@
 #define ADC_SLAVE_CONF          0x300398c9
 #define DAC_MASTER_CONF         0x20062bc5 //0x281e2bc5
 
-//#define ADC_TX_TURBO            0x281e28c9 // force CH low
-//#define ADC_TX_TURBO_SINGLE     0x280e28c9 // No force CH low
 #define INIT_DACA               0x100000
 #define INIT_DACB               0x110000
 #define INIT_DACC               0x120000

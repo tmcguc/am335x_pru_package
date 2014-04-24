@@ -52,6 +52,7 @@ CHECKRESET2:
     QBBC CHECKRESET2, val.t0
 
 
+
 JMP ADCRESET
 RADCRESET:
 
@@ -134,7 +135,7 @@ SETUPADCM:
     //TODO XFER level will be determined from passed values
     // set xfer level
     MOV addr, MCSPI1 | MCSPI_XFERLEVEL
-    MOV val, ADC_XFER
+    MOV val, ADC_MASTER_XFER
     SBBO val, addr, 0, 4
     
 
@@ -142,7 +143,7 @@ SETUPADCM:
 SETUPADCS:
 
     MOV addr, MCSPI0 |  MCSPI_MODULCTRL
-    MOV val, MODCONTROL
+    MOV val, ADC_SLAVE_MODCONTROL
     SBBO val, addr , 0, 4
 
     
@@ -178,7 +179,7 @@ SETUPADCS:
     //TODO XFER level will be determined from passed values
     // set xfer level
     MOV addr, MCSPI0 | MCSPI_XFERLEVEL
-    MOV val, ADC_XFER
+    MOV val, ADC_SLAVE_XFER
     SBBO val, addr, 0, 4
 
 
