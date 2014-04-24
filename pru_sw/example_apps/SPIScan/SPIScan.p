@@ -79,7 +79,7 @@ PASSVALUES:
     MOV Fy, 0x0000
 //dx          r9      //dx for Fast vector
     MOV dx, 0x0100
-    MOV dy, 0x0100
+    MOV dy, 0x0000
 //dy          r10     //dy for Fast vector
 //pF          r11     //Points fast initial value
 //pFc         r12     //Points fast count, used to decrement
@@ -265,7 +265,7 @@ RDACUPDATE:
     //JMP LOOP3   //Test scan without looping ADCS           // Loop samples ADCs multiple times
 RLOOP3:
     ADD Fx, Fx, dx          // update Fx, TODO: check if I need to do a MOV first and use another register
-    ADD Fy, Fy, dy          // update Fy
+    //ADD Fy, Fy, dy          // update Fy
     SUB pFc, pFc, 1         // decrement count
     QBNE SUBLOOP2, pFc, 0   // see if we are going to the next line
     JMP RLOOP2
