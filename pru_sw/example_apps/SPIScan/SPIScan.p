@@ -75,8 +75,8 @@ PASSVALUES:
 
 //Fx          r7      //new x position for Fast vector
 //Fy          r8      //new y position for Fast vector
-    MOV Fx, 0x0000
-    MOV Fy, 0x0000
+//    MOV Fx, 0x0000
+//    MOV Fy, 0x0000
 //dx          r9      //dx for Fast vector
     MOV dx, 0x0100
     MOV dy, 0x0000
@@ -242,19 +242,19 @@ DELAY2L:
 // * =======================================================
 
 LOOP1:
-    SBBO Sx, Fx, 0, 4       // store Sx in Fx
-    SBBO Sy, Fy, 0, 4       // store Sy in Fy 
-SUBLOOP1:
+    MOV Fx, Sx       // store Sx in Fx
+    MOV Fy, Sy      // store Sy in Fy 
+//SUBLOOP1:
     
     JMP LOOP2              // LOOP2 is where we call the DAC and ADC subroutines
 RLOOP2: 
     ADD Sx, Sx, sdx         // update Sx 
     ADD Sy, Sy, sdy         // update Sy
-    SBBO Sx, Fx, 0, 4       // store Sx in Fx
-    SBBO Sy, Fy, 0, 4       // store Sy in Fy 
+    //SBBO Sx, Fx, 0, 4       // store Sx in Fx
+    //SBBO Sy, Fy, 0, 4       // store Sy in Fy 
     SUB sF, sF, 1           // decrement count
     // TODO: add something here to check if we should stop the scan
-    QBNE SUBLOOP1, sF, 0       // check if we are done
+    QBNE LOOP1, sF, 0       // check if we are done
     JMP RTESTLOOP
     RET
 
