@@ -244,7 +244,7 @@ DELAY2L:
 LOOP1:
     SBBO Sx, Fx, 0, 4       // store Sx in Fx
     SBBO Sy, Fy, 0, 4       // store Sy in Fy 
-SUBLOOP1
+SUBLOOP1:
     
     JMP LOOP2              // LOOP2 is where we call the DAC and ADC subroutines
 RLOOP2: 
