@@ -244,15 +244,17 @@ DELAY2L:
 LOOP1:
     SBBO Sx, Fx, 0, 4       // store Sx in Fx
     SBBO Sy, Fy, 0, 4       // store Sy in Fy 
+SUBLOOP1
+    
     JMP LOOP2              // LOOP2 is where we call the DAC and ADC subroutines
 RLOOP2: 
     ADD Sx, Sx, sdx         // update Sx 
     ADD Sy, Sy, sdy         // update Sy
-    //SBBO Sx, Fx, 0, 4       // store Sx in Fx
-    //SBBO Sy, Fy, 0, 4       // store Sy in Fy 
+    SBBO Sx, Fx, 0, 4       // store Sx in Fx
+    SBBO Sy, Fy, 0, 4       // store Sy in Fy 
     SUB sF, sF, 1           // decrement count
     // TODO: add something here to check if we should stop the scan
-    QBNE LOOP1, sF, 0       // check if we are done
+    QBNE SUBLOOP1, sF, 0       // check if we are done
     JMP RTESTLOOP
     RET
 
@@ -265,7 +267,7 @@ RDACUPDATE:
     //JMP LOOP3   //Test scan without looping ADCS           // Loop samples ADCs multiple times
 RLOOP3:
     ADD Fx, Fx, dx          // update Fx, TODO: check if I need to do a MOV first and use another register
-    //ADD Fy, Fy, dy          // update Fy
+    ADD Fy, Fy, dy          // update Fy
     SUB pFc, pFc, 1         // decrement count
     QBNE SUBLOOP2, pFc, 0   // see if we are going to the next line
     JMP RLOOP2
