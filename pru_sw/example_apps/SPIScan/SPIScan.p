@@ -79,7 +79,7 @@ PASSVALUES:
     MOV Fy, 0x0000
 //dx          r9      //dx for Fast vector
     MOV dx, 0x0100
-    MOV dy, 0x0000
+    MOV dy, 0x0100
 //dy          r10     //dy for Fast vector
 //pF          r11     //Points fast initial value
 //pFc         r12     //Points fast count, used to decrement
@@ -248,8 +248,8 @@ LOOP1:
 RLOOP2: 
     ADD Sx, Sx, sdx         // update Sx 
     ADD Sy, Sy, sdy         // update Sy
-    SBBO Sx, Fx, 0, 4       // store Sx in Fx
-    SBBO Sy, Fy, 0, 4       // store Sy in Fy 
+    //SBBO Sx, Fx, 0, 4       // store Sx in Fx
+    //SBBO Sy, Fy, 0, 4       // store Sy in Fy 
     SUB sF, sF, 1           // decrement count
     // TODO: add something here to check if we should stop the scan
     QBNE LOOP1, sF, 0       // check if we are done
