@@ -114,6 +114,7 @@
 #define sampc       r15     //Samples count
 #define DACA        r16     // output for DAC A
 #define DACB        r17     // output for DAC B
-#define CH          r18     // Channel Count
+#define CH          r18     // Channels
+#define CHc         r19     // channel decrement index
 
 

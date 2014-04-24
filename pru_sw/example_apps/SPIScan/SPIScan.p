@@ -387,13 +387,13 @@ ADCREAD:
 RCONVERT:
     JMP WAITBUSY // Don't need this until we have ADC Board to test!!!
 RWB:        //Return location for WaitBUSY
-    MOV CH, 8 // this is just a test value  TODO:need to init CH with value that is passed from memory
-    MOV val, CH
+    MOV CHc, CH // this is just a test value  TODO:need to init CH with value that is passed from memory
+    //MOV val, CH
 READCH:
     JMP SPI0TX
 RSPI0TX:
-    SUB val, val ,1    
-    QBNE READCH, val, 0     // keep on sending tx and reading into rx SPI0 slave unitl we got all of the channels
+    SUB CHc, CHc, 1    
+    QBNE READCH, CHc, 0     // keep on sending tx and reading into rx SPI0 slave unitl we got all of the channels
     //JMP RADCREAD
     JMP RTEST_ADCREAD
 
