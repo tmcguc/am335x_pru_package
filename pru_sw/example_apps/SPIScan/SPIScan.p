@@ -399,12 +399,21 @@ RSPI0TX:
     JMP RTEST_ADCREAD
 
 
+
 ENABLEADC:
     MOV addr, MCSPI1 | MCSPI_CH0CTRL
     MOV val, EN_CH
     SBBO val, addr, 0, 4
-CHECKTXSADC:
+CHECKTXMADC:
     MOV addr, MCSPI1 | MCSPI_CH0STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXMADC, val.t1
+//Need to explictly enable Slave as well
+    MOV addr, MCSPI0 | MCSPI_CH0CTRL
+    MOV val, EN_CH
+    SBBO val, addr, 0, 4
+CHECKTXSADC:
+    MOV addr, MCSPI0 | MCSPI_CH0STAT
     LBBO val, addr, 0, 4
     QBBC CHECKTXSADC, val.t1
     //JMP RENABLEADC
@@ -415,7 +424,15 @@ DISABLEADC:
     MOV addr, MCSPI1 | MCSPI_CH0CTRL
     MOV val, DIS_CH
     SBBO val, addr, 0 ,4
+
+    MOV addr, MCSPI0 | MCSPI_CH0CTRL
+    MOV val, DIS_CH
+    SBBO val, addr, 0 ,4
+
     JMP RDISABLEADC
+
+
+
 
 
 
