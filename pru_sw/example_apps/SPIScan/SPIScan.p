@@ -244,14 +244,11 @@ DELAY2L:
 LOOP1:
     MOV Fx, Sx       // store Sx in Fx
     MOV Fy, Sy      // store Sy in Fy 
-//SUBLOOP1:
     
     JMP LOOP2              // LOOP2 is where we call the DAC and ADC subroutines
 RLOOP2: 
     ADD Sx, Sx, sdx         // update Sx 
     ADD Sy, Sy, sdy         // update Sy
-    //SBBO Sx, Fx, 0, 4       // store Sx in Fx
-    //SBBO Sy, Fy, 0, 4       // store Sy in Fy 
     SUB sF, sF, 1           // decrement count
     // TODO: add something here to check if we should stop the scan
     QBNE LOOP1, sF, 0       // check if we are done
