@@ -1,3 +1,15 @@
+//*=======================================================================================
+//*Mighty EBIC Scan control
+//* Copyright Ephemeron labs
+//* Written by Terrence McGuckin
+//* For Ephemeron Labs Inc.
+//* See PYSPI for how to get configurations for SPI modes
+//*========================================================================================
+
+
+
+
+
 .origin 0
 .entrypoint START
 #include "SPIScan.hp"
@@ -52,16 +64,14 @@ CHECKRESET2:
     QBBC CHECKRESET2, val.t0
 
 
-
+// Need to initialize ADC always do this on power up first conversion
 JMP ADCRESET
 RADCRESET:
 
 
 
-
-
-
 CONFIG:
+
 
 
 PASSVALUES:
@@ -102,24 +112,20 @@ SETUPADCM:
     MOV val, MODCONTROL
     SBBO val, addr , 0, 4
 
-    
     MOV  addr, MCSPI1 |  MCSPI_SYSCONFIG
     MOV  val, ADC_SYSCONFIG
     SBBO val, addr, 0, 4
-
 
     //reset interrupt status bits write all ones
     MOV addr, MCSPI1 |  MCSPI_IRQSTATUS
     MOV val, RESET_IRQ_STAT 
     SBBO val, addr, 0, 4
 
-
     //enable interupts for ADCs
     MOV addr, MCSPI1 | MCSPI_IRQENABLE
     MOV val, ADC_IRQENABLE
     SBBO val, addr, 0, 4
     
-
     //disable channel
     MOV addr, MCSPI1 |  MCSPI_CH0CTRL
     MOV val, DIS_CH
@@ -131,14 +137,12 @@ SETUPADCM:
     SBBO val, addr, 0, 4
 
 
-
     //TODO XFER level will be determined from passed values
     // set xfer level
     MOV addr, MCSPI1 | MCSPI_XFERLEVEL
     MOV val, ADC_MASTER_XFER
     SBBO val, addr, 0, 4
     
-
 
 SETUPADCS:
 
@@ -173,7 +177,6 @@ SETUPADCS:
     MOV addr, MCSPI0 |  MCSPI_CH0CONF     
     MOV val, ADC_SLAVE_CONF
     SBBO val, addr, 0, 4
-
 
 
     //TODO XFER level will be determined from passed values
@@ -217,6 +220,13 @@ RTEST_ENABLEADC:
     JMP ADCREAD
 RTEST_ADCREAD:
 
+    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
+    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
+
+
 
     // Send notification to Host for program completion
     MOV R31.b0, PRU0_ARM_INTERRUPT+16
@@ -224,23 +234,6 @@ RTEST_ADCREAD:
 HALT
 
 
-
-DELAY:
-    MOV r24, 0x96  //Test to delay LDAC until CS goes high
-DELAY0:
-    SUB r24, r24, 1
-    QBNE DELAY0 , r24, 0
-    JMP RDELAY
-
-
-//Delay2 is nested with Delay 1
-DELAY2:
-    MOV r25, 0x1
-DELAY2L:
-    CALL DELAY 
-    SUB r25, r25, 1
-    QBNE DELAY2L, r25, 0
-    RET
 
 
 
@@ -367,6 +360,29 @@ DISABLEDAC:
     SBBO val, addr, 0 ,4
     JMP RDISABLEDAC
 
+//*=======================================================
+//* DELAY Routines
+//*=======================================================
+
+
+
+DELAY:
+    MOV r24, 0x96  //Test to delay LDAC until CS goes high
+DELAY0:
+    SUB r24, r24, 1
+    QBNE DELAY0 , r24, 0
+    JMP RDELAY
+
+
+//Delay2 is nested with Delay 1
+DELAY2:
+    MOV r25, 0x1
+DELAY2L:
+    CALL DELAY 
+    SUB r25, r25, 1
+    QBNE DELAY2L, r25, 0
+    RET
+
 
 //Need to figure out othermethod foe setting delays this is just a test
 DELAYSET:
@@ -386,15 +402,25 @@ DELAYSET0:
 ADCREAD:
     JMP CONVERT
 RCONVERT:
-    JMP WAITBUSY // Don't need this until we have ADC Board to test!!!
+    JMP WAITBUSY // wait for adc to finish convert
 RWB:        //Return location for WaitBUSY
     MOV CHc, CH // this is just a test value  TODO:need to init CH with value that is passed from memory
-    //MOV val, CH
+    //MOV val, CH // delay scales for each channel
 READCH:
     JMP SPI0TX
 RSPI0TX:
-    SUB CHc, CHc, 1    
+    SUB CHc, CHc, 1   
     QBNE READCH, CHc, 0     // keep on sending tx and reading into rx SPI0 slave unitl we got all of the channels
+    //ADD in Delay here so we don't move faster than SPI can send out data
+    MOV CHc, CH   // for each channel delay set time
+READ_DELAY:
+    SUB CHc, CHc, 1
+    MOV val , 0x82    
+READ_DELAY_LOOP:
+    SUB val, val, 1
+    QBNE READ_DELAY_LOOP, val, 0
+    QBNE READ_DELAY, CHc, 0     // keep delaying until we got all of the channels, this is a minimum delay
+
     //JMP RADCREAD
     JMP RTEST_ADCREAD
 
