@@ -99,6 +99,7 @@ PASSVALUES:
 //sF          r13     //Points slow count
     MOV sF, 0x0ff
 //samp        r14     //Samples per point initial value
+    MOV samp, 0x1
 //sampc       r15     //Samples count
 //CH          r18     // Channel Count
     MOV CH, 0x8
@@ -213,18 +214,18 @@ TESTLOOP:
 RTESTLOOP:
 
 
-TESTADC:
-    JMP ENABLEADC
-RTEST_ENABLEADC:
+//TESTADC:
+//    JMP ENABLEADC
+//RTEST_ENABLEADC:
 
-    JMP ADCREAD
-RTEST_ADCREAD:
+//    JMP ADCREAD
+//RTEST_ADCREAD:
 
-    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
-    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
-    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
-    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
-    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
+//    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
+//    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+//    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+//    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+//    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
 
 
 
@@ -263,7 +264,7 @@ LOOP2:
 SUBLOOP2:
     JMP DACUPDATE          // write out values to DACs
 RDACUPDATE:
-    //JMP LOOP3   //Test scan without looping ADCS           // Loop samples ADCs multiple times
+    JMP LOOP3   //Test scan without looping ADCS           // Loop samples ADCs multiple times
 RLOOP3:
     ADD Fx, Fx, dx          // update Fx, TODO: check if I need to do a MOV first and use another register
     ADD Fy, Fy, dy          // update Fy
@@ -421,8 +422,8 @@ READ_DELAY_LOOP:
     QBNE READ_DELAY_LOOP, val, 0
     QBNE READ_DELAY, CHc, 0     // keep delaying until we got all of the channels, this is a minimum delay
 
-    //JMP RADCREAD
-    JMP RTEST_ADCREAD
+    JMP RADCREAD
+    //JMP RTEST_ADCREAD
 
 
 
@@ -442,8 +443,8 @@ CHECKTXSADC:
     MOV addr, MCSPI0 | MCSPI_CH0STAT
     LBBO val, addr, 0, 4
     QBBC CHECKTXSADC, val.t1
-    //JMP RENABLEADC
-    JMP RTEST_ENABLEADC
+    JMP RENABLEADC
+    //JMP RTEST_ENABLEADC
 
 
 DISABLEADC:
