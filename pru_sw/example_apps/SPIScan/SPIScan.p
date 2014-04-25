@@ -99,10 +99,11 @@ PASSVALUES:
 //sF          r13     //Points slow count
     MOV sF, 0x0ff
 //samp        r14     //Samples per point initial value
-    MOV samp, 0x1
+    MOV samp, 0x5
 //sampc       r15     //Samples count
 //CH          r18     // Channel Count
     MOV CH, 0x8
+    MOV DVAR, 0x10
 
 
 
@@ -325,6 +326,8 @@ RLOADDAC:
 RDISABLEDAC:
     JMP DELAYSET           //TODO: need to include a seperate delay that allows sample to reacvh steady state before measurement
 RDELAYSET:
+    JMP DELAY_VAR
+RDELAY_VAR:
     JMP RDACUPDATE
     //JMP TRDACUPDATE   //Removed just for testing
 
@@ -366,7 +369,7 @@ DISABLEDAC:
 //*=======================================================
 
 
-
+// Fixed Delay before loading values from register into DAC
 DELAY:
     MOV r24, 0x96  //Test to delay LDAC until CS goes high
 DELAY0:
@@ -375,19 +378,18 @@ DELAY0:
     JMP RDELAY
 
 
-//Delay2 is nested with Delay 1
-DELAY2:
-    MOV r25, 0x1
+//Variable Delay user defined
+DELAY_VAR:
+    MOV r25, DVAR
 DELAY2L:
-    CALL DELAY 
     SUB r25, r25, 1
     QBNE DELAY2L, r25, 0
-    RET
+    JMP RDELAY_VAR
 
 
-//Need to figure out othermethod foe setting delays this is just a test
+//Minimum delay before sampling ADCs
 DELAYSET:
-    MOV r24, 0x8ff  
+    MOV r24, 0x320  // 8us delay for DAC settling time  
 DELAYSET0:
     SUB r24, r24, 1
     QBNE DELAYSET0 , r24, 0

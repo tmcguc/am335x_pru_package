@@ -3,7 +3,13 @@
 
 #define GPIO1 0x4804c000
 #define GPIO_CLEARDATAOUT 0x190
-#define GPIO_SETDATAOUT 0x194
+#define GPIO_SETDATAOUT  0x194
+
+#define GPIO2 0x481ac000
+
+
+
+
 
 #define MCSPI0 0x48030000
 #define MCSPI1 0x481a0000
@@ -117,5 +123,6 @@
 #define DACB        r17     // output for DAC B
 #define CH          r18     // Channels
 #define CHc         r19     // channel decrement index
+#define DVAR        r20
 
 

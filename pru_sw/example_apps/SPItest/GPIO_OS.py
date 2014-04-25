@@ -20,11 +20,12 @@ f = open("/dev/mem", "r+b")
 #Memory maping SPI1
 gpio = mmap(f.fileno(), 0xfff, offset = GPIO2_OFFSET)
 
-value = 1 << OS_0 | 1 << OS_1 | 1 << OS_2
+value = 1 << OS_2 | 1 << OS_1 | 1 << OS_0
+#time.sleep(2)
+reg.setReg(CLEAR, gpio, value)
+
+value = 0 << OS_2 | 0 << OS_1 | 1 << OS_0
 reg.setReg(SET, gpio, value)
 
 
-value = 1 << OS_0 | 1 << OS_1 | 1 << OS_2
-time.sleep(2)
-reg.setReg(CLEAR, gpio, value)
 
