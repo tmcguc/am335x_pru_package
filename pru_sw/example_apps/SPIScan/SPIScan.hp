@@ -6,7 +6,7 @@
 #define GPIO_SETDATAOUT  0x194
 
 #define GPIO2 0x481ac000
-
+#define CONST_PRUDRAM   C24
 
 
 

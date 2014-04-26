@@ -24,7 +24,7 @@ value = 1 << OS_2 | 1 << OS_1 | 1 << OS_0
 #time.sleep(2)
 reg.setReg(CLEAR, gpio, value)
 
-value = 0 << OS_2 | 0 << OS_1 | 1 << OS_0
+value = 0 << OS_2 | 0 << OS_1 | 0 << OS_0
 reg.setReg(SET, gpio, value)
 
 

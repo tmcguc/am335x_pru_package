@@ -75,35 +75,41 @@ CONFIG:
 
 
 PASSVALUES:
-//Sx          r3      //Slow x start position for line 
-    MOV Sx, 0x8000
-    MOV Sy, 0x8000
-//Sy          r4      //Slow y start position for line
-//sdx         r5      //Slow dx for each line
-    MOV sdx, 0x0000
-    MOV sdy, 0x0100
-//sdy         r6      //Slow dy for each line
+//    MOV Sx, 0x8000
+LBCO Sx, CONST_PRUDRAM, 0, 4
 
-//Fx          r7      //new x position for Fast vector
-//Fy          r8      //new y position for Fast vector
-//    MOV Fx, 0x0000
-//    MOV Fy, 0x0000
-//dx          r9      //dx for Fast vector
-    MOV dx, 0x0100
-    MOV dy, 0x0000
-//dy          r10     //dy for Fast vector
-//pF          r11     //Points fast initial value
-//pFc         r12     //Points fast count, used to decrement
-    MOV pF, 0x0ff
+LBCO Sy, CONST_PRUDRAM, 4, 4
 
-//sF          r13     //Points slow count
-    MOV sF, 0x0ff
-//samp        r14     //Samples per point initial value
-    MOV samp, 0x5
-//sampc       r15     //Samples count
-//CH          r18     // Channel Count
-    MOV CH, 0x8
-    MOV DVAR, 0x10
+LBCO sdx, CONST_PRUDRAM, 8, 4
+
+LBCO sdy, CONST_PRUDRAM, 12, 4
+
+LBCO dx, CONST_PRUDRAM, 16, 4
+
+LBCO dy, CONST_PRUDRAM, 20, 4
+
+LBCO pF, CONST_PRUDRAM, 24, 4
+
+LBCO sF, CONST_PRUDRAM, 28, 4
+
+LBCO samp, CONST_PRUDRAM, 32, 4
+
+LBCO CH, CONST_PRUDRAM, 36, 4
+
+//LBCO Sy, CONST_PRUDRAM, 40, 4
+
+//LBCO Sy, CONST_PRUDRAM, 44, 4
+
+//    MOV Sy, 0x8000
+//    MOV sdx, 0x0000
+//    MOV sdy, 0x0040
+//    MOV dx, 0x0040
+//    MOV dy, 0x0000
+//    MOV pF, 0x3ff
+//    MOV sF, 0x3ff
+//    MOV samp, 0x1
+//    MOV CH, 0x2
+//    MOV DVAR, 0x1
 
 
 
@@ -265,12 +271,18 @@ LOOP2:
 SUBLOOP2:
     JMP DACUPDATE          // write out values to DACs
 RDACUPDATE:
-    JMP LOOP3   //Test scan without looping ADCS           // Loop samples ADCs multiple times
+    JMP LOOP3                // Loop samples ADCs multiple times
 RLOOP3:
     ADD Fx, Fx, dx          // update Fx, TODO: check if I need to do a MOV first and use another register
     ADD Fy, Fy, dy          // update Fy
     SUB pFc, pFc, 1         // decrement count
     QBNE SUBLOOP2, pFc, 0   // see if we are going to the next line
+    //Test to see if we stop
+    //report back values
+    // Exit if the halt flag is set
+   // MOV r6, DMX_HALT
+   // LBCO r2, CONST_PRUDRAM, r6, 1
+   // QBNE EXIT, r2.b0, 0  //Something like this to check and see if we are done
     JMP RLOOP2
 
 
@@ -324,7 +336,7 @@ CHECKTXSB:
 RLOADDAC:
     JMP DISABLEDAC         //TODO: write DAISABLEDAC function
 RDISABLEDAC:
-    JMP DELAYSET           //TODO: need to include a seperate delay that allows sample to reacvh steady state before measurement
+    JMP DELAYSET           //TODO: need to include a seperate delay that allows sample to reach steady state before measurement
 RDELAYSET:
     JMP DELAY_VAR
 RDELAY_VAR:
@@ -389,7 +401,7 @@ DELAY2L:
 
 //Minimum delay before sampling ADCs
 DELAYSET:
-    MOV r24, 0x320  // 8us delay for DAC settling time  
+    MOV r24, 0xc8  // 2us delay for DAC settling time  for 512 step size
 DELAYSET0:
     SUB r24, r24, 1
     QBNE DELAYSET0 , r24, 0
