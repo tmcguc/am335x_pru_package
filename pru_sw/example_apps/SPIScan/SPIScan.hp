@@ -99,6 +99,11 @@
 #define addr        r1
 #define val         r2
 
+#define OS_0    0x2
+#define OS_1    0x3
+#define OS_2    0x5
+
+
 
 
 
@@ -124,5 +129,6 @@
 #define CH          r18     // Channels
 #define CHc         r19     // channel decrement index
 #define DVAR        r20
+#define OS          r21
 
 

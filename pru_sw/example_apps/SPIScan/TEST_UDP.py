@@ -14,11 +14,12 @@ import struct
 IP = "10.0.1.8"
 PORT = 9930
 
-# number of DMX channels
-CHANNELS = 4
 
-# how many seconds to wait between sending a DMX update
-DELAY = 0.5
+OS_0 = 2
+OS_1 = 3
+OS_2 = 5
+
+
 
 def constructPayload():
     Sx = 0x8000
@@ -32,7 +33,10 @@ def constructPayload():
     samp = 0x1
     CH = 0x2
     DVAR = 0x1
-    res = "%8x" %Sx	
+    OS =  1 << OS_2 | 1 << OS_1 | 0 << OS_0
+
+    res = "%8x" %0xa0aa
+    res += "%8x" %Sx	
     res += "%8x"%Sy
     res += "%8x"%sdx
     res += "%8x"%sdy
@@ -43,6 +47,7 @@ def constructPayload():
     res += "%8x"%samp
     res += "%8x"%CH
     res += "%8x"%DVAR
+    res += "%8x"%OS
     return res
 
 def loop():

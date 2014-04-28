@@ -20,9 +20,13 @@
 #define AM33XX
 
 
+
 #define UDP_PORT (9930)
 #define UDP_BUFLEN (512)
 
+
+#define START_SCAN 0xa0aa
+#define STOP_SCAN  0xf0ff
 
 static void *pruDataMem;
 static unsigned int *pruDataMem_int;
@@ -43,34 +47,36 @@ struct scan_param {
     unsigned int samp;
     unsigned int CH;
     unsigned int DVAR;
+	unsigned int OS;
 };
 
 struct scan_param scan;
 
 static int udp_forever = 1;
+unsigned int scanning = 0;
 
 int main (void)
 {
-    unsigned int ret;
-    tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+    //unsigned int ret;
+    //tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
     
-    printf("\nINFO: Starting %s example.\r\n", "SPIScan");
+    //printf("\nINFO: Starting %s example.\r\n", "SPIScan");
     /* Initialize the PRU */
-    prussdrv_init ();		
+    //prussdrv_init ();		
     
     /* Open PRU Interrupt */
-    ret = prussdrv_open(PRU_EVTOUT_0);
-    if (ret)
-    {
-        printf("prussdrv_open open failed\n");
-        return (ret);
-    }
+    //ret = prussdrv_open(PRU_EVTOUT_0);
+    //if (ret)
+    //{
+    //    printf("prussdrv_open open failed\n");
+    //   return (ret);
+    //}
     
     /* Get the interrupt initialized */
-    prussdrv_pruintc_init(&pruss_intc_initdata);
+    //prussdrv_pruintc_init(&pruss_intc_initdata);
 
     //Initialize Data on of shared memory
-     LOCAL_exampleInit(PRU_NUM);
+    // LOCAL_exampleInit(PRU_NUM);
 	LOCAL_udp_listen();
 
     /* Execute example on PRU */
@@ -106,19 +112,14 @@ static int LOCAL_exampleInit ( unsigned short pruNum )
     // Write values in the PRU data memory locations
     pruDataMem_int[0] = 0x0;// 0x8000; //Sx
     pruDataMem_int[1] =0x0;//  0x8000; //Sy
-
     pruDataMem_int[2] = 0x0;// 0x0000; //sdx
     pruDataMem_int[3] = 0x0;// 0x0040; //sdy
-
     pruDataMem_int[4] = 0x0;// 0x0040; //dx
     pruDataMem_int[5] = 0x0;// 0x0000; //dy
-
     pruDataMem_int[6] = 0x0;// 0x03ff; //pF
     pruDataMem_int[7] = 0x0;// 0x03ff; //sF
-
     pruDataMem_int[8] = 0x0;// 0x0001; //samp
     pruDataMem_int[9] = 0x0;// 0x0002; //CH
-
     pruDataMem_int[10] = 0x0;// 0x0001; //DVAR
 
     return(0);
@@ -128,20 +129,17 @@ static int Local_pru_Data_Mem(){
 
     pruDataMem_int[0] = scan.Sx;
     pruDataMem_int[1] = scan.Sy;
-
     pruDataMem_int[2] = scan.sdx;
     pruDataMem_int[3] = scan.sdy;
-
     pruDataMem_int[4] = scan.dx;
     pruDataMem_int[5] = scan.dy;
-
     pruDataMem_int[6] = scan.pF;
     pruDataMem_int[7] = scan.sF;
-
     pruDataMem_int[8] = scan.samp;
     pruDataMem_int[9] = scan.CH;
-
     pruDataMem_int[10] = scan.DVAR;
+    pruDataMem_int[11] = scan.OS;
+
 
     return(0);
 
@@ -164,6 +162,9 @@ static void LOCAL_udp_listen () {
 	int packet_length;
 	int r;
 
+    unsigned int ret;
+	unsigned int cmd;
+
 	if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1)
 		diep("socket");
 
@@ -177,38 +178,74 @@ static void LOCAL_udp_listen () {
 	for (i=0; i<UDP_BUFLEN; i++) {
 		buf[i] = 0;
 	}
-
+	while(udp_forever){
 		packet_length = recvfrom(s, buf, UDP_BUFLEN, 0, &si_other, &slen);
 		if (packet_length == -1) {
 			diep("recvfrom()");
 		}
-		//for (i=0; i<packet_length; i+=8) {
 		buf[packet_length] = 0;
-		sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &scan.Sx, &scan.Sy, &scan.sdx, &scan.sdy, &scan.dx, &scan.dy, &scan.pF, &scan.sF, &scan.samp, &scan.CH, &scan.DVAR );
-		//	pruDataMem_byte[channel] = value;
-		//}
-        //
-		printf("%d", packet_length);
-		//scan.Sx = 0x8000;
-    	//scan.Sy = 0x8000;
+		
+		sscanf(buf, "%8x", &cmd); //First part of the buffer always needs to be the cmd
+			switch(cmd){
+				case START_SCAN:
+					sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &cmd, &scan.Sx, &scan.Sy, &scan.sdx, &scan.sdy, &scan.dx, 
+							&scan.dy, &scan.pF, &scan.sF, &scan.samp, &scan.CH, &scan.DVAR, &scan.OS );
+					printf("%d", packet_length);
 
-    	//scan.sdx = 0x0;
-    	//scan.sdy = 0x40;
+					if (scanning == 1){
+					    prussdrv_pru_clear_event (PRU0_ARM_INTERRUPT);
 
-    	//scan.dx = 0x40;
-    	//scan.dy = 0x0;
+    					/* Disable PRU and close memory mapping*/
+    					prussdrv_pru_disable (PRU_NUM);
+    					prussdrv_exit ();
+					}
+					
+    				tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+    
+    				printf("\nINFO: Starting %s example.\r\n", "SPIScan");
+    				/* Initialize the PRU */
+    				prussdrv_init ();		
+    
+    				/* Open PRU Interrupt */
+    				ret = prussdrv_open(PRU_EVTOUT_0);
+    				if (ret){
+        				printf("prussdrv_open open failed\n");
+        				//return (ret);
+    				}
+    
+    				/* Get the interrupt initialized */
+    				prussdrv_pruintc_init(&pruss_intc_initdata);
 
-    	//scan.pF = 0x03ff;
-    	//scan.sF = 0x3ff;
+    				//Initialize Data on of shared memory
+     				LOCAL_exampleInit(PRU_NUM);
+					r = Local_pru_Data_Mem();
 
-    	//scan.samp = 0x1;
-    	//scan.CH = 0x8;
+				    printf("\tINFO: Executing example.\r\n");
+    				prussdrv_exec_program (PRU_NUM, "./SPIScan.bin");
+    
+					scanning = 1;
 
-    	//scan.DVAR= 0x1;
-		r = Local_pru_Data_Mem();
+					break;
 
 
- 	//}
+				case STOP_SCAN:
 
+					if (scanning == 1){
+					    prussdrv_pru_clear_event (PRU0_ARM_INTERRUPT);
+
+    					/* Disable PRU and close memory mapping*/
+    					prussdrv_pru_disable (PRU_NUM);
+    					prussdrv_exit ();
+					}
+						scanning = 0;
+
+					break;
+
+				default:
+					break;
+
+			}
+			
+	}
 	close(s);
 }

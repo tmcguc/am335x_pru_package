@@ -24,6 +24,10 @@ START:
 
 
 SETUP:
+
+
+
+
     // setAndCheckReg(CM_PER_SPI1_CLK_CTRL, Cmem, 0x2, name = "CM_PER_SPI1_CLK_CTRL")
     //enable clkspiref and clk
     // SPI1 is the master aka HighLander
@@ -70,12 +74,7 @@ RADCRESET:
 
 
 
-CONFIG:
-
-
-
 PASSVALUES:
-//    MOV Sx, 0x8000
 LBCO Sx, CONST_PRUDRAM, 0, 4
 
 LBCO Sy, CONST_PRUDRAM, 4, 4
@@ -98,16 +97,20 @@ LBCO CH, CONST_PRUDRAM, 36, 4
 
 LBCO DVAR, CONST_PRUDRAM, 40, 4
 
-//    MOV Sy, 0x8000
-//    MOV sdx, 0x0000
-//    MOV sdy, 0x0040
-//    MOV dx, 0x0040
-//    MOV dy, 0x0000
-//    MOV pF, 0x3ff
-//    MOV sF, 0x3ff
-//    MOV samp, 0x1
-//    MOV CH, 0x2
-//    MOV DVAR, 0x1
+LBCO OS, CONST_PRUDRAM, 44, 4
+
+SETUPOS:
+    //Set up Over Sampling
+
+
+    MOV val, 1 << OS_2 | 1 << OS_1 | 1 << OS_0
+    MOV addr, GPIO2 | GPIO_CLEARDATAOUT
+    SBBO val, addr, 0, 4
+
+    MOV addr, GPIO2 | GPIO_SETDATAOUT
+    SBBO OS, addr, 0, 4
+   
+
 
 
 
@@ -339,7 +342,7 @@ RDELAYSET:
     JMP DELAY_VAR
 RDELAY_VAR:
     JMP RDACUPDATE
-    //JMP TRDACUPDATE   //Removed just for testing
+
 
 LOADDAC:
     JMP DELAY
