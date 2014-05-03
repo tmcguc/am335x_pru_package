@@ -99,6 +99,8 @@ LBCO DVAR, CONST_PRUDRAM, 40, 4
 
 LBCO OS, CONST_PRUDRAM, 44, 4
 
+LBCO XFER, CONST_PRUDRAM, 48, 4
+
 SETUPOS:
     //Set up Over Sampling
 
@@ -188,11 +190,11 @@ SETUPADCS:
     SBBO val, addr, 0, 4
 
 
-    //TODO XFER level will be determined from passed values
+    //TODO: XFER level will be determined from passed values
     // set xfer level
     MOV addr, MCSPI0 | MCSPI_XFERLEVEL
-    MOV val, ADC_SLAVE_XFER
-    SBBO val, addr, 0, 4
+    //MOV XFER
+    SBBO XFER, addr, 0, 4
 
 
 

@@ -130,5 +130,6 @@
 #define CHc         r19     // channel decrement index
 #define DVAR        r20
 #define OS          r21
+#define XFER        r22
 
 

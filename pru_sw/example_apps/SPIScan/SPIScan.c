@@ -8,12 +8,18 @@
 #include <signal.h>
 #include <prussdrv.h>
 #include <pruss_intc_mapping.h>
+#include <assert.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include "/home/ubuntu/am335x_edma/src/edma/mighty.h"
+
 
 
 #define PRU_NUM 	0
@@ -34,6 +40,7 @@ static unsigned int *pruDataMem_int;
 static int LOCAL_exampleInit ( unsigned short pruNum );
 static void LOCAL_udp_listen ();
 static int Local_pru_Data_Mem ();
+static void write_ioctl(unsigned int bcnt, unsigned int ccnt);
 
 struct scan_param {
     unsigned int Sx;
@@ -48,6 +55,9 @@ struct scan_param {
     unsigned int CH;
     unsigned int DVAR;
 	unsigned int OS;
+	unsigned int XFER;
+	unsigned int CCNT;
+
 };
 
 struct scan_param scan;
@@ -121,6 +131,10 @@ static int LOCAL_exampleInit ( unsigned short pruNum )
     pruDataMem_int[8] = 0x0;// 0x0001; //samp
     pruDataMem_int[9] = 0x0;// 0x0002; //CH
     pruDataMem_int[10] = 0x0;// 0x0001; //DVAR
+    pruDataMem_int[11] = 0x0;// 0x0001; //OS
+    pruDataMem_int[12] = 0x0;// 0x0001; //XFER
+
+
 
     return(0);
 }
@@ -139,6 +153,8 @@ static int Local_pru_Data_Mem(){
     pruDataMem_int[9] = scan.CH;
     pruDataMem_int[10] = scan.DVAR;
     pruDataMem_int[11] = scan.OS;
+    pruDataMem_int[12] = scan.XFER;
+
 
 
     return(0);
@@ -151,6 +167,41 @@ static void diep(char *s)
   perror(s);
   exit(1);
 }
+
+
+static void write_ioctl(unsigned int bcnt, unsigned int ccnt) {
+	/* Our File Descriptor */ 
+	int fd;
+	int rc = 0;
+	int i = 0;
+	int ret = 0;
+	struct mighty_bccnt mighty;
+	int data_points;
+
+
+	/*Open the device */
+	fd = open("/dev/mighty_dma", O_RDWR);
+	if (fd == -1) {
+		perror("open failed");
+		rc = fd;
+		exit(-1);
+	}
+
+	printf(": open: successful\n");
+
+
+	mighty.bcnt = bcnt;
+	mighty.ccnt = ccnt;
+
+	ret = ioctl(fd, MTY_START, &mighty);
+	assert(ret == 0);
+
+	printf(" read: returning %d bytes!\n", rc);
+
+	close(fd);
+	//return 0;
+}
+
 
 
 // From http://www.abc.se/~m6695/udp.html
@@ -188,8 +239,8 @@ static void LOCAL_udp_listen () {
 		sscanf(buf, "%8x", &cmd); //First part of the buffer always needs to be the cmd
 			switch(cmd){
 				case START_SCAN:
-					sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &cmd, &scan.Sx, &scan.Sy, &scan.sdx, &scan.sdy, &scan.dx, 
-							&scan.dy, &scan.pF, &scan.sF, &scan.samp, &scan.CH, &scan.DVAR, &scan.OS );
+					sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &cmd, &scan.Sx, &scan.Sy, &scan.sdx, &scan.sdy, &scan.dx, 
+							&scan.dy, &scan.pF, &scan.sF, &scan.samp, &scan.CH, &scan.DVAR, &scan.OS, &scan.XFER, &scan.CCNT );
 					printf("%d", packet_length);
 
 					if (scanning == 1){
@@ -199,7 +250,11 @@ static void LOCAL_udp_listen () {
     					prussdrv_pru_disable (PRU_NUM);
     					prussdrv_exit ();
 					}
-					
+				
+					//TODO:SETUP DMA here
+					write_ioctl(scan.CH, scan.CCNT);
+					//
+
     				tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
     
     				printf("\nINFO: Starting %s example.\r\n", "SPIScan");
