@@ -15,11 +15,17 @@ import numpy
 IP = "10.0.1.8"
 PORT = 9930
 
-
+#bit shift
 OS_0 = 2
 OS_1 = 3
 OS_2 = 5
 
+#extract bits
+OS0 = 0b1
+OS1 = 0b10
+OS2 = 0b100
+
+OS_value = 2
 
 # can just us numpy.int16 to take care of 2's complement
 #easily scan in every direction
@@ -33,9 +39,9 @@ def constructPayload():
     pF = 0x400
     sF = 0x400
     samp = 0x1
-    CH = 0x5
+    CH = 0x2
     DVAR = 0xff
-    OS =  0 << OS_2 | 1 << OS_1 | 0 << OS_0
+    OS =  (OS_value & OS2) << OS_2 | (OS_value & OS1) << OS_1 | (OS_value & OS0) << OS_0 #TODO: need a nice way to add in the over clocking through the gui 2,4,8,16,32,64
     XFER = CH << 16 | ((CH*4) -1) << 8
 
 
@@ -44,8 +50,9 @@ def constructPayload():
         CCNT = int(1020/(CH*samp))# largest CCNT can be
         pF = (pF/CCNT)*CCNT
         print "CCNT", CCNT
-    else:
-        CCNT = pF*CH*samp
+    elif(CH*pF*samp <= 1020):
+        CCNT = pF*samp
+
 
     print "CCNT",CCNT
     print "pF",pF
@@ -63,10 +70,6 @@ def constructPayload():
 
     #Pick values that fit levels allowed by DMA controller and buffers
     assert (CH*samp) <= 1020
-
-    #assert  CCNT <= 1020/(CH*samp)
-
-    
 
     
 
