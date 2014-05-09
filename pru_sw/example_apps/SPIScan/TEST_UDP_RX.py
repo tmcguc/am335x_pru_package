@@ -3,6 +3,7 @@ import socket
 import time
 import struct
 import numpy
+import pylab
 
 # address of the BeagleBone DMX
 IP = "10.0.1.8"
@@ -37,7 +38,8 @@ count = 0
 
 storedArray = numpy.zeros([pF, sF, CH, samp], numpy.int32)
 
-
+header_max = pF/CCNT * sF 
+print header_max
 
 
 
@@ -66,7 +68,7 @@ def loop():
         yindex = (header -1)/(pF/CCNT)   
         xindex = header - yindex*(pF/CCNT)-1
 
-        sub_data_array = numpy.reshape(X, ((CCNT/samp),CH,samp))
+        sub_data_array = numpy.reshape(Z, ((CCNT/samp),CH,samp), order = 'C')
         
         print "data", count , " len", len(data), "xindex" , xindex, "yindex", yindex , "data shape", sub_data_array.shape, "header" , header[0], "Z", Z[4]
         #print sub_data_array
@@ -75,12 +77,16 @@ def loop():
         storedArray[sub_xindex[0] : sub_xindex[0] + sub_data_array.shape[0], yindex[0], :,:] = sub_data_array
 
         count += 1
-
+        if header[0] == header_max:
+            break
+    sock.close()
+    pylab.imshow(storedArray[:,:,1,0])
+    pylab.show()
 
 
 
 if __name__ == "__main__":
 
     loop()
-    sock.close()
+    #sock.close()
 

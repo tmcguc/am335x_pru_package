@@ -15,21 +15,28 @@ import numpy
 IP = "10.0.1.8"
 PORT = 9930
 
-#bit shift
-OS_0 = 2
-OS_1 = 3
-OS_2 = 5
-
-#extract bits
-OS0 = 0b1
-OS1 = 0b10
-OS2 = 0b100
-
-OS_value = 2
 
 # can just us numpy.int16 to take care of 2's complement
 #easily scan in every direction
 def constructPayload():
+    #bit shift
+    OS_0 = 2
+    OS_1 = 3
+    OS_2 = 5
+
+    #extract bits
+    OS0 = 0b001
+    OS1 = 0b010
+    OS2 = 0b100
+    OSI = 1
+
+
+    if OSI > 0:
+        OS_value = int(numpy.log2(OSI))
+    else:
+        OS_value = OSI
+    print "OS_valuen", bin(OS_value)
+
     Sx = numpy.int16(0x8000)
     Sy = numpy.int16(0x8000)
     sdx = numpy.int16(0x0000)
@@ -41,9 +48,10 @@ def constructPayload():
     samp = 0x1
     CH = 0x2
     DVAR = 0xff
-    OS =  (OS_value & OS2) << OS_2 | (OS_value & OS1) << OS_1 | (OS_value & OS0) << OS_0 #TODO: need a nice way to add in the over clocking through the gui 2,4,8,16,32,64
+    OS =  ((OS_value & OS2) >> 2) << OS_2 | ((OS_value & OS1) >> 1) << OS_1 | (OS_value & OS0) << OS_0 #TODO: need a nice way to add in the over clocking through the gui 2,4,8,16,32,64
+    print "OS", OS
     XFER = CH << 16 | ((CH*4) -1) << 8
-
+    
 
     # make sure pF is integer multiple of CCNT
     if (pF >= 1020/(CH*samp)):
@@ -56,7 +64,9 @@ def constructPayload():
 
     print "CCNT",CCNT
     print "pF",pF
- 
+
+    header_max = pF/CCNT * sF 
+    print header_max
 
     #Make sure scan doesn't go outside bounds of what the DAC can take as an input
     assert abs(Sx + sdx*sF) <= abs(0x8000) 
