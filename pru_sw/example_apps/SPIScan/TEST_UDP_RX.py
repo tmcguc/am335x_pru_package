@@ -62,7 +62,7 @@ def loop():
         Copy = numpy.int32(X << 14)
         #shift data back to proper space
         #now we have signed 18bit data represented as signed int32
-        Z = Copy >> 15   #15 to get data back to its place but keep the sign
+        Z = Copy >> 14   #15 to get data back to its place but keep the sign
         #data is always zero indexed
 
         yindex = (header -1)/(pF/CCNT)   
@@ -70,7 +70,7 @@ def loop():
 
         sub_data_array = numpy.reshape(Z, ((CCNT/samp),CH,samp), order = 'C')
         
-        print "data", count , " len", len(data), "xindex" , xindex, "yindex", yindex , "data shape", sub_data_array.shape, "header" , header[0], "Z", Z[4]
+        print "data", count , " len", len(data), "xindex" , xindex, "yindex", yindex , "data shape", sub_data_array.shape, "header" , header[0], "Z", Z[1]
         #print sub_data_array
         sub_xindex = xindex*sub_data_array.shape[0]
         print sub_xindex 
@@ -81,8 +81,11 @@ def loop():
             break
     sock.close()
     pylab.imshow(storedArray[:,:,1,0])
+    pylab.colorbar()
     pylab.show()
-
+    pylab.imshow(storedArray[:,:,0,0])
+    pylab.colorbar()
+    pylab.show()
 
 
 if __name__ == "__main__":
