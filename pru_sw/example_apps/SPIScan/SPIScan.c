@@ -33,6 +33,7 @@
 
 #define START_SCAN 0xa0aa
 #define STOP_SCAN  0xf0ff
+#define IV_SCAN    0xa011 
 
 static void *pruDataMem;
 static unsigned int *pruDataMem_int;
@@ -216,6 +217,9 @@ static void LOCAL_udp_listen () {
     unsigned int ret;
 	unsigned int cmd;
 
+    tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+
+
 	if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1)
 		diep("socket");
 
@@ -255,7 +259,7 @@ static void LOCAL_udp_listen () {
 					write_ioctl(scan.CH, scan.CCNT);
 					//
 
-    				tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+    				//tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
     
     				printf("\nINFO: Starting %s example.\r\n", "SPIScan");
     				/* Initialize the PRU */
@@ -295,6 +299,50 @@ static void LOCAL_udp_listen () {
 						scanning = 0;
 
 					break;
+
+                case IV_SCAN:   
+                	sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &cmd, &scan.Sx, &scan.Sy, &scan.sdx, &scan.sdy, &scan.dx, 
+							&scan.dy, &scan.pF, &scan.sF, &scan.samp, &scan.CH, &scan.DVAR, &scan.OS, &scan.XFER, &scan.CCNT );
+					printf("%d", packet_length);
+
+					if (scanning == 1){
+					    prussdrv_pru_clear_event (PRU0_ARM_INTERRUPT);
+
+    					/* Disable PRU and close memory mapping*/
+    					prussdrv_pru_disable (PRU_NUM);
+    					prussdrv_exit ();
+					}
+				
+					//TODO:SETUP DMA here
+					write_ioctl(scan.CH, scan.CCNT);
+					//
+
+    				//tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+    
+    				printf("\nINFO: Starting %s example.\r\n", "SPIScanIV");
+    				/* Initialize the PRU */
+    				prussdrv_init ();		
+    
+    				/* Open PRU Interrupt */
+    				ret = prussdrv_open(PRU_EVTOUT_0);
+    				if (ret){
+        				printf("prussdrv_open open failed\n");
+        				//return (ret);
+    				}
+    
+    				/* Get the interrupt initialized */
+    				prussdrv_pruintc_init(&pruss_intc_initdata);
+
+    				//Initialize Data on of shared memory
+     				LOCAL_exampleInit(PRU_NUM);
+					r = Local_pru_Data_Mem();
+
+				    printf("\tINFO: Executing example.\r\n");
+    				prussdrv_exec_program (PRU_NUM, "./SPIScanIV.bin");
+    
+					scanning = 1;
+
+					break; 
 
 				default:
 					break;
