@@ -1,0 +1,134 @@
+#define PRU0_ARM_INTERRUPT 19
+#define AM33XX
+
+#define GPIO1 0x4804c000
+#define GPIO_CLEARDATAOUT 0x190
+#define GPIO_SETDATAOUT  0x194
+
+#define GPIO2 0x481ac000
+#define CONST_PRUDRAM   C24
+
+
+
+
+#define MCSPI0 0x48030000
+#define MCSPI1 0x481a0000
+
+#define CM_PER 0x44E00000
+#define CM_PER_SPI1_CLK_CTRL 0x50 | CM_PER
+#define CM_PER_SPI0_CLK_CTRL 0x4C | CM_PER
+
+
+
+// Cn is the constants table for spi0 it is c6 address of 0x4803_0000
+// c16 is for spi10x481a_0000
+
+#define MCSPI_REVISION 0x000
+#define MCSPI_SYSCONFIG 0x110
+#define MCSPI_SYSSTATUS 0x114
+#define MCSPI_IRQSTATUS 0x118
+#define MCSPI_IRQENABLE 0x11c
+#define MCSPI_WAKEUPENABLE 0x120
+#define MCSPI_SYST 0x124
+#define MCSPI_MODULCTRL 0x128
+
+#define MCSPI_XFERLEVEL 0x17c
+#define MCSPI_DAFTX 0x180   // DMA address aligned FIFO TX register
+#define MCSPI_DAFRX 0x1a0   // DMA address aligned FIFO RX register
+
+#define MCSPI_CH0CONF 0x12c
+#define MCSPI_CH0STAT 0x130
+#define MCSPI_CH0CTRL 0x134
+#define MCSPI_TX0 0x138
+#define MCSPI_RX0 0x13c
+
+#define MCSPI_CH1CONF 0x140
+#define MCSPI_CH1STAT 0x144
+#define MCSPI_CH1CTRL 0x148
+#define MCSPI_TX1 0x14c
+#define MCSPI_RX1 0x150
+
+// This is where we can change the register configuartions values and put them all together
+
+// sysconfig register setup
+
+#define CM_PER_SPI1_CLK_EN      0x2
+#define CM_PER_SPI0_CLK_EN      0x2
+#define RESET                   0x2
+
+#define ADC_SYSCONFIG           0x00000311 
+
+#define RESET_IRQ_STAT          0xffffffff
+#define DIS_CH                  0x00000000
+#define EN_CH                   0x00000001
+#define TEST_PATT               0xfff29999
+
+#define ADC_IRQENABLE           0x00000000
+
+#define MODCONTROL_SINGLE       0x00000001 //
+#define MODCONTROL              0x0
+#define ADC_SLAVE_MODCONTROL    0x106
+
+
+#define ADC_SLAVE_XFER          0x81f00 // This needs to be user define perahps a macro
+#define ADC_MASTER_XFER         0x0
+#define DAC_MASTER_XFER         0x4000
+
+//*****************************
+//* ADC and DAC CONFIGS        *
+//*************************
+
+
+
+#define ADC_MASTER_CONF         0x281e28ca // changed PHA to 0 and POl to 1 (a -> 9)
+#define ADC_SLAVE_CONF          0x300398ca // changed PHA to 0 and POl to 1 (a -> 9)
+#define DAC_MASTER_CONF         0x20062bc5 //0x281e2bc5
+
+#define INIT_DACA               0x100000
+#define INIT_DACB               0x110000
+#define INIT_DACC               0x120000
+#define INIT_DACD               0x130000
+#define INIT_DAC_ALL            0x140000
+
+
+//
+// ***************************************
+// *     Global Register Assignments     *
+// ***************************************
+
+#define addr        r1
+#define val         r2
+
+#define OS_0    0x2
+#define OS_1    0x3
+#define OS_2    0x5
+
+
+
+
+
+/// These are all the scan variables we need
+// setting up their own registers so we can be fast yo!!
+
+#define pStep          r3      //Slow x start position for line 
+#define nStep          r4      //Slow y start position for line
+#define Count         r5      //Slow dx for each line
+#define Start         r6      //Slow dy for each line
+
+#define Stop          r7      //new x position for Fast vector
+#define Min          r8      //new y position for Fast vector
+#define Max          r9      //dx for Fast vector
+#define CTR          r10     //control register
+#define STEP          r11     //Points fast initial value
+//#define pFc         r12     //Points fast count, used to decrement
+//#define sF          r13     //Points slow count
+#define samp        r14     //Samples per point initial value
+#define sampc       r15     //Samples count
+#define DACC        r16     // output for DAC A
+#define DACD        r17     // output for DAC B
+#define CH          r18     // Channels
+#define CHc         r19     // channel decrement index
+#define DVAR        r20
+#define OS          r21
+#define XFER        r22
+
