@@ -110,22 +110,22 @@
 /// These are all the scan variables we need
 // setting up their own registers so we can be fast yo!!
 
-#define pStep          r3      //Slow x start position for line 
-#define nStep          r4      //Slow y start position for line
-#define Count         r5      //Slow dx for each line
-#define Start         r6      //Slow dy for each line
+#define pStep           r3      // 
+#define nStep           r4      //
+#define Count           r5      //
+#define Start           r6      //
 
-#define Stop          r7      //new x position for Fast vector
-#define Min          r8      //new y position for Fast vector
-#define Max          r9      //dx for Fast vector
-#define CTR          r10     //control register
-#define STEP          r11     //Points fast initial value
-//#define pFc         r12     //Points fast count, used to decrement
+#define Stop            r7      //
+#define Min             r8      //
+#define Max             r9      //
+#define CTR             r10     //control register
+#define STEP            r11     //Points fast initial value
+#define V1          r12     //Points fast count, used to decrement
 //#define sF          r13     //Points slow count
 #define samp        r14     //Samples per point initial value
 #define sampc       r15     //Samples count
-#define DACC        r16     // output for DAC A
-#define DACD        r17     // output for DAC B
+#define DACC        r16     // output for DAC C
+#define DACD        r17     // output for DAC D
 #define CH          r18     // Channels
 #define CHc         r19     // channel decrement index
 #define DVAR        r20
