@@ -61,7 +61,28 @@ struct scan_param {
 
 };
 
+struct iv_param {
+    unsigned int nStep;
+    unsigned int pStep;
+    unsigned int Count;
+    unsigned int Start;
+    unsigned int Stop;
+    unsigned int Min;
+    unsigned int Max;
+    unsigned int STEP;
+    unsigned int samp;
+    unsigned int CH;
+    unsigned int DVAR;
+	unsigned int OS;
+	unsigned int XFER;
+	unsigned int CCNT;
+
+};
+
+
 struct scan_param scan;
+
+struct iv_param IV;
 
 static int udp_forever = 1;
 unsigned int scanning = 0;
@@ -140,6 +161,28 @@ static int LOCAL_exampleInit ( unsigned short pruNum )
     return(0);
 }
 
+static int Local_pru_Data_Mem_IV(){
+
+    pruDataMem_int[0] = IV.nStep;
+    pruDataMem_int[1] = IV.pStep;
+    pruDataMem_int[2] = IV.Count;
+    pruDataMem_int[3] = IV.Start;
+    pruDataMem_int[4] = IV.Stop;
+    pruDataMem_int[5] = IV.Min;
+    pruDataMem_int[6] = IV.Max;
+    pruDataMem_int[7] = IV.STEP;
+    pruDataMem_int[8] = IV.samp;
+    pruDataMem_int[9] = IV.CH;
+    pruDataMem_int[10] = IV.DVAR;
+    pruDataMem_int[11] = IV.OS;
+    pruDataMem_int[12] = IV.XFER;
+
+
+
+    return(0);
+
+}
+
 static int Local_pru_Data_Mem(){
 
     pruDataMem_int[0] = scan.Sx;
@@ -161,8 +204,6 @@ static int Local_pru_Data_Mem(){
     return(0);
 
 }
-
-
 static void diep(char *s)
 {
   perror(s);
@@ -301,8 +342,8 @@ static void LOCAL_udp_listen () {
 					break;
 
                 case IV_SCAN:   
-                	sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &cmd, &scan.Sx, &scan.Sy, &scan.sdx, &scan.sdy, &scan.dx, 
-							&scan.dy, &scan.pF, &scan.sF, &scan.samp, &scan.CH, &scan.DVAR, &scan.OS, &scan.XFER, &scan.CCNT );
+                	sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &cmd, &IV.nStep, &IV.pStep, &IV.Count, &IV.Start, &IV.Stop, 
+							&IV.Min, &IV.Max, &IV.STEP, &IV.samp, &IV.CH, &IV.DVAR, &IV.OS, &IV.XFER, &IV.CCNT );
 					printf("%d", packet_length);
 
 					if (scanning == 1){
@@ -314,7 +355,7 @@ static void LOCAL_udp_listen () {
 					}
 				
 					//TODO:SETUP DMA here
-					write_ioctl(scan.CH, scan.CCNT);
+					write_ioctl(IV.CH, IV.CCNT);
 					//
 
     				//tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
@@ -335,10 +376,10 @@ static void LOCAL_udp_listen () {
 
     				//Initialize Data on of shared memory
      				LOCAL_exampleInit(PRU_NUM);
-					r = Local_pru_Data_Mem();
+					r = Local_pru_Data_Mem_IV();
 
 				    printf("\tINFO: Executing example.\r\n");
-    				prussdrv_exec_program (PRU_NUM, "./SPIScanIV.bin");
+    				prussdrv_exec_program (PRU_NUM, "./IV.bin");
     
 					scanning = 1;
 

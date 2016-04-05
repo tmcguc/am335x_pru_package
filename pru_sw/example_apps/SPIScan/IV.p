@@ -74,9 +74,9 @@ LBCO Start, CONST_PRUDRAM, 12, 4
 
 LBCO Stop, CONST_PRUDRAM, 16, 4
 
-LBCO Min, CONST_PRUDRAM, 20, 4
+LBCO MinV, CONST_PRUDRAM, 20, 4
 
-LBCO Max, CONST_PRUDRAM, 24, 4
+LBCO MaxV, CONST_PRUDRAM, 24, 4
 
 LBCO STEP, CONST_PRUDRAM, 28, 4
 
@@ -200,20 +200,21 @@ SETUPDAC:
     MOV addr, MCSPI1 |  MCSPI_CH1CONF     
     MOV val, DAC_MASTER_CONF
     SBBO val, addr, 0, 4
-
+    
+    MOV V1, Start
 
 
 
 STIV:
     QBEQ DONE, Stop, Count
-    QBEQ SETnSTEP, Max, Count //check to see if we switch step sign
-    QBEQ SETpSTEP, Min, Count // check to see if we swicth signs again
+    QBEQ SETnSTEP, MaxV, Count //check to see if we switch step sign
+    QBEQ SETpSTEP, MinV, Count // check to see if we swicth signs again
 RSETnSTEP:
 RSETpSTEP:
-    ADD V1, V1, STEP // set step value
-    SUB Count, Count, 1 //decrement count   Count down to zero
     JMP DACUPDATE          // write out values to DACs
 RDACUPDATE:
+    ADD V1, V1, STEP // set step value
+    SUB Count, Count, 1 //decrement count   Count down to zero
     JMP LOOP3                // Loop samples ADCs multiple times
 RLOOP3:
 

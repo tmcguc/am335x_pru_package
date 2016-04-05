@@ -116,8 +116,8 @@
 #define Start           r6      //
 
 #define Stop            r7      //
-#define Min             r8      //
-#define Max             r9      //
+#define MinV             r8      //
+#define MaxV             r9      //
 #define CTR             r10     //control register
 #define STEP            r11     //Points fast initial value
 #define V1          r12     //Points fast count, used to decrement
