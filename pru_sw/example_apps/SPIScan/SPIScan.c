@@ -33,7 +33,8 @@
 
 #define START_SCAN 0xa0aa
 #define STOP_SCAN  0xf0ff
-#define IV_SCAN    0xa011 
+#define IV_SCAN    0xa011
+#define SET_V      0x10f1 
 
 static void *pruDataMem;
 static unsigned int *pruDataMem_int;
@@ -42,6 +43,12 @@ static int LOCAL_exampleInit ( unsigned short pruNum );
 static void LOCAL_udp_listen ();
 static int Local_pru_Data_Mem ();
 static void write_ioctl(unsigned int bcnt, unsigned int ccnt);
+
+
+
+
+//Define Structs for different commands
+
 
 struct scan_param {
     unsigned int Sx;
@@ -80,9 +87,19 @@ struct iv_param {
 };
 
 
+struct setV_param {
+
+    unsigned int V1;
+    unsigned int V2;
+    unsigned int CTRL;
+
+};    
+
 struct scan_param scan;
 
 struct iv_param IV;
+
+struct setV_param setV;
 
 static int udp_forever = 1;
 unsigned int scanning = 0;
@@ -161,6 +178,18 @@ static int LOCAL_exampleInit ( unsigned short pruNum )
     return(0);
 }
 
+/// Transfer values in structs to PRUdataMEM
+
+
+static int Local_pru_Data_Mem_SETV(){
+
+    pruDataMem_int[0] = setV.V1;
+    pruDataMem_int[1] = setV.V2;
+    pruDataMem_int[2] = setV.CTRL;
+    return(0);
+
+}
+
 static int Local_pru_Data_Mem_IV(){
 
     pruDataMem_int[0] = IV.nStep;
@@ -204,6 +233,7 @@ static int Local_pru_Data_Mem(){
     return(0);
 
 }
+
 static void diep(char *s)
 {
   perror(s);
@@ -384,6 +414,50 @@ static void LOCAL_udp_listen () {
 					scanning = 1;
 
 					break; 
+
+                case SET_V:   
+                	sscanf(buf, "%8x%8x%8x%8x", &cmd, &setV.V1, &setV.V2, &setV.CTRL );
+					printf("%d", packet_length);
+
+					if (scanning == 1){
+					    prussdrv_pru_clear_event (PRU0_ARM_INTERRUPT);
+
+    					/* Disable PRU and close memory mapping*/
+    					prussdrv_pru_disable (PRU_NUM);
+    					prussdrv_exit ();
+					}
+				
+					//TODO:SETUP DMA here
+					//write_ioctl(IV.CH, IV.CCNT);
+					//
+
+    				//tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+    
+    				printf("\nINFO: Starting %s example.\r\n", "SetV");
+    				/* Initialize the PRU */
+    				prussdrv_init ();		
+    
+    				/* Open PRU Interrupt */
+    				ret = prussdrv_open(PRU_EVTOUT_0);
+    				if (ret){
+        				printf("prussdrv_open open failed\n");
+        				//return (ret);
+    				}
+    
+    				/* Get the interrupt initialized */
+    				prussdrv_pruintc_init(&pruss_intc_initdata);
+
+    				//Initialize Data on of shared memory
+     				LOCAL_exampleInit(PRU_NUM);
+					r = Local_pru_Data_Mem_SETV();
+
+				    printf("\tINFO: Executing example.\r\n");
+    				prussdrv_exec_program (PRU_NUM, "./SetV.bin");
+    
+					scanning = 1;
+
+					break; 
+
 
 				default:
 					break;

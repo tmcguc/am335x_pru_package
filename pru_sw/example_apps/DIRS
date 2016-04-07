@@ -23,6 +23,7 @@ ASSEM_FILES += SPItest/SPItest.p
 ASSEM_FILES += SPIScan/SPIScan.p
 ASSEM_FILES += SPIScan/SPIScanIV.p
 ASSEM_FILES += SPIScan/IV.p
+ASSEM_FILES += SPIScan/SetV.p
 
 BIN_FILES :=
 
@@ -37,4 +38,4 @@ BIN_FILES += SPItest.bin
 BIN_FILES += SPIScan.bin
 BIN_FILES += SPIScanIV.bin
 BIN_FILES += IV.bin
-
+BIN_FILES += SetV.bin
