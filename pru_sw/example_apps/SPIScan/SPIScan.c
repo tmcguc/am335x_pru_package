@@ -34,7 +34,8 @@
 #define START_SCAN 0xa0aa
 #define STOP_SCAN  0xf0ff
 #define IV_SCAN    0xa011
-#define SET_V      0x10f1 
+#define SET_V      0x10f1
+#define READ_CH    0xdead 
 
 static void *pruDataMem;
 static unsigned int *pruDataMem_int;
@@ -95,11 +96,25 @@ struct setV_param {
 
 };    
 
+struct readCH_param {
+
+    unsigned int samp;
+    unsigned int CH;
+    unsigned int DVAR;
+	unsigned int OS;
+	unsigned int XFER;
+	unsigned int CCNT;
+
+}; 
+
+
 struct scan_param scan;
 
 struct iv_param IV;
 
 struct setV_param setV;
+
+struct readCH_param rCH;
 
 static int udp_forever = 1;
 unsigned int scanning = 0;
@@ -173,12 +188,23 @@ static int LOCAL_exampleInit ( unsigned short pruNum )
     pruDataMem_int[11] = 0x0;// 0x0001; //OS
     pruDataMem_int[12] = 0x0;// 0x0001; //XFER
 
-
-
     return(0);
 }
 
 /// Transfer values in structs to PRUdataMEM
+
+
+static int Local_pru_Data_Mem_READCH(){
+
+    pruDataMem_int[0] = rCH.samp;
+    pruDataMem_int[1] = rCH.CH;
+    pruDataMem_int[2] = rCH.DVAR;
+    pruDataMem_int[3] = rCH.OS;
+    pruDataMem_int[4] = rCH.XFER;
+
+    return(0);
+
+}
 
 
 static int Local_pru_Data_Mem_SETV(){
@@ -186,6 +212,7 @@ static int Local_pru_Data_Mem_SETV(){
     pruDataMem_int[0] = setV.V1;
     pruDataMem_int[1] = setV.V2;
     pruDataMem_int[2] = setV.CTRL;
+
     return(0);
 
 }
@@ -205,8 +232,6 @@ static int Local_pru_Data_Mem_IV(){
     pruDataMem_int[10] = IV.DVAR;
     pruDataMem_int[11] = IV.OS;
     pruDataMem_int[12] = IV.XFER;
-
-
 
     return(0);
 
@@ -457,6 +482,50 @@ static void LOCAL_udp_listen () {
 					scanning = 1;
 
 					break; 
+
+                case READ_CH:   
+                	sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x", &cmd, &rCH.samp, &rCH.CH, &rCH.DVAR, &rCH.OS, &rCH.XFER, &rCH.CCNT );
+					printf("%d", packet_length);
+
+					if (scanning == 1){
+					    prussdrv_pru_clear_event (PRU0_ARM_INTERRUPT);
+
+    					/* Disable PRU and close memory mapping*/
+    					prussdrv_pru_disable (PRU_NUM);
+    					prussdrv_exit ();
+					}
+				
+					//TODO:SETUP DMA here
+					write_ioctl(rCH.CH, rCH.CCNT);
+					//
+
+    				//tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+    
+    				printf("\nINFO: Starting %s example.\r\n", "SetV");
+    				/* Initialize the PRU */
+    				prussdrv_init ();		
+    
+    				/* Open PRU Interrupt */
+    				ret = prussdrv_open(PRU_EVTOUT_0);
+    				if (ret){
+        				printf("prussdrv_open open failed\n");
+        				//return (ret);
+    				}
+    
+    				/* Get the interrupt initialized */
+    				prussdrv_pruintc_init(&pruss_intc_initdata);
+
+    				//Initialize Data on of shared memory
+     				LOCAL_exampleInit(PRU_NUM);
+					r = Local_pru_Data_Mem_READCH();
+
+				    printf("\tINFO: Executing example.\r\n");
+    				prussdrv_exec_program (PRU_NUM, "./ReadCH.bin");
+    
+					scanning = 1;
+
+					break; 
+
 
 
 				default:

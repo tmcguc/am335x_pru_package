@@ -1,6 +1,6 @@
 .origin 0
 .entrypoint START
-#include "IV.hp"
+#include "ReadCH.hp"
 
 
 START:
@@ -64,31 +64,16 @@ RADCRESET:
 
 
 PASSVALUES:
-LBCO nStep, CONST_PRUDRAM, 0, 4
+LBCO samp, CONST_PRUDRAM, 0, 4
 
-LBCO pStep, CONST_PRUDRAM, 4, 4
+LBCO CH, CONST_PRUDRAM, 4, 4
 
-LBCO Count, CONST_PRUDRAM, 8, 4
+LBCO DVAR, CONST_PRUDRAM, 8, 4
 
-LBCO Start, CONST_PRUDRAM, 12, 4
+LBCO OS, CONST_PRUDRAM, 12, 4
 
-LBCO Stop, CONST_PRUDRAM, 16, 4
+LBCO XFER, CONST_PRUDRAM, 16, 4
 
-LBCO MinV, CONST_PRUDRAM, 20, 4
-
-LBCO MaxV, CONST_PRUDRAM, 24, 4
-
-LBCO STEP, CONST_PRUDRAM, 28, 4
-
-LBCO samp, CONST_PRUDRAM, 32, 4
-
-LBCO CH, CONST_PRUDRAM, 36, 4
-
-LBCO DVAR, CONST_PRUDRAM, 40, 4
-
-LBCO OS, CONST_PRUDRAM, 44, 4
-
-LBCO XFER, CONST_PRUDRAM, 48, 4
 
 
 SETUPOS:
@@ -203,14 +188,7 @@ HALT
 
 
 
-//Change Step to negative for down swing
-SETpSTEP:
-    MOV STEP, pStep
-    JMP RSETpSTEP
 
-SETnSTEP:
-    MOV STEP, nStep
-    JMP RSETnSTEP
 
 
 LOOP3:
@@ -228,111 +206,11 @@ RDISABLEADC:
     JMP RLOOP3
 
 
-//*=============================================================
-//*This is where we are defining the DAC functionality !!!!
-//*=============================================================
-
-
-
-DACUPDATE:
-    JMP ENABLEDAC          // Enable the DAC SPI channels TODO: need to write seperate ENABLE DAC 
-RENABLEDAC:
-    MOV DACC, INIT_DACC    //Change from A to C for seting up IV
-    //MOV DACD, INIT_DACD     //change from B to D for setting up IV
-    OR DACC, V1.w0, DACC    // This takes the position Fx and adds the prefix for the DAC to go to DACC 
-    //OR DACD, Fy.w0, DACD    // Same thing for DACD
-
-    MOV addr, MCSPI1 | MCSPI_TX1     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
-    SBBO DACC, addr,0,4     //send out the data to DACC Yo
-
-CHECKTXSA:
-    MOV addr, MCSPI1 |  MCSPI_CH1STAT
-    LBBO val, addr, 0, 4
-    QBBC CHECKTXSA, val.t1
-
-//    MOV addr, MCSPI1 | MCSPI_TX1     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
-//    SBBO DACD, addr,0,4     //send out the data to DACB Yo
-
-//CHECKTXSB:
-//    MOV addr, MCSPI1 |  MCSPI_CH1STAT
-//    LBBO val, addr, 0, 4
-//    QBBC CHECKTXSB, val.t1
-
-
-    JMP LOADDAC            //
-RLOADDAC:
-    JMP DISABLEDAC         //
-RDISABLEDAC:
-    JMP DELAYSET           //
-RDELAYSET:
-    JMP DELAY_VAR
-RDELAY_VAR:
-    JMP RDACUPDATE
-
-
-LOADDAC:
-    JMP DELAY
-RDELAY:
-    MOV val, 0xac           // need a dealy of 1.7 us before we take pulse LDAC  low
-DELAYLOADDAC:
-    SUB val, val, 1
-    QBNE DELAYLOADDAC , val , 0
-    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
-    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
-    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
-    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
-    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
-    JMP RLOADDAC               
-
-
-ENABLEDAC:
-    MOV addr, MCSPI1 |  MCSPI_CH1CTRL
-    MOV val, EN_CH
-    SBBO val, addr, 0, 4
-    /// Took this from CHECKTXSDAC
-CHECKTXSDAC:
-    MOV addr, MCSPI1 |  MCSPI_CH1STAT
-    LBBO val, addr, 0, 4
-    QBBC CHECKTXSDAC, val.t1
-    JMP RENABLEDAC
-
-
-DISABLEDAC:
-    MOV addr, MCSPI1 | MCSPI_CH1CTRL
-    MOV val, DIS_CH
-    SBBO val, addr, 0 ,4
-    JMP RDISABLEDAC
 
 //*=======================================================
 //* DELAY Routines
 //*=======================================================
 
-
-// Fixed Delay before loading values from register into DAC
-DELAY:
-    MOV r24, 0x96  //Test to delay LDAC until CS goes high
-DELAY0:
-    SUB r24, r24, 1
-    QBNE DELAY0 , r24, 0
-    JMP RDELAY
-
-
-//Variable Delay user defined
-DELAY_VAR:
-    MOV r25, DVAR
-DELAY2L:
-    SUB r25, r25, 1
-    QBNE DELAY2L, r25, 0
-    JMP RDELAY_VAR
-
-
-//Minimum delay before sampling ADCs
-DELAYSET:
-    MOV r24, 0xc8  // 2us delay for DAC settling time  for 512 step size
-DELAYSET0:
-    SUB r24, r24, 1
-    QBNE DELAYSET0 , r24, 0
-    JMP RDELAYSET
 
 
 //*================================================================
