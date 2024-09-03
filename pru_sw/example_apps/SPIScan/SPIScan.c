@@ -35,7 +35,9 @@
 #define STOP_SCAN  0xf0ff
 #define IV_SCAN    0xa011
 #define SET_V      0x10f1
-#define READ_CH    0xdead 
+#define READ_CH    0xdead
+#define TRIG_SCAN  0xbeef
+#define SNAKE_SCAN 0x5a5a 
 
 static void *pruDataMem;
 static unsigned int *pruDataMem_int;
@@ -382,6 +384,49 @@ static void LOCAL_udp_listen () {
 
 					break;
 
+				case TRIG_SCAN:
+					sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &cmd, &scan.Sx, &scan.Sy, &scan.sdx, &scan.sdy, &scan.dx, 
+							&scan.dy, &scan.pF, &scan.sF, &scan.samp, &scan.CH, &scan.DVAR, &scan.OS, &scan.XFER, &scan.CCNT );
+					printf("%d", packet_length);
+
+					if (scanning == 1){
+					    prussdrv_pru_clear_event (PRU0_ARM_INTERRUPT);
+
+    					/* Disable PRU and close memory mapping*/
+    					prussdrv_pru_disable (PRU_NUM);
+    					prussdrv_exit ();
+					}
+				
+					//TODO:SETUP DMA here
+					write_ioctl(scan.CH, scan.CCNT);
+					//
+
+    				//tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+    
+    				printf("\nINFO: Starting %s example.\r\n", "SPIScan");
+    				/* Initialize the PRU */
+    				prussdrv_init ();		
+    
+    				/* Open PRU Interrupt */
+    				ret = prussdrv_open(PRU_EVTOUT_0);
+    				if (ret){
+        				printf("prussdrv_open open failed\n");
+        				//return (ret);
+    				}
+    
+    				/* Get the interrupt initialized */
+    				prussdrv_pruintc_init(&pruss_intc_initdata);
+
+    				//Initialize Data on of shared memory
+     				LOCAL_exampleInit(PRU_NUM);
+					r = Local_pru_Data_Mem();
+
+				    printf("\tINFO: Executing example.\r\n");
+    				prussdrv_exec_program (PRU_NUM, "./TRIGScan.bin");
+    
+					scanning = 1;
+
+					break;
 
 				case STOP_SCAN:
 

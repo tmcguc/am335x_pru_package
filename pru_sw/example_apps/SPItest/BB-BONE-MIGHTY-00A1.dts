@@ -24,12 +24,14 @@
 		"P8.7",  /*GPIO os_0*/
 		"P8.8",  /*GPIO os_1*/
 		"P8.9",  /*GPIO os_2*/
+		"P8.16", /*TrigIN    pru0: pr1_pru0_pru_r31_14 */
 		/* the pin header P9 uses */
 		"P9.17", /* SPI0_CS0	*/
 		"P9.18", /* SPI0_D1   */
 		"P9.21", /* SPI0_D0_MOSI  */
 		"P9.22", /* SPI0_SCLK */
 		"P9.25", /* ADC RESET pru0: pr1_pru0_pru_r30_7	*/
+		"P9.27", /* TrigOUT   pru0: pr1_pru0_pru_r30_5  */
 		"P9.28", /* SPI1_CS0 	*/
 		"P9.29", /* SPI1_MISO   */
 		"P9.30", /* SPI1_MOSI	*/
@@ -70,7 +72,8 @@
 					0x034 0x16 	/* P8_11 = CONV,  OUTPUT_PULLUP   | MODE6 */
 					0x030 0x16 	/* P8_12 = LDAC,  OUTPUT_PULLUP   | MODE6 */
 					0x1aC 0x05 	/* P9_25 = RESET, OUTPUT_PULLDOWN | MODE5 */
-
+					0x038 0x36	/* P8_16 = TrigIN, INPUT_PULLUP	  | MODE6 */
+					0x1a4 0x15	/* P9_27 = TrigOUT, OUTPUT_PULLUP | MODE5 */
 				>;
 			};
 
