@@ -198,11 +198,27 @@ SETUPADCS:
 
 
 
+SETUPDAC:
+    
+
+    //disable channel
+    MOV addr, MCSPI1 |  MCSPI_CH1CTRL
+    MOV val, DIS_CH
+    SBBO val, addr, 0 ,4
+
+    // configure the channel 
+    MOV addr, MCSPI1 |  MCSPI_CH1CONF     
+    MOV val, DAC_MASTER_CONF
+    SBBO val, addr, 0, 4
 
 
 SETUPTRIG:
     SET r30.t5              //MOV r30, 1 << 5  go high make sure output is high
 
+//DAC TEST 
+//TESTDAC:
+//    JMP DACUPDATE
+//TRDACUPDATE:
 
 
 //Test loop
@@ -211,7 +227,18 @@ TESTLOOP:
 RTESTLOOP:
 
 
+//TESTADC:
+//    JMP ENABLEADC
+//RTEST_ENABLEADC:
 
+//    JMP ADCREAD
+//RTEST_ADCREAD:
+
+//    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
+//    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+//    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+//    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+//    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
 
 
 
@@ -236,9 +263,8 @@ LOOP1:
     
     JMP LOOP2              // LOOP2 is where we call the DAC and ADC subroutines
 RLOOP2: 
-    //Commented out the incrementing of the Fx and Fy values not needed for Trigger Scan
-    //ADD Sx, Sx, sdx         // update Sx 
-    //ADD Sy, Sy, sdy         // update Sy
+    ADD Sx, Sx, sdx         // update Sx 
+    ADD Sy, Sy, sdy         // update Sy
     SUB sF, sF, 1           // decrement count
     // TODO: add something here to check if we should stop the scan
     QBNE LOOP1, sF, 0       // check if we are done
@@ -249,18 +275,12 @@ RLOOP2:
 LOOP2:
     MOV pFc, pF             // reintialize fast count value
 SUBLOOP2:
-    //JMP DACUPDATE          // write out values to DACs not needed in Trigger Scan
-//RDACUPDATE:
-
-    //
-    JMP DELAY_VAR
-RDELAY_VAR:
-
-
+    JMP DACUPDATE          // Enabled for TRIG ScanTesing write out values to DACs not needed in Trigger Scan
+RDACUPDATE:
     JMP LOOP3                // Loop samples ADCs multiple times
 RLOOP3:
-    //ADD Fx, Fx, dx          // update Fx, TODO: check if I need to do a MOV first and use another register
-    //ADD Fy, Fy, dy          // update Fy
+    ADD Fx, Fx, dx          // update Fx, TODO: check if I need to do a MOV first and use another register
+    ADD Fy, Fy, dy          // update Fy
     SUB pFc, pFc, 1         // decrement count
     QBNE SUBLOOP2, pFc, 0   // see if we are going to the next line
     //Test to see if we stop
@@ -297,9 +317,74 @@ RDISABLEADC:
 
 
 
+DACUPDATE:
+    JMP ENABLEDAC          // Enable the DAC SPI channels TODO: need to write seperate ENABLE DAC 
+RENABLEDAC:
+    MOV DACA, INIT_DACA
+    MOV DACB, INIT_DACB
+    OR DACA, Fx.w0, DACA    // This takes the position Fx and adds the prefix for the DAC to go to DACA 
+    OR DACB, Fy.w0, DACB    // Same thing for DACB
+
+    MOV addr, MCSPI1 | MCSPI_TX1     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
+    SBBO DACA, addr,0,4     //send out the data to DACA Yo
+
+CHECKTXSA:
+    MOV addr, MCSPI1 |  MCSPI_CH1STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXSA, val.t1
+
+    MOV addr, MCSPI1 | MCSPI_TX1     //TODO: make sure this is going to the right peripheral Should be MCSPI_TX1
+    SBBO DACB, addr,0,4     //send out the data to DACB Yo
+
+CHECKTXSB:
+    MOV addr, MCSPI1 |  MCSPI_CH1STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXSB, val.t1
 
 
+    JMP LOADDAC            //TODO: write separate LOADDAC function need to determine right GPIOS
+RLOADDAC:
+    JMP DISABLEDAC         //TODO: write DAISABLEDAC function
+RDISABLEDAC:
+    JMP DELAYSET           //TODO: need to include a seperate delay that allows sample to reach steady state before measurement
+RDELAYSET:
+    JMP DELAY_VAR
+RDELAY_VAR:
+    JMP RDACUPDATE
 
+
+LOADDAC:
+    JMP DELAY
+RDELAY:
+    MOV val, 0xac           // need a dealy of 1.7 us before we take pulse LDAC  low
+DELAYLOADDAC:
+    SUB val, val, 1
+    QBNE DELAYLOADDAC , val , 0
+    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
+    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+    CLR r30.t14             //MOV r30, 0 << 14       // pulse low
+    SET r30.t14             //MOV r30, 1 << 14  go high make sure output is high
+    JMP RLOADDAC               
+
+
+ENABLEDAC:
+    MOV addr, MCSPI1 |  MCSPI_CH1CTRL
+    MOV val, EN_CH
+    SBBO val, addr, 0, 4
+    /// Took this from CHECKTXSDAC
+CHECKTXSDAC:
+    MOV addr, MCSPI1 |  MCSPI_CH1STAT
+    LBBO val, addr, 0, 4
+    QBBC CHECKTXSDAC, val.t1
+    JMP RENABLEDAC
+
+
+DISABLEDAC:
+    MOV addr, MCSPI1 | MCSPI_CH1CTRL
+    MOV val, DIS_CH
+    SBBO val, addr, 0 ,4
+    JMP RDISABLEDAC
 
 //*=======================================================
 //* DELAY Routines
@@ -307,7 +392,12 @@ RDISABLEADC:
 
 
 // Fixed Delay before loading values from register into DAC
-
+DELAY:
+    MOV r24, 0x96  //Test to delay LDAC until CS goes high
+DELAY0:
+    SUB r24, r24, 1
+    QBNE DELAY0 , r24, 0
+    JMP RDELAY
 
 
 //Variable Delay user defined
@@ -318,6 +408,14 @@ DELAY2L:
     QBNE DELAY2L, r25, 0
     JMP RDELAY_VAR
 
+
+//Minimum delay before sampling ADCs
+DELAYSET:
+    MOV r24, 0xc8  // 2us delay for DAC settling time  for 512 step size
+DELAYSET0:
+    SUB r24, r24, 1
+    QBNE DELAYSET0 , r24, 0
+    JMP RDELAYSET
 
 
 //*================================================================
