@@ -72,6 +72,26 @@ struct scan_param {
 
 };
 
+struct snake_param {
+	unsigned int Sx;
+	unsigned int Sy;
+	unsigned int sdx;
+	unsigned int sdy;
+	unsigned int dx;
+	unsigned int dy;
+	unsigned int pF;
+	unsigned int sF;
+	unsigned int samp;
+	unsigned int CH;
+	unsigned int DVAR;
+	unsigned int OS;
+	unsigned int XFER;
+	unsigned int CCNT;
+	unsigned int iDX;
+	unsigned int iDY;
+
+};
+
 struct iv_param {
     unsigned int nStep;
     unsigned int pStep;
@@ -118,6 +138,8 @@ struct iv_param IV;
 struct setV_param setV;
 
 struct readCH_param rCH;
+
+struct snake_param snake;
 
 static int udp_forever = 1;
 unsigned int scanning = 0;
@@ -262,6 +284,29 @@ static int Local_pru_Data_Mem(){
 
 }
 
+static int Local_pru_Data_Mem_SNAKE(){
+
+	pruDataMem_int[0] = snake.Sx;
+	pruDataMem_int[1] = snake.Sy;
+	pruDataMem_int[2] = snake.sdx;
+	pruDataMem_int[3] = snake.sdy;
+	pruDataMem_int[4] = snake.dx;
+	pruDataMem_int[5] = snake.dy;
+	pruDataMem_int[6] = snake.pF;
+	pruDataMem_int[7] = snake.sF;
+	pruDataMem_int[8] = snake.samp;
+	pruDataMem_int[9] = snake.CH;
+	pruDataMem_int[10] = snake.DVAR;
+	pruDataMem_int[11] = snake.OS;
+	pruDataMem_int[12] = snake.XFER;
+	pruDataMem_int[13] = snake.iDX;
+	pruDataMem_int[14] = snake.iDY;
+
+	return(0);
+
+}
+
+
 static void diep(char *s)
 {
   perror(s);
@@ -384,6 +429,51 @@ static void LOCAL_udp_listen () {
 					scanning = 1;
 
 					break;
+
+				case SNAKE_SCAN:
+					sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &cmd, &snake.Sx, &snake.Sy, &snake.sdx, &snake.sdy, &snake.dx, 
+							&snake.dy, &snake.pF, &snake.sF, &snake.samp, &snake.CH, &snake.DVAR, &snake.OS, &snake.XFER, &snake.CCNT, &snake.iDX, &snake.iDY);
+					printf("%d", packet_length);
+
+					if (scanning == 1){
+					    prussdrv_pru_clear_event (PRU0_ARM_INTERRUPT);
+
+    					/* Disable PRU and close memory mapping*/
+    					prussdrv_pru_disable (PRU_NUM);
+    					prussdrv_exit ();
+					}
+				
+					//TODO:SETUP DMA here
+					write_ioctl(scan.CH, scan.CCNT);
+					//
+
+    				//tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+    
+    				printf("\nINFO: Starting %s example.\r\n", "SPISnake");
+    				/* Initialize the PRU */
+    				prussdrv_init ();		
+    
+    				/* Open PRU Interrupt */
+    				ret = prussdrv_open(PRU_EVTOUT_0);
+    				if (ret){
+        				printf("prussdrv_open open failed\n");
+        				//return (ret);
+    				}
+    
+    				/* Get the interrupt initialized */
+    				prussdrv_pruintc_init(&pruss_intc_initdata);
+
+    				//Initialize Data on of shared memory
+     				LOCAL_exampleInit(PRU_NUM);
+					r = Local_pru_Data_Mem_SNAKE();
+
+				    printf("\tINFO: Executing example.\r\n");
+    				prussdrv_exec_program (PRU_NUM, "./SPISnake.bin");
+    
+					scanning = 1;
+
+					break;
+
 
 				case TRIG_SCAN:
 					sscanf(buf, "%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x%8x", &cmd, &scan.Sx, &scan.Sy, &scan.sdx, &scan.sdy, &scan.dx, 
