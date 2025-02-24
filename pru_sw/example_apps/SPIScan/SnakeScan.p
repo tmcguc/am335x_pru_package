@@ -101,9 +101,9 @@ LBCO OS, CONST_PRUDRAM, 44, 4
 
 LBCO XFER, CONST_PRUDRAM, 48, 4
 
-LBCO IDX, CONST_PRUDRAM, 52, 4
+//LBCO IDX, CONST_PRUDRAM, 52, 4
 
-LBCO IDY, CONST_PRUDRAM, 56, 4
+//LBCO IDY, CONST_PRUDRAM, 56, 4
 
 SETUPOS:
     //Set up Over Sampling
@@ -229,7 +229,13 @@ SETUPDXDY:
 
     XOR IDX, DX, val
     ADD IDX, IDX, 1
-    //LDI r28, 635
+    
+    LDI val, 0xffff
+
+    XOR IDY, DY, val
+    ADD IDY, IDY, 1
+
+
 
 //Test loop
 TESTLOOP:
@@ -255,13 +261,13 @@ HALT
 // * =======================================================
 
 LOOP1:
-    //=MOV Fx, Sx       // store Sx in Fx
+    //MOV Fx, Sx       // store Sx in Fx
     MOV Fy, Sy      // store Sy in Fy 
     
     JMP LOOP2              // LOOP2 is where we call the DAC and ADC subroutines
 RLOOP2N:
 RLOOP2P: 
-    //ADD Sx, Sx, sdx         // update Sx 
+    ADD Sx, Sx, sdx         // update Sx 
     ADD Sy, Sy, sdy         // update Sy
     SUB sF, sF, 1           // decrement count
     // TODO: add something here to check if we should stop the scan
@@ -278,7 +284,7 @@ RDACUPDATE:
     JMP LOOP3                // Loop samples ADCs multiple times
 RLOOP3:
     ADD Fx, Fx, dx          // update Fx, TODO: check if I need to do a MOV first and use another register
-    //ADD Fy, Fy, dy          // update Fy
+    ADD Fy, Fy, dy          // update Fy
     SUB pFc, pFc, 1         // decrement count
     QBNE SUBLOOP2, pFc, 0   // see if we are going to the next line
 
@@ -290,13 +296,13 @@ RLOOP3:
 
 SWitchN:
     MOV dx, IDX//635
-    //MOV dy, iDY
+    MOV dy, IDY
     MOV SwS, 1
     JMP RLOOP2N
 
 SWitchP:
     MOV dx, DX//-635
-    //MOV dy, DY
+    MOV dy, DY
     MOV SwS, 0
     JMP RLOOP2P
 
