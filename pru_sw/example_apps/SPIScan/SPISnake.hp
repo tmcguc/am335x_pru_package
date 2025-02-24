@@ -133,8 +133,8 @@
 #define XFER        r22
 #define DX          r23     // hold Original dx
 #define DY          r24     // hold Original dy
-#define iDX         r25     // inverse dx
-#define iDY         r26     // inverse dy
+#define IDX         r28     // inverse dx
+#define IDY         r26     // inverse dy
 #define SwS         r27     //Switch State
 
 

@@ -46,6 +46,7 @@ static unsigned int *pruDataMem_int;
 static int LOCAL_exampleInit ( unsigned short pruNum );
 static void LOCAL_udp_listen ();
 static int Local_pru_Data_Mem ();
+static int Local_pru_Data_Mem_SNAKE();
 static void write_ioctl(unsigned int bcnt, unsigned int ccnt);
 
 
@@ -212,6 +213,8 @@ static int LOCAL_exampleInit ( unsigned short pruNum )
     pruDataMem_int[10] = 0x0;// 0x0001; //DVAR
     pruDataMem_int[11] = 0x0;// 0x0001; //OS
     pruDataMem_int[12] = 0x0;// 0x0001; //XFER
+	pruDataMem_int[13] = 0x0;// 0x0001; //CCNT
+	pruDataMem_int[14] = 0x0;// 0x0001; //iDX
 
     return(0);
 }
@@ -444,7 +447,7 @@ static void LOCAL_udp_listen () {
 					}
 				
 					//TODO:SETUP DMA here
-					write_ioctl(scan.CH, scan.CCNT);
+					write_ioctl(snake.CH, snake.CCNT);
 					//
 
     				//tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
@@ -468,7 +471,7 @@ static void LOCAL_udp_listen () {
 					r = Local_pru_Data_Mem_SNAKE();
 
 				    printf("\tINFO: Executing example.\r\n");
-    				prussdrv_exec_program (PRU_NUM, "./SPISnake.bin");
+    				prussdrv_exec_program (PRU_NUM, "./SnakeScan.bin");
     
 					scanning = 1;
 
